@@ -16,9 +16,6 @@ public class coach_user {
     @Column(name = "coach_gender")
     private String coachGender;
 
-    @Column(name = "examine_state")
-    private String examineState;
-
     @Column(name = "user_id")
     private Integer userId;
 
@@ -60,14 +57,6 @@ public class coach_user {
         this.coachGender = coachGender;
     }
 
-    public String getExamineState() {
-        return examineState;
-    }
-
-    public void setExamineState(String examineState) {
-        this.examineState = examineState;
-    }
-
     public Integer getUserId() {
         return userId;
     }
@@ -90,7 +79,6 @@ public class coach_user {
                 "coachUserId=" + coachUserId +
                 ", coachName='" + coachName + '\'' +
                 ", coachGender='" + coachGender + '\'' +
-                ", examineState='" + examineState + '\'' +
                 ", userId=" + userId +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

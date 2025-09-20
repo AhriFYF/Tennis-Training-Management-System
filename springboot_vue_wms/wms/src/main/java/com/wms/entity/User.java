@@ -12,14 +12,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author wms
- * @since 2022-07-21
- */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -50,7 +42,7 @@ public class User implements Serializable {
     @ApiModelProperty(value = "电话")
     private String phone;
 
-    @ApiModelProperty(value = "角色 0超级管理员，1管理员，2普通账号")
+    @ApiModelProperty(value = "角色 0主校区管理员，1分校区管理员，2教练，2学生")
     private Integer roleId;
 
     @ApiModelProperty(value = "是否有效，Y有效，其他无效")

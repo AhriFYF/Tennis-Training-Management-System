@@ -22,9 +22,6 @@ public class student_users {
     @Column(name = "parents_phone_number")
     private String parentsPhoneNumber;
 
-    @Column(name = "examine_state")
-    private String examineState;
-
     @Column(name = "user_id")
     private Integer userId;
 
@@ -74,14 +71,6 @@ public class student_users {
         this.studentAge = studentAge;
     }
 
-    public String getExamineState() {
-        return examineState;
-    }
-
-    public void setExamineState(String examineState) {
-        this.examineState = examineState;
-    }
-
     public Integer getUserId() {
         return userId;
     }
@@ -114,7 +103,6 @@ public class student_users {
                 ", studentGender='" + studentGender + '\'' +
                 ", studentAge='" + studentAge + '\'' +
                 ", parentsPhoneNumber='" + parentsPhoneNumber + '\'' +
-                ", examineState='" + examineState + '\'' +
                 ", userId=" + userId +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

@@ -52,11 +52,14 @@ public class course_information {
     @Column(name = "student_course_selection_limit_times")
     private Integer studentCourseSelectionLimitTimes;
 
-    @Column(name = "create_time")
-    private LocalDateTime createTime;
+    @Column(name = "status")
+    private String status;
 
-    @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    @Column(name = "course_start_time")
+    private LocalDateTime courseStartTime;
+
+    @Column(name = "course_end_time")
+    private LocalDateTime courseEndTime;
 
     public Double getCourseHours() {
         return courseHours;
@@ -178,26 +181,35 @@ public class course_information {
         this.studentCourseSelectionLimitTimes = studentCourseSelectionLimitTimes;
     }
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
+    public LocalDateTime getCourseStartTime() {
+        return courseStartTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
+    public void setCourseStartTime(LocalDateTime courseStartTime) {
+        this.courseStartTime = courseStartTime;
     }
 
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
+    public LocalDateTime getCourseEndTime() {
+        return courseEndTime;
     }
 
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
+    public void setCourseEndTime(LocalDateTime courseEndTime) {
+        this.courseEndTime = courseEndTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "course_information{" +
-                "courseInformationId=" + courseInformationId +
+                "praiseLen=" + praiseLen +
+                ", courseInformationId=" + courseInformationId +
                 ", courseName='" + courseName + '\'' +
                 ", courseTypes='" + courseTypes + '\'' +
                 ", coachUser=" + coachUser +
@@ -208,12 +220,12 @@ public class course_information {
                 ", courseImages='" + courseImages + '\'' +
                 ", courseIntroduction='" + courseIntroduction + '\'' +
                 ", hits=" + hits +
-                ", praiseLen=" + praiseLen +
                 ", collectLen=" + collectLen +
                 ", commentLen=" + commentLen +
                 ", studentCourseSelectionLimitTimes=" + studentCourseSelectionLimitTimes +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
+                ", status='" + status + '\'' +
+                ", courseStartTime=" + courseStartTime +
+                ", courseEndTime=" + courseEndTime +
                 '}';
     }
 }
