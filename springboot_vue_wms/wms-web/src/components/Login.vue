@@ -61,7 +61,7 @@
 
                     // 根据 roleId 进行跳转
                     if (roleId === 0) {
-                      this.$router.replace('/Index');
+                      this.$router.replace('/SuperAdmin');
                     } else if (roleId === 1) {
                       this.$router.replace('/admin');
                     } else if (roleId === 2) {

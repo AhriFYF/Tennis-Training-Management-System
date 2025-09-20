@@ -8,10 +8,19 @@ const routes = [
         component:()=>import('../components/Login')
     },
     {
+        path:'/SuperAdmin',
+        name:'superAdmin',
+        component:()=>import('../components/SuperAdmin')
+    },
+    {
         path:'/Index',
         name:'index',
         component:()=>import('../components/Index'),
         children:[
+            {
+                path:'', // 默认路径，当访问 /Index 时匹配
+                redirect:'/Home' // 重定向到 /Home
+            },
             {
                 path:'/Home',
                 name:'home',
