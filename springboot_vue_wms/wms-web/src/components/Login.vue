@@ -45,35 +45,44 @@
         },
         methods:{
 
-            confirm(){
-                this.confirm_disabled=true;
-                this.$refs.loginForm.validate((valid) => {
-                    if (valid) { //valid成功为true，失败为false
-                        //去后台验证用户名密码
-                        this.$axios.post(this.$httpUrl+'/user/login',this.loginForm).then(res=>res.data).then(res=>{
-                            console.log(res)
-                            if(res.code==200){
-                                //存储
-                                sessionStorage.setItem("CurUser",JSON.stringify(res.data.user))
+// 前端代码
+          confirm() {
+            this.confirm_disabled = true;
+            this.$refs.loginForm.validate((valid) => {
+              if (valid) {
+                this.$axios.post(this.$httpUrl + '/user/login', this.loginForm).then(res => res.data).then(res => {
+                  if (res.code == 200) {
+                    sessionStorage.setItem("CurUser", JSON.stringify(res.data.user));
+                    this.$store.commit("setMenu", res.data.menu);
 
-                                console.log(res.data.menu)
-                                this.$store.commit("setMenu",res.data.menu)
-                                //跳转到主页
-                                this.$router.replace('/Index');
-                            }else{
-                                this.confirm_disabled=false;
-                                alert('校验失败，用户名或密码错误！');
-                                return false;
-                            }
-                        });
-                    } else {
-                        this.confirm_disabled=false;
-                        console.log('校验失败');
-                        return false;
+                    // 获取用户的 roleId
+                    const user = res.data.user;
+                    const roleId = user.roleId; // 这里可以直接获取，因为后端已经返回了
+
+                    // 根据 roleId 进行跳转
+                    if (roleId === 0) {
+                      this.$router.replace('/Index');
+                    } else if (roleId === 1) {
+                      this.$router.replace('/admin');
+                    } else if (roleId === 2) {
+                      this.$router.replace('/coach');
+                    } else if (roleId === 3) {
+                      this.$router.replace('/student');
                     }
-                });
 
-            }
+                  } else {
+                    this.confirm_disabled = false;
+                    alert('校验失败，用户名或密码错误！');
+                    return false;
+                  }
+                });
+              } else {
+                this.confirm_disabled = false;
+                console.log('校验失败');
+                return false;
+              }
+            });
+          }
         }
     }
 </script>
