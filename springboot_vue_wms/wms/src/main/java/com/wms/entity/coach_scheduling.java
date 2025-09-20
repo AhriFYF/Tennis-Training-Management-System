@@ -1,5 +1,5 @@
-package com.system.tabletennis_training_management_system.pojo;
-import jakarta.persistence.*;
+package com.wms.entity;
+import javax.persistence.*;
 import java.util.Date;
 
 @Table(name="coach_scheduling")

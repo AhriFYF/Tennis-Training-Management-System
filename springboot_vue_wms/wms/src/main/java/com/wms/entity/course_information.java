@@ -1,5 +1,5 @@
-package com.system.tabletennis_training_management_system.pojo;
-import jakarta.persistence.*;
+package com.wms.entity;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Table(name="course_information")

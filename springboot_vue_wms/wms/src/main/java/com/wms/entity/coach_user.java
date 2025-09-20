@@ -1,6 +1,6 @@
-package com.system.tabletennis_training_management_system.pojo;
+package com.wms.entity;
 import java.time.LocalDateTime;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Table(name="coach_user")
 @Entity
