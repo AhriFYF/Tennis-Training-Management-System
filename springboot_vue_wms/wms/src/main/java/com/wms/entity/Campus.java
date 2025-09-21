@@ -1,4 +1,6 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.*;
 import java.util.Date;
 import javax.persistence.*;
@@ -7,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "campuses")
+@TableName("campuses")
 public class Campus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

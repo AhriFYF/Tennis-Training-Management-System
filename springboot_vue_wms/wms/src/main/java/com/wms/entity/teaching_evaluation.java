@@ -1,9 +1,12 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name="teaching_evaluation")
 @Entity
+@Table(name="teaching_evaluation")
+@TableName("teaching_evaluation")
 public class teaching_evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,10 +1,13 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "system_logs")
+@TableName("system_logs")
 public class SystemLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

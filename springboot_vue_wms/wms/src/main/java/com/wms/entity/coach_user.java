@@ -1,9 +1,12 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
-@Table(name="coach_user")
 @Entity
+@Table(name="coach_user")
+@TableName("coach_user")
 public class coach_user {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

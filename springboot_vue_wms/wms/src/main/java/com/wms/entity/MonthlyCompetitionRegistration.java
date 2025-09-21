@@ -1,10 +1,13 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "competition_registrations")
+@TableName("competition_registrations")
 public class MonthlyCompetitionRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
