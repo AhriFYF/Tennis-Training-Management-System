@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.SelectionMapper">
+
+    <resultMap id="BaseResultMap" type="com.wms.entity.student_course_selection">
+        <id column="student_course_selection_id" property="studentCourseSelectionId" />
+        <result column="course_name" property="courseName" />
+        <result column="course_number" property="courseNumber" />
+        <result column="course_types" property="courseTypes" />
+        <result column="coach_user" property="coachUser" />
+        <result column="coach_name" property="coachName" />
+        <result column="course_hours" property="courseHours" />
+        <result column="duration_of_class_hours" property="durationOfClassHours" />
+        <result column="course_prices" property="coursePrices" />
+        <result column="student_users" property="studentUsers" />
+        <result column="name" property="name" />
+        <result column="student_age" property="studentAge" />
+        <result column="parents_phone_number" property="parentsPhoneNumber" />
+        <result column="pay_state" property="payState" />
+        <result column="pay_type" property="payType" />
+        <result column="coach_scheduling_limit_times" property="coachSchedulingLimitTimes" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="source_table" property="sourceTable" />
+        <result column="source_id" property="sourceId" />
+        <result column="source_user_id" property="sourceUserId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        student_course_selection_id, course_name, course_number, course_types, coach_user, coach_name,
+    course_hours, duration_of_class_hours, course_prices, student_users, name, student_age,
+    parents_phone_number, pay_state, pay_type, coach_scheduling_limit_times, create_time,
+    update_time, source_table, source_id, source_user_id
+    </sql>
+
+    <select id="pageC" resultType="com.wms.entity.student_course_selection">
+        select * from student_course_selection
+    </select>
+
+    <select id="pageCC" resultType="com.wms.entity.student_course_selection">
+        select * from student_course_selection ${ew.customSqlSegment}
+    </select>
+
+</mapper>

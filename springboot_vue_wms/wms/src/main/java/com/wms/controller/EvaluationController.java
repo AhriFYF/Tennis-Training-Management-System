@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
-import com.wms.entity.course_information;
-import com.wms.service.CourseService;
+import com.wms.entity.teaching_evaluation;
+import com.wms.service.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,40 +16,40 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/course")
-public class CourseController {
+@RequestMapping("/evaluation")
+public class EvaluationController {
 
     @Autowired
-    private CourseService courseService; // 注入课程信息Service
+    private EvaluationService EvaluationService; // 注入课程信息Service
 
     @GetMapping("/list")
-    public List<course_information> list(){
-        return courseService.list();
+    public List<teaching_evaluation> list(){
+        return EvaluationService.list();
     }
 
     // 根据ID查找（示例）
     @GetMapping("/findById")
     public Result findById(@RequestParam Integer id){
-        List<course_information> list = courseService.lambdaQuery().eq(course_information::getCourseInformationId, id).list();
+        List<teaching_evaluation> list = EvaluationService.lambdaQuery().eq(teaching_evaluation::getTeachingEvaluationId, id).list();
         return list.size() > 0 ? Result.suc(list) : Result.fail();
     }
 
     // 新增
     @PostMapping("/save")
-    public Result save(@RequestBody course_information courseInfo){
-        return courseService.save(courseInfo) ? Result.suc() : Result.fail();
+    public Result save(@RequestBody teaching_evaluation courseInfo){
+        return EvaluationService.save(courseInfo) ? Result.suc() : Result.fail();
     }
 
     // 更新
     @PostMapping("/update")
-    public Result update(@RequestBody course_information courseInfo){
-        return courseService.updateById(courseInfo) ? Result.suc() : Result.fail();
+    public Result update(@RequestBody teaching_evaluation courseInfo){
+        return EvaluationService.updateById(courseInfo) ? Result.suc() : Result.fail();
     }
 
     // 删除
     @GetMapping("/del")
     public Result del(@RequestParam Integer id){
-        return courseService.removeById(id) ? Result.suc() : Result.fail();
+        return EvaluationService.removeById(id) ? Result.suc() : Result.fail();
     }
 
     // 模糊查询和分页
@@ -57,29 +57,22 @@ public class CourseController {
     public Result listPageC1(@RequestBody QueryPageParam query){
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");
-        String courseTypes = (String) param.get("courseTypes");
 
-        Page<course_information> page = new Page();
+        Page<teaching_evaluation> page = new Page();
         page.setCurrent(query.getPageNum());
         page.setSize(query.getPageSize());
 
-        LambdaQueryWrapper<course_information> lambdaQueryWrapper = new LambdaQueryWrapper();
+        LambdaQueryWrapper<teaching_evaluation> lambdaQueryWrapper = new LambdaQueryWrapper();
 
         // 根据课程名称进行模糊查询
         if(StringUtils.isNotBlank(courseName) && !"null".equals(courseName)){
-            lambdaQueryWrapper.like(course_information::getCourseName, courseName);
+            lambdaQueryWrapper.like(teaching_evaluation::getCourseName, courseName);
         }
 
-        // 根据课程类型进行精确查询
-        if(StringUtils.isNotBlank(courseTypes) && !"null".equals(courseTypes)){
-            lambdaQueryWrapper.eq(course_information::getCourseTypes, courseTypes);
-        }
-
-        IPage<course_information> result = courseService.pageCC(page, lambdaQueryWrapper);
+        IPage<teaching_evaluation> result = EvaluationService.pageCC(page, lambdaQueryWrapper);
 
         System.out.println("total==" + result.getTotal());
 
         return Result.suc(result.getRecords(), result.getTotal());
     }
 }
-

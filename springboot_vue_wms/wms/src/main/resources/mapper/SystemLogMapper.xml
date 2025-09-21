@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.SystemLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.wms.entity.SystemLog">
+        <id column="id" property="id" />
+        <result column="user_id" property="user.id" />
+        <result column="action_type" property="actionType" />
+        <result column="action_detail" property="actionDetail" />
+        <result column="action_time" property="actionTime" />
+        <result column="ip_address" property="ipAddress" />
+        <result column="request_data" property="requestData" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, action_type, action_detail, action_time, ip_address, request_data
+    </sql>
+
+    <select id="pageC" resultType="com.wms.entity.SystemLog">
+        select * from system_logs
+    </select>
+
+    <select id="pageCC" resultType="com.wms.entity.SystemLog">
+        select * from system_logs ${ew.customSqlSegment}
+    </select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.CoachCancelMapper">
+
+    <resultMap id="BaseResultMap" type="com.wms.entity.coach_cancels_class">
+        <id column="coach_cancels_class_id" property="coachCancelsClassId" />
+        <result column="course_name" property="courseName" />
+        <result column="course_number" property="courseNumber" />
+        <result column="coach_user" property="coachUser" />
+        <result column="coach_name" property="coachName" />
+        <result column="student_users" property="studentUsers" />
+        <result column="name" property="name" />
+        <result column="schedule_date" property="scheduleDate" />
+        <result column="scheduling_period" property="schedulingPeriod" />
+        <result column="content_of_courses" property="contentOfCourses" />
+        <result column="duration_of_teaching_hours" property="durationOfTeachingHours" />
+        <result column="course_notes" property="courseNotes" />
+        <result column="source_user_id" property="sourceUserId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        coach_cancels_class_id, course_name, course_number, coach_user, coach_name, student_users,
+        name, schedule_date, scheduling_period, content_of_courses, duration_of_teaching_hours,
+        course_notes, source_user_id
+    </sql>
+
+    <select id="pageC" resultType="com.wms.entity.coach_cancels_class">
+        select * from course_information
+    </select>
+
+    <select id="pageCC" resultType="com.wms.entity.coach_cancels_class">
+        select * from course_information ${ew.customSqlSegment}
+    </select>
+</mapper>

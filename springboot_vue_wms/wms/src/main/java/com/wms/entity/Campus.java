@@ -22,9 +22,8 @@ public class Campus {
     private String contactPhone;
     private String contactEmail;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_campus_id")
-    private Campus parentCampus;
+    @Column(name = "parent_campus_id")
+    private Long parentCampus;
 
     @Column(name = "is_center", nullable = false)
     private Boolean isCenter = false;
@@ -35,12 +34,12 @@ public class Campus {
     @Column(name = "update_time")
     private LocalDateTime updateTime;
 
-    public String getContactPhone() {
-        return contactPhone;
+    public String getContactPerson() {
+        return contactPerson;
     }
 
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone;
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     public Long getId() {
@@ -67,12 +66,12 @@ public class Campus {
         this.address = address;
     }
 
-    public String getContactPerson() {
-        return contactPerson;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public String getContactEmail() {
@@ -83,11 +82,11 @@ public class Campus {
         this.contactEmail = contactEmail;
     }
 
-    public Campus getParentCampus() {
+    public Long getParentCampus() {
         return parentCampus;
     }
 
-    public void setParentCampus(Campus parentCampus) {
+    public void setParentCampus(Long parentCampus) {
         this.parentCampus = parentCampus;
     }
 

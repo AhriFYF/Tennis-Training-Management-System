@@ -20,7 +20,7 @@ public class MonthlyCompetitionRegistration {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CompetitionGroup group;
+    private CompetitionGroup group_team;
 
     @Column(nullable = false)
     private Boolean isPaid = false;
@@ -29,11 +29,11 @@ public class MonthlyCompetitionRegistration {
     private LocalDateTime registerTime;
 
     public CompetitionGroup getGroup() {
-        return group;
+        return group_team;
     }
 
     public void setGroup(CompetitionGroup group) {
-        this.group = group;
+        this.group_team = group;
     }
 
     public Long getId() {
@@ -82,7 +82,7 @@ public class MonthlyCompetitionRegistration {
                 "id=" + id +
                 ", student=" + student +
                 ", competition=" + competition +
-                ", group=" + group +
+                ", group_team=" + group_team +
                 ", isPaid=" + isPaid +
                 ", registerTime=" + registerTime +
                 '}';

@@ -42,7 +42,7 @@
       <el-col :span="14">
         <el-card class="box-card feature-card">
           <div slot="header" class="clearfix">
-            <span>系统用户管理</span>
+            <span>用户管理</span>
           </div>
           <div class="button-group">
             <el-button type="primary" plain @click="goTo('/SuperAdmin-userManage')">用户信息管理</el-button>
@@ -67,21 +67,19 @@
           </div>
           <div class="button-group">
             <el-button type="warning" plain @click="goTo('/SuperAdmin-studentCourseSelection')">学员选课管理</el-button>
-            <el-button type="warning" plain @click="goTo('/SuperAdmin-coachScheduling')">教练排课管理</el-button>
+            <el-button type="warning" plain @click="goTo('/SuperAdmin-coachSchedule')">教练排课管理</el-button>
             <el-button type="warning" plain @click="goTo('/SuperAdmin-teachingEvaluation')">教学评价管理</el-button>
-            <el-button type="warning" plain @click="goTo('/SuperAdmin-coachConsumption')">教练消课管理</el-button>
+            <el-button type="warning" plain @click="goTo('/SuperAdmin-coachCancel')">教练消课管理</el-button>
           </div>
         </el-card>
 
         <el-card class="box-card feature-card">
           <div slot="header" class="clearfix">
-            <span>系统与资源管理</span>
+            <span>系统管理</span>
           </div>
           <div class="button-group">
             <el-button type="info" plain @click="goTo('/SuperAdmin-campus')">校区管理</el-button>
-            <el-button type="info" plain @click="goTo('/SuperAdmin-carouselManage')">系统轮播图管理</el-button>
-            <el-button type="info" plain @click="goTo('/SuperAdmin-noticeManage')">通知公告管理</el-button>
-            <el-button type="info" plain @click="goTo('/SuperAdmin-resourceManage')">资源管理</el-button>
+            <el-button type="info" plain @click="goTo('/SuperAdmin-systemLog')">系统日志</el-button>
           </div>
         </el-card>
       </el-col>
