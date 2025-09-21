@@ -16,6 +16,14 @@ const routes = [
         ]
     },
     {
+        path:'/Admin',
+        name:'Admin',
+        component:()=>import('../components/Admin.vue'),
+        children:[
+
+        ]
+    },
+    {
         path:'/SuperAdmin-userManage',
         name:'UserManage',
         meta:{
