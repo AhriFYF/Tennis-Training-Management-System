@@ -101,6 +101,7 @@ export default {
         }
       }, 1000);
     };
+    /*
     let checkCourseId = (rule, value, callback) => {
       if(this.form.courseInformationId) {
         return callback();
@@ -113,7 +114,7 @@ export default {
         }
       })
     };
-
+    */
     return {
       tableData: [],
       pageSize: 10,

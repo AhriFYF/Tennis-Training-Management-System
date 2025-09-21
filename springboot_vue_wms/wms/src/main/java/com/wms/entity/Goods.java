@@ -13,14 +13,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author wms
- * @since 2022-10-15
- */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)

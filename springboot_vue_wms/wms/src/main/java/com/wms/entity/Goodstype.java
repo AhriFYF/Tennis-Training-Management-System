@@ -12,14 +12,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author wms
- * @since 2022-10-15
- */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -40,5 +32,36 @@ public class Goodstype implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "Goodstype{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

@@ -16,14 +16,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author wms
- * @since 2022-10-16
- */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -60,4 +52,82 @@ public class Record implements Serializable {
 
     @TableField(exist = false)
     private String action;
+
+    public Integer getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Integer goods) {
+        this.goods = goods;
+    }
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public LocalDateTime getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(LocalDateTime createtime) {
+        this.createtime = createtime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "createtime=" + createtime +
+                ", id=" + id +
+                ", goods=" + goods +
+                ", userid=" + userid +
+                ", adminId=" + adminId +
+                ", count=" + count +
+                ", remark='" + remark + '\'' +
+                ", action='" + action + '\'' +
+                '}';
+    }
 }

@@ -16,6 +16,14 @@ const routes = [
         ]
     },
     {
+        path:'/SuperAdmin-userManage',
+        name:'UserManage',
+        meta:{
+            title:'用户管理'
+        },
+        component:()=>import('../components/admin/UserManage'),
+    },
+    {
         path:'/SuperAdmin-adminManage',
         name:'AdminManage',
         meta:{

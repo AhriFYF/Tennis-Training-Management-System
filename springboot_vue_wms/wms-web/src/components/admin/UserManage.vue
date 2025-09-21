@@ -40,7 +40,7 @@
                     <el-tag
                             :type="scope.row.roleId === 0 ? 'danger' : (scope.row.roleId === 1 ? 'primary' : 'success')"
                             disable-transitions>{{scope.row.roleId === 0 ? '超级管理员' :
-                        (scope.row.roleId === 1 ? '管理员' : '用户')}}</el-tag>
+                        (scope.row.roleId === 1 ? '管理员' : (scope.row.roleId === 2 ? '教练' :   '学生'))}}</el-tag>
                 </template>
             </el-table-column>
             <el-table-column prop="phone" label="电话" width="180">
@@ -325,8 +325,7 @@
                     pageNum:this.pageNum,
                     param:{
                         name:this.name,
-                        sex:this.sex,
-                        roleId:'2'
+                        sex:this.sex
                     }
                 }).then(res=>res.data).then(res=>{
                     console.log(res)

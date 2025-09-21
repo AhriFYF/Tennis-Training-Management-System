@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.wms.entity.User;
+import com.wms.entity.course_information;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-public interface UserService extends IService<User> {
+public interface CourseService extends IService<course_information>{
 
-    IPage pageC(IPage<User> page);
+    IPage pageC(IPage<course_information> page);
 
-    IPage pageCC(IPage<User> page, Wrapper wrapper);
+    IPage pageCC(IPage<course_information> page, Wrapper wrapper);
 }

@@ -1,4 +1,4 @@
-package com.system.tabletennis_training_management_system.pojo;
+package com.wms.entity;
 
 import org.springframework.http.HttpStatus;
 
@@ -40,5 +40,14 @@ public class ResponseMessage<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseMessage{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

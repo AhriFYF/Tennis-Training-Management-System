@@ -28,5 +28,72 @@ public class SystemLog {
     @Column(columnDefinition = "TEXT")
     private String requestData;
 
-    // Getters and Setters
+    public LocalDateTime getActionTime() {
+        return actionTime;
+    }
+
+    public void setActionTime(LocalDateTime actionTime) {
+        this.actionTime = actionTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public String getActionDetail() {
+        return actionDetail;
+    }
+
+    public void setActionDetail(String actionDetail) {
+        this.actionDetail = actionDetail;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public String getRequestData() {
+        return requestData;
+    }
+
+    public void setRequestData(String requestData) {
+        this.requestData = requestData;
+    }
+
+    @Override
+    public String toString() {
+        return "SystemLog{" +
+                "id=" + id +
+                ", user=" + user +
+                ", actionType='" + actionType + '\'' +
+                ", actionDetail='" + actionDetail + '\'' +
+                ", actionTime=" + actionTime +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", requestData='" + requestData + '\'' +
+                '}';
+    }
 }

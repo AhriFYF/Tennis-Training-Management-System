@@ -33,6 +33,82 @@ public class PaymentRecord {
     @Column(columnDefinition = "TEXT")
     private String remark;
 
-    // Getters and Setters
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public student_users getStudent() {
+        return student;
+    }
+
+    public void setStudent(student_users student) {
+        this.student = student;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public PaymentType getType() {
+        return type;
+    }
+
+    public void setType(PaymentType type) {
+        this.type = type;
+    }
+
+    public LocalDateTime getPaymentTime() {
+        return paymentTime;
+    }
+
+    public void setPaymentTime(LocalDateTime paymentTime) {
+        this.paymentTime = paymentTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentRecord{" +
+                "status='" + status + '\'' +
+                ", id=" + id +
+                ", student=" + student +
+                ", amount=" + amount +
+                ", type=" + type +
+                ", transactionId='" + transactionId + '\'' +
+                ", paymentTime=" + paymentTime +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }
 

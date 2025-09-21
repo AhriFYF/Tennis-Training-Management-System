@@ -23,5 +23,54 @@ public class MonthlyCompetition {
     @Column(nullable = false)
     private String status = "UPCOMING"; // UPCOMING, ONGOING, FINISHED
 
-    // Getters and Setters
+    public LocalDate getCompetitionDate() {
+        return competitionDate;
+    }
+
+    public void setCompetitionDate(LocalDate competitionDate) {
+        this.competitionDate = competitionDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Campus getCampus() {
+        return campus;
+    }
+
+    public void setCampus(Campus campus) {
+        this.campus = campus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "MonthlyCompetition{" +
+                "id=" + id +
+                ", campus=" + campus +
+                ", competitionDate=" + competitionDate +
+                ", name='" + name + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

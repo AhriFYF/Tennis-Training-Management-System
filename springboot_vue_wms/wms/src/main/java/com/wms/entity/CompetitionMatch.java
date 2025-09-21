@@ -40,5 +40,108 @@ public class CompetitionMatch {
     @Column(nullable = false)
     private String status = "SCHEDULED"; // SCHEDULED, ONGOING, FINISHED
 
-    // Getters and Setters
+    public Integer getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(Integer tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public MonthlyCompetition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(MonthlyCompetition competition) {
+        this.competition = competition;
+    }
+
+    public student_users getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(student_users player1) {
+        this.player1 = player1;
+    }
+
+    public student_users getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(student_users player2) {
+        this.player2 = player2;
+    }
+
+    public Integer getRound() {
+        return round;
+    }
+
+    public void setRound(Integer round) {
+        this.round = round;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getPlayer1Score() {
+        return player1Score;
+    }
+
+    public void setPlayer1Score(Integer player1Score) {
+        this.player1Score = player1Score;
+    }
+
+    public Integer getPlayer2Score() {
+        return player2Score;
+    }
+
+    public void setPlayer2Score(Integer player2Score) {
+        this.player2Score = player2Score;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "CompetitionMatch{" +
+                "player1Score=" + player1Score +
+                ", id=" + id +
+                ", competition=" + competition +
+                ", player1=" + player1 +
+                ", player2=" + player2 +
+                ", round=" + round +
+                ", tableNumber=" + tableNumber +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", player2Score=" + player2Score +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

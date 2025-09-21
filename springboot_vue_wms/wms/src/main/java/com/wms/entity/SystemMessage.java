@@ -39,5 +39,99 @@ public class SystemMessage {
     @Column(columnDefinition = "TEXT")
     private String relatedData; // JSON data related to the message
 
-    // Getters and Setters
+    public Boolean getRead() {
+        return isRead;
+    }
+
+    public void setRead(Boolean read) {
+        isRead = read;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public LocalDateTime getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(LocalDateTime sendTime) {
+        this.sendTime = sendTime;
+    }
+
+    public LocalDateTime getReadTime() {
+        return readTime;
+    }
+
+    public void setReadTime(LocalDateTime readTime) {
+        this.readTime = readTime;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getRelatedData() {
+        return relatedData;
+    }
+
+    public void setRelatedData(String relatedData) {
+        this.relatedData = relatedData;
+    }
+
+    @Override
+    public String toString() {
+        return "SystemMessage{" +
+                "readTime=" + readTime +
+                ", id=" + id +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", isRead=" + isRead +
+                ", sendTime=" + sendTime +
+                ", messageType='" + messageType + '\'' +
+                ", relatedData='" + relatedData + '\'' +
+                '}';
+    }
 }

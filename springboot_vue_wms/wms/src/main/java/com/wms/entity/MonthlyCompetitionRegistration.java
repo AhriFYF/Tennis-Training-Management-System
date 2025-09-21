@@ -28,6 +28,64 @@ public class MonthlyCompetitionRegistration {
     @Column(name = "register_time", nullable = false)
     private LocalDateTime registerTime;
 
-    // Getters and Setters
+    public CompetitionGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(CompetitionGroup group) {
+        this.group = group;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public student_users getStudent() {
+        return student;
+    }
+
+    public void setStudent(student_users student) {
+        this.student = student;
+    }
+
+    public MonthlyCompetition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(MonthlyCompetition competition) {
+        this.competition = competition;
+    }
+
+    public Boolean getPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(Boolean paid) {
+        isPaid = paid;
+    }
+
+    public LocalDateTime getRegisterTime() {
+        return registerTime;
+    }
+
+    public void setRegisterTime(LocalDateTime registerTime) {
+        this.registerTime = registerTime;
+    }
+
+    @Override
+    public String toString() {
+        return "MonthlyCompetitionRegistration{" +
+                "id=" + id +
+                ", student=" + student +
+                ", competition=" + competition +
+                ", group=" + group +
+                ", isPaid=" + isPaid +
+                ", registerTime=" + registerTime +
+                '}';
+    }
 }
 

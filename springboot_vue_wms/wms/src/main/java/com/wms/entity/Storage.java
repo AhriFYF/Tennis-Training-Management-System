@@ -11,14 +11,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author wms
- * @since 2022-10-15
- */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -38,5 +30,36 @@ public class Storage implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "Storage{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

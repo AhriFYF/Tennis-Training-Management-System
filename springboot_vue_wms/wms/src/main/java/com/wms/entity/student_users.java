@@ -25,5 +25,63 @@ public class student_users {
     @Column(name = "user_id")
     private Integer userId;
 
+    public String getStudentGender() {
+        return studentGender;
+    }
 
+    public void setStudentGender(String studentGender) {
+        this.studentGender = studentGender;
+    }
+
+    public Integer getStudentUsersId() {
+        return studentUsersId;
+    }
+
+    public void setStudentUsersId(Integer studentUsersId) {
+        this.studentUsersId = studentUsersId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStudentAge() {
+        return studentAge;
+    }
+
+    public void setStudentAge(String studentAge) {
+        this.studentAge = studentAge;
+    }
+
+    public String getParentsPhoneNumber() {
+        return parentsPhoneNumber;
+    }
+
+    public void setParentsPhoneNumber(String parentsPhoneNumber) {
+        this.parentsPhoneNumber = parentsPhoneNumber;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "student_users{" +
+                "studentUsersId=" + studentUsersId +
+                ", name='" + name + '\'' +
+                ", studentGender='" + studentGender + '\'' +
+                ", studentAge='" + studentAge + '\'' +
+                ", parentsPhoneNumber='" + parentsPhoneNumber + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

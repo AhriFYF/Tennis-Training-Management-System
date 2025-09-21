@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.CourseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.course_information">
+        <id column="course_information_id" property="courseInformationId" />
+        <result column="course_name" property="courseName" />
+        <result column="course_types" property="courseTypes" />
+        <result column="coach_user" property="coachUser" />
+        <result column="coach_name" property="coachName" />
+        <result column="course_hours" property="courseHours" />
+        <result column="duration_of_class_hours" property="durationOfClassHours" />
+        <result column="course_prices" property="coursePrices" />
+        <result column="course_images" property="courseImages" />
+        <result column="course_introduction" property="courseIntroduction" />
+        <result column="hits" property="hits" />
+        <result column="praise_len" property="praiseLen" />
+        <result column="collect_len" property="collectLen" />
+        <result column="comment_len" property="commentLen" />
+        <result column="student_course_selection_limit_times" property="studentCourseSelectionLimitTimes" />
+        <result column="status" property="status" />
+        <result column="course_start_time" property="courseStartTime" />
+        <result column="course_end_time" property="courseEndTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        course_information_id, course_name, course_types, coach_user, coach_name, course_hours,
+    duration_of_class_hours, course_prices, course_images, course_introduction,
+    hits, praise_len, collect_len, comment_len, student_course_selection_limit_times,
+    status, course_start_time, course_end_time
+    </sql>
+
+    <select id="pageC" resultType="com.wms.entity.course_information">
+        select * from course_information
+    </select>
+
+    <select id="pageCC" resultType="com.wms.entity.course_information">
+        select * from course_information ${ew.customSqlSegment}
+    </select>
+</mapper>

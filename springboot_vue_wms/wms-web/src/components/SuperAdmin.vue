@@ -45,6 +45,7 @@
             <span>系统用户管理</span>
           </div>
           <div class="button-group">
+            <el-button type="primary" plain @click="goTo('/SuperAdmin-userManage')">用户信息管理</el-button>
             <el-button type="primary" plain @click="goTo('/SuperAdmin-adminManage')">管理员信息管理</el-button>
             <el-button type="primary" plain @click="goTo('/SuperAdmin-coachManage')">教练信息管理</el-button>
             <el-button type="primary" plain @click="goTo('/SuperAdmin-studentManage')">学生用户管理</el-button>
