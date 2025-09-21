@@ -19,69 +19,26 @@ public class coach_user {
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "create_time")
-    private LocalDateTime createTime;
+    @Column(name = "coach_age")
+    private String studentAge;
 
-    @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    @Column(name = "phone_number")
+    private String parentsPhoneNumber;
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
+    @Column(name = "campus")
+    private String campus;
 
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
+    @Column(name = "score")
+    private String score;
 
-    public Integer getCoachUserId() {
-        return coachUserId;
-    }
+    @Column(name = "photo")
+    private String photo;
 
-    public void setCoachUserId(Integer coachUserId) {
-        this.coachUserId = coachUserId;
-    }
+    //1初级 2中级 3高级
+    @Column(name = "level")
+    private Integer level;
 
-    public String getCoachName() {
-        return coachName;
-    }
-
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
-    }
-
-    public String getCoachGender() {
-        return coachGender;
-    }
-
-    public void setCoachGender(String coachGender) {
-        this.coachGender = coachGender;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "User{" +
-                "coachUserId=" + coachUserId +
-                ", coachName='" + coachName + '\'' +
-                ", coachGender='" + coachGender + '\'' +
-                ", userId=" + userId +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
-    }
+    //0拒绝 1待审核 2审核通过
+    @Column(name = "audit")
+    private Integer audit;
 }
