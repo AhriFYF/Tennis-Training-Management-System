@@ -1,87 +1,43 @@
 package com.wms.entity;
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
-@Table(name="student_users")
+import javax.persistence.*;
+import lombok.Data;
+
+@Data
 @Entity
+@Table(name = "student_users")
 public class student_users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_users_id")
-    private Integer studentUsersId;
+    @Column(name = "student_id")
+    private Integer studentId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "student_gender")
-    private String studentGender;
+    @Column(name = "gender", length = 1)
+    private String gender; // M-男, F-女
 
-    @Column(name = "student_age")
-    private String studentAge;
+    @Column(name = "age")
+    private Integer age;
 
-    @Column(name = "parents_phone_number")
-    private String parentsPhoneNumber;
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "user_id", unique = true)
+    private Integer userId; // 关联基础用户表
 
-    public String getStudentGender() {
-        return studentGender;
-    }
+    @Column(name = "class_grade")
+    private String classGrade; // 班级信息
 
-    public void setStudentGender(String studentGender) {
-        this.studentGender = studentGender;
-    }
+    @Column(name = "training_hours")
+    private Integer trainingHours = 0; // 训练时长(小时)
 
-    public Integer getStudentUsersId() {
-        return studentUsersId;
-    }
+    @Column(name = "payment_status")
+    private Integer paymentStatus = 0; // 0-未缴费, 1-已缴费
 
-    public void setStudentUsersId(Integer studentUsersId) {
-        this.studentUsersId = studentUsersId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStudentAge() {
-        return studentAge;
-    }
-
-    public void setStudentAge(String studentAge) {
-        this.studentAge = studentAge;
-    }
-
-    public String getParentsPhoneNumber() {
-        return parentsPhoneNumber;
-    }
-
-    public void setParentsPhoneNumber(String parentsPhoneNumber) {
-        this.parentsPhoneNumber = parentsPhoneNumber;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "student_users{" +
-                "studentUsersId=" + studentUsersId +
-                ", name='" + name + '\'' +
-                ", studentGender='" + studentGender + '\'' +
-                ", studentAge='" + studentAge + '\'' +
-                ", parentsPhoneNumber='" + parentsPhoneNumber + '\'' +
-                ", userId=" + userId +
-                '}';
-    }
+    // 关联校区信息（非数据库字段）
+    @Transient
+    private String campusName;
 }

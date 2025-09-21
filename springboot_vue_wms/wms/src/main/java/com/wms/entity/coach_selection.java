@@ -16,7 +16,7 @@ public class coach_selection {
     private Integer coachId;
 
     @Column(name = "status")
-    private String status;
+    private String status;//没同意0   同意1
 
     public Integer getCoachId() {
         return coachId;

@@ -1,149 +1,62 @@
 package com.wms.entity;
-import java.time.LocalDateTime;
-import javax.persistence.*;
 
-@Table(name="coach_user")
+import javax.persistence.*;
+import lombok.Data;
+
+@Data
 @Entity
+@Table(name = "coach_users")
 public class coach_user {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coach_user_id")
-    private Integer coachUserId;
+    @Column(name = "coach_id")
+    private Integer coachId;
 
-    @Column(name = "coach_name")
-    private String coachName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "coach_gender")
-    private String coachGender;
+    @Column(name = "gender", length = 1)
+    private String gender; // M-男, F-女
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "age")
+    private Integer age;
 
-    @Column(name = "coach_age")
-    private String studentAge;
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
-    @Column(name = "phone_number")
-    private String parentsPhoneNumber;
+    @Column(name = "user_id", unique = true)
+    private Integer userId; // 关联基础用户表
 
-    @Column(name = "campus")
-    private String campus;
+    @Column(name = "campus_id")
+    private Integer campusId; // 所属校区
 
-    @Column(name = "score")
-    private String score;
+    @Column(name = "achievements", columnDefinition = "TEXT")
+    private String achievements; // 比赛成绩
 
-    @Column(name = "photo")
-    private String photo;
+    @Column(name = "photo_url")
+    private String photoUrl; // 照片路径
 
-    //1初级 2中级 3高级
     @Column(name = "level")
-    private Integer level;
+    private Integer level; // 1-初级, 2-中级, 3-高级
 
-    //0拒绝 1待审核 2审核通过
-    @Column(name = "audit")
-    private Integer audit;
+    @Column(name = "audit_status")
+    private Integer auditStatus = 0; // 0-待审核, 1-通过, 2-拒绝
 
-    public String getCampus() {
-        return campus;
+    @Column(name = "hourly_rate")
+    private Integer hourlyRate; // 课时费(元/小时)
+
+    // 自动计算课时费
+    public Integer getHourlyRate() {
+        return switch(this.level) {
+            case 1 -> 80;
+            case 2 -> 150;
+            case 3 -> 200;
+            default -> 80;
+        };
     }
 
-    public void setCampus(String campus) {
-        this.campus = campus;
-    }
-
-    public Integer getCoachUserId() {
-        return coachUserId;
-    }
-
-    public void setCoachUserId(Integer coachUserId) {
-        this.coachUserId = coachUserId;
-    }
-
-    public String getCoachName() {
-        return coachName;
-    }
-
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
-    }
-
-    public String getCoachGender() {
-        return coachGender;
-    }
-
-    public void setCoachGender(String coachGender) {
-        this.coachGender = coachGender;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getStudentAge() {
-        return studentAge;
-    }
-
-    public void setStudentAge(String studentAge) {
-        this.studentAge = studentAge;
-    }
-
-    public String getParentsPhoneNumber() {
-        return parentsPhoneNumber;
-    }
-
-    public void setParentsPhoneNumber(String parentsPhoneNumber) {
-        this.parentsPhoneNumber = parentsPhoneNumber;
-    }
-
-    public String getScore() {
-        return score;
-    }
-
-    public void setScore(String score) {
-        this.score = score;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public Integer getAudit() {
-        return audit;
-    }
-
-    public void setAudit(Integer audit) {
-        this.audit = audit;
-    }
-
-    @Override
-    public String toString() {
-        return "coach_user{" +
-                "level=" + level +
-                ", coachUserId=" + coachUserId +
-                ", coachName='" + coachName + '\'' +
-                ", coachGender='" + coachGender + '\'' +
-                ", userId=" + userId +
-                ", studentAge='" + studentAge + '\'' +
-                ", parentsPhoneNumber='" + parentsPhoneNumber + '\'' +
-                ", campus='" + campus + '\'' +
-                ", score='" + score + '\'' +
-                ", photo='" + photo + '\'' +
-                ", audit=" + audit +
-                '}';
-    }
+    // 关联校区信息（非数据库字段）
+    @Transient
+    private String campusName;
 }

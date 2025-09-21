@@ -53,7 +53,7 @@ public class course_information {
     private Integer studentCourseSelectionLimitTimes;
 
     @Column(name = "status")
-    private String status;
+    private String status;//0有课没预约 1有预约 2确定
 
     @Column(name = "course_start_time")
     private LocalDateTime courseStartTime;
