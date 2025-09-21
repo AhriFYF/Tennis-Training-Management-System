@@ -10,7 +10,42 @@ const routes = [
     {
         path:'/SuperAdmin',
         name:'superAdmin',
-        component:()=>import('../components/SuperAdmin')
+        component:()=>import('../components/SuperAdmin'),
+        children:[
+
+        ]
+    },
+    {
+        path:'/SuperAdmin-adminManage',
+        name:'AdminManage',
+        meta:{
+            title:'管理员管理'
+        },
+        component:()=>import('../components/admin/AdminManage')
+    },
+    {
+        path:'/SuperAdmin-coachManage',
+        name:'CoachManage',
+        meta:{
+            title:'管理员管理'
+        },
+        component:()=>import('../components/admin/CoachManage')
+    },
+    {
+        path:'/SuperAdmin-studentManage',
+        name:'StudentManage',
+        meta:{
+            title:'学生管理'
+        },
+        component:()=>import('../components/admin/StudentManage')
+    },
+    {
+        path:'/SuperAdmin-courseInfoManage',
+        name:'CourseInfoManage',
+        meta:{
+            title:'课程管理'
+        },
+        component:()=>import('../components/course/CourseInfoManage')
     },
     {
         path:'/Index',

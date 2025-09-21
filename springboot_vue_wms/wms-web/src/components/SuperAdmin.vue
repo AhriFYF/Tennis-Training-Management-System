@@ -45,8 +45,9 @@
             <span>系统用户管理</span>
           </div>
           <div class="button-group">
-            <el-button type="primary" plain @click="goTo('/SuperAdmin/userManage')">学生用户管理</el-button>
-            <el-button type="primary" plain @click="goTo('/SuperAdmin/coachManage')">教练信息管理</el-button>
+            <el-button type="primary" plain @click="goTo('/SuperAdmin-adminManage')">管理员信息管理</el-button>
+            <el-button type="primary" plain @click="goTo('/SuperAdmin-coachManage')">教练信息管理</el-button>
+            <el-button type="primary" plain @click="goTo('/SuperAdmin-studentManage')">学生用户管理</el-button>
           </div>
         </el-card>
 
@@ -55,8 +56,7 @@
             <span>课程管理</span>
           </div>
           <div class="button-group">
-            <el-button type="success" plain @click="goTo('/SuperAdmin/courseTypeManage')">课程种类管理</el-button>
-            <el-button type="success" plain @click="goTo('/SuperAdmin/courseInfoManage')">课程信息管理</el-button>
+            <el-button type="success" plain @click="goTo('/SuperAdmin-courseInfoManage')">课程信息管理</el-button>
           </div>
         </el-card>
 
@@ -65,10 +65,10 @@
             <span>教学管理</span>
           </div>
           <div class="button-group">
-            <el-button type="warning" plain @click="goTo('/SuperAdmin/studentCourseSelection')">学员选课管理</el-button>
-            <el-button type="warning" plain @click="goTo('/SuperAdmin/coachScheduling')">教练排课管理</el-button>
-            <el-button type="warning" plain @click="goTo('/SuperAdmin/teachingEvaluation')">教学评价管理</el-button>
-            <el-button type="warning" plain @click="goTo('/SuperAdmin/coachConsumption')">教练消课管理</el-button>
+            <el-button type="warning" plain @click="goTo('/SuperAdmin-studentCourseSelection')">学员选课管理</el-button>
+            <el-button type="warning" plain @click="goTo('/SuperAdmin-coachScheduling')">教练排课管理</el-button>
+            <el-button type="warning" plain @click="goTo('/SuperAdmin-teachingEvaluation')">教学评价管理</el-button>
+            <el-button type="warning" plain @click="goTo('/SuperAdmin-coachConsumption')">教练消课管理</el-button>
           </div>
         </el-card>
 
@@ -77,9 +77,10 @@
             <span>系统与资源管理</span>
           </div>
           <div class="button-group">
-            <el-button type="info" plain @click="goTo('/SuperAdmin/carouselManage')">系统轮播图管理</el-button>
-            <el-button type="info" plain @click="goTo('/SuperAdmin/noticeManage')">通知公告管理</el-button>
-            <el-button type="info" plain @click="goTo('/SuperAdmin/resourceManage')">资源管理</el-button>
+            <el-button type="info" plain @click="goTo('/SuperAdmin-campus')">校区管理</el-button>
+            <el-button type="info" plain @click="goTo('/SuperAdmin-carouselManage')">系统轮播图管理</el-button>
+            <el-button type="info" plain @click="goTo('/SuperAdmin-noticeManage')">通知公告管理</el-button>
+            <el-button type="info" plain @click="goTo('/SuperAdmin-resourceManage')">资源管理</el-button>
           </div>
         </el-card>
       </el-col>
