@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.entity.coach_cancels_class;
+import com.wms.entity.coach_scheduling;
 import com.wms.entity.student_course_selection;
 import com.wms.service.CoachCancelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/coachCancel")
@@ -59,6 +61,7 @@ public class CoachCancelController {
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");
         String name = (String) param.get("name");
+        String campusId = String.valueOf(param.get("campusId"));
 
         Page<coach_cancels_class> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -74,6 +77,13 @@ public class CoachCancelController {
         // 根据学生姓名进行模糊查询
         if(StringUtils.isNotBlank(name) && !"null".equals(name)){
             lambdaQueryWrapper.like(coach_cancels_class::getName, name);
+        }
+
+        System.out.println(campusId);
+        if(!Objects.equals(campusId, "0")) {
+            if (StringUtils.isNotBlank(campusId)) {
+                lambdaQueryWrapper.eq(coach_cancels_class::getCampusId, campusId);
+            }
         }
 
         IPage<coach_cancels_class> result = CoachCancelService.pageCC(page, lambdaQueryWrapper);

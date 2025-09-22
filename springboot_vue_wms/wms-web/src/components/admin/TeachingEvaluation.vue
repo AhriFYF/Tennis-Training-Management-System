@@ -86,6 +86,7 @@ export default {
   name: "TeachingEvaluation",
   data() {
     return {
+      user: JSON.parse(localStorage.getItem("user")),
       tableData: [],
       pageSize: 10,
       pageNum: 1,
@@ -237,6 +238,7 @@ export default {
         param: {
           courseName: this.courseName,
           name: this.name,
+          campusId: this.user.campusId
         }
       }).then(res => res.data).then(res => {
         if (res.code == 200) {

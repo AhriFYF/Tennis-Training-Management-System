@@ -49,6 +49,9 @@ public class coach_scheduling {
     @Column(name = "source_user_id")
     private Integer sourceUserId;
 
+    @Column(name = "campus_id")
+    private Integer campusId;
+
     public String getCoachName() {
         return coachName;
     }
@@ -145,10 +148,18 @@ public class coach_scheduling {
         this.sourceUserId = sourceUserId;
     }
 
-    @java.lang.Override
-    public java.lang.String toString() {
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
+    @Override
+    public String toString() {
         return "coach_scheduling{" +
-                "schedulingPeriod='" + schedulingPeriod + '\'' +
+                "scheduleDate=" + scheduleDate +
                 ", coachSchedulingId=" + coachSchedulingId +
                 ", courseName='" + courseName + '\'' +
                 ", courseNumber='" + courseNumber + '\'' +
@@ -156,10 +167,11 @@ public class coach_scheduling {
                 ", coachName='" + coachName + '\'' +
                 ", studentUsers=" + studentUsers +
                 ", name='" + name + '\'' +
-                ", scheduleDate=" + scheduleDate +
+                ", schedulingPeriod='" + schedulingPeriod + '\'' +
                 ", contentOfCourses='" + contentOfCourses + '\'' +
                 ", sourceId=" + sourceId +
                 ", sourceUserId=" + sourceUserId +
+                ", campusId=" + campusId +
                 '}';
     }
 }

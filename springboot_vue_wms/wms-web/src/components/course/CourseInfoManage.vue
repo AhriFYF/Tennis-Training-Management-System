@@ -115,6 +115,7 @@ export default {
     };
     */
     return {
+      user: JSON.parse(localStorage.getItem("user")),
       tableData: [],
       pageSize: 10,
       pageNum: 1,
@@ -273,7 +274,8 @@ export default {
         pageNum: this.pageNum,
         param: {
           courseName: this.courseName,
-          courseTypes: this.courseTypes
+          courseTypes: this.courseTypes,
+          campusId: this.user.campusId
         }
       }).then(res => res.data).then(res => {
         if(res.code == 200){

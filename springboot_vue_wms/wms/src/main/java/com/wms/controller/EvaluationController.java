@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/evaluation")
@@ -59,6 +60,7 @@ public class EvaluationController {
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");
         String name = (String) param.get("name");
+        String campusId = String.valueOf(param.get("campusId"));
 
         Page<teaching_evaluation> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -74,6 +76,13 @@ public class EvaluationController {
         // 根据学生姓名进行模糊查询
         if(StringUtils.isNotBlank(name) && !"null".equals(name)){
             lambdaQueryWrapper.like(teaching_evaluation::getName, name);
+        }
+
+        System.out.println(campusId);
+        if(!Objects.equals(campusId, "0")) {
+            if (StringUtils.isNotBlank(campusId)) {
+                lambdaQueryWrapper.eq(teaching_evaluation::getCampusId, campusId);
+            }
         }
 
         IPage<teaching_evaluation> result = EvaluationService.pageCC(page, lambdaQueryWrapper);

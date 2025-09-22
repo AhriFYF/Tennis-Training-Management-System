@@ -52,6 +52,9 @@ public class coach_cancels_class {
     @Column(name = "source_user_id")
     private Integer sourceUserId;
 
+    @Column(name = "campus_id")
+    private Integer campusId;
+
     public String getName() {
         return name;
     }
@@ -156,6 +159,14 @@ public class coach_cancels_class {
         this.sourceUserId = sourceUserId;
     }
 
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
     @Override
     public String toString() {
         return "coach_cancels_class{" +
@@ -172,6 +183,7 @@ public class coach_cancels_class {
                 ", durationOfTeachingHours=" + durationOfTeachingHours +
                 ", courseNotes='" + courseNotes + '\'' +
                 ", sourceUserId=" + sourceUserId +
+                ", campusId=" + campusId +
                 '}';
     }
 }

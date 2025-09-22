@@ -52,6 +52,9 @@ public class teaching_evaluation {
     @Column(name = "source_user_id")
     private Integer sourceUserId;
 
+    @Column(name = "campus_id")
+    private Integer campusId;
+
     public String getCoachName() {
         return coachName;
     }
@@ -156,15 +159,23 @@ public class teaching_evaluation {
         this.sourceUserId = sourceUserId;
     }
 
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
     @Override
     public String toString() {
         return "teaching_evaluation{" +
-                "teachingEvaluationId=" + teachingEvaluationId +
+                "studentUsers=" + studentUsers +
+                ", teachingEvaluationId=" + teachingEvaluationId +
                 ", courseName='" + courseName + '\'' +
                 ", courseNumber='" + courseNumber + '\'' +
                 ", coachUser=" + coachUser +
                 ", coachName='" + coachName + '\'' +
-                ", studentUsers=" + studentUsers +
                 ", name='" + name + '\'' +
                 ", scheduleDate=" + scheduleDate +
                 ", schedulingPeriod='" + schedulingPeriod + '\'' +
@@ -172,6 +183,7 @@ public class teaching_evaluation {
                 ", reviewVideo='" + reviewVideo + '\'' +
                 ", evaluationContent='" + evaluationContent + '\'' +
                 ", sourceUserId=" + sourceUserId +
+                ", campusId=" + campusId +
                 '}';
     }
 }
