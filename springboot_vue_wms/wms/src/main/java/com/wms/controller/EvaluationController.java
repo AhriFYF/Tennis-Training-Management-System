@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
+import com.wms.entity.coach_cancels_class;
 import com.wms.entity.teaching_evaluation;
 import com.wms.service.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/evaluation")
@@ -57,6 +59,8 @@ public class EvaluationController {
     public Result listPageC1(@RequestBody QueryPageParam query){
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");
+        String name = (String) param.get("name");
+        String campusId = String.valueOf(param.get("campusId"));
 
         Page<teaching_evaluation> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -67,6 +71,18 @@ public class EvaluationController {
         // 根据课程名称进行模糊查询
         if(StringUtils.isNotBlank(courseName) && !"null".equals(courseName)){
             lambdaQueryWrapper.like(teaching_evaluation::getCourseName, courseName);
+        }
+
+        // 根据学生姓名进行模糊查询
+        if(StringUtils.isNotBlank(name) && !"null".equals(name)){
+            lambdaQueryWrapper.like(teaching_evaluation::getName, name);
+        }
+
+        System.out.println(campusId);
+        if(!Objects.equals(campusId, "0")) {
+            if (StringUtils.isNotBlank(campusId)) {
+                lambdaQueryWrapper.eq(teaching_evaluation::getCampusId, campusId);
+            }
         }
 
         IPage<teaching_evaluation> result = EvaluationService.pageCC(page, lambdaQueryWrapper);

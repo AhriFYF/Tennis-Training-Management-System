@@ -67,6 +67,9 @@ public class course_information {
     @Column(name = "course_end_time")
     private LocalDateTime courseEndTime;
 
+    @Column(name = "campus_id")
+    private Integer campusId;
+
     public Double getCourseHours() {
         return courseHours;
     }
@@ -211,10 +214,18 @@ public class course_information {
         this.status = status;
     }
 
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
     @Override
     public String toString() {
         return "course_information{" +
-                "praiseLen=" + praiseLen +
+                "coursePrices=" + coursePrices +
                 ", courseInformationId=" + courseInformationId +
                 ", courseName='" + courseName + '\'' +
                 ", courseTypes='" + courseTypes + '\'' +
@@ -222,16 +233,17 @@ public class course_information {
                 ", coachName='" + coachName + '\'' +
                 ", courseHours=" + courseHours +
                 ", durationOfClassHours='" + durationOfClassHours + '\'' +
-                ", coursePrices=" + coursePrices +
                 ", courseImages='" + courseImages + '\'' +
                 ", courseIntroduction='" + courseIntroduction + '\'' +
                 ", hits=" + hits +
+                ", praiseLen=" + praiseLen +
                 ", collectLen=" + collectLen +
                 ", commentLen=" + commentLen +
                 ", studentCourseSelectionLimitTimes=" + studentCourseSelectionLimitTimes +
                 ", status='" + status + '\'' +
                 ", courseStartTime=" + courseStartTime +
                 ", courseEndTime=" + courseEndTime +
+                ", campusId=" + campusId +
                 '}';
     }
 }

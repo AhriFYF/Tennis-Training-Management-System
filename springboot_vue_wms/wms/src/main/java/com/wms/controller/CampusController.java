@@ -56,7 +56,9 @@ public class CampusController {
     @PostMapping("/listPageC1")
     public Result listPageC1(@RequestBody QueryPageParam query){
         HashMap param = query.getParam();
-        String CampusName = (String) param.get("Name");
+
+        String name = (String) param.get("name");
+        String contactPerson = (String) param.get("contactPerson");
 
         Page<Campus> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -64,9 +66,12 @@ public class CampusController {
 
         LambdaQueryWrapper<Campus> lambdaQueryWrapper = new LambdaQueryWrapper();
 
-        // 根据课程名称进行模糊查询
-        if(StringUtils.isNotBlank(CampusName) && !"null".equals(CampusName)){
-            lambdaQueryWrapper.like(Campus::getName, CampusName);
+        if(StringUtils.isNotBlank(name) && !"null".equals(name)){
+            lambdaQueryWrapper.like(Campus::getName, name);
+        }
+
+        if(StringUtils.isNotBlank(contactPerson) && !"null".equals(contactPerson)){
+            lambdaQueryWrapper.like(Campus::getContactPerson, contactPerson);
         }
 
         IPage<Campus> result = CampusService.pageCC(page, lambdaQueryWrapper);

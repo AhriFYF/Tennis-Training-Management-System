@@ -20,7 +20,7 @@
       <el-table-column prop="name" label="学生姓名"></el-table-column>
       <el-table-column prop="payState" label="支付状态" width="100"></el-table-column>
       <el-table-column prop="coursePrices" label="课程价格" width="100"></el-table-column>
-      <el-table-column prop="parentsPhoneNumber" label="家长电话" width="120"></el-table-column>
+      <el-table-column prop="parentsPhoneNumber" label="电话" width="120"></el-table-column>
       <el-table-column prop="operate" label="操作" width="200">
         <template slot-scope="scope">
           <el-button size="small" type="success" @click="mod(scope.row)">编辑</el-button>
@@ -93,6 +93,7 @@ export default {
     };
 
     return {
+      user: JSON.parse(localStorage.getItem("user")),
       tableData: [],
       pageSize: 10,
       pageNum: 1,
@@ -244,6 +245,7 @@ export default {
         param: {
           courseName: this.courseName,
           name: this.name,
+          campusId: this.user.campusId
         }
       }).then(res => res.data).then(res => {
         if (res.code == 200) {

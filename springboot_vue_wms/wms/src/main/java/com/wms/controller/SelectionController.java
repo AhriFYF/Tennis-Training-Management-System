@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
+import com.wms.entity.course_information;
 import com.wms.entity.student_course_selection;
 import com.wms.service.SelectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/selection")
@@ -58,6 +60,8 @@ public class SelectionController {
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");
         String courseTypes = (String) param.get("courseTypes");
+        String name = (String) param.get("name");
+        String campusId = String.valueOf(param.get("campusId"));
 
         Page<student_course_selection> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -73,6 +77,18 @@ public class SelectionController {
         // 根据课程类型进行精确查询
         if(StringUtils.isNotBlank(courseTypes) && !"null".equals(courseTypes)){
             lambdaQueryWrapper.eq(student_course_selection::getCourseTypes, courseTypes);
+        }
+
+        // 根据学生姓名进行模糊查询
+        if(StringUtils.isNotBlank(name) && !"null".equals(name)){
+            lambdaQueryWrapper.like(student_course_selection::getName, name);
+        }
+
+        System.out.println(campusId);
+        if(!Objects.equals(campusId, "0")) {
+            if (StringUtils.isNotBlank(campusId)) {
+                lambdaQueryWrapper.eq(student_course_selection::getCampusId, campusId);
+            }
         }
 
         IPage<student_course_selection> result = SelectionService.pageCC(page, lambdaQueryWrapper);

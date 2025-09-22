@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.StudentCourseSelectionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.student_course_selection">
+        <id column="student_course_selection_id" property="studentCourseSelectionId" />
+        <result column="course_name" property="courseName" />
+        <result column="course_number" property="courseNumber" />
+        <result column="course_types" property="courseTypes" />
+        <result column="coach_user" property="coachUser" />
+        <result column="coach_name" property="coachName" />
+        <result column="student_users" property="studentUsers" />
+        <result column="name" property="name" />
+        <result column="pay_state" property="payState" />
+        <result column="create_time" property="createTime" />
+        <result column="source_id" property="sourceId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        student_course_selection_id, course_name, course_number, course_types, 
+        coach_user, coach_name, student_users, name, pay_state, create_time, source_id
+    </sql>
+
+    <!-- 获取教练的学员选课统计 -->
+    <select id="getSelectionStatsByCoachId" resultType="java.util.Map">
+        SELECT 
+            COUNT(*) as totalSelections,
+            COUNT(CASE WHEN pay_state = 'pending' THEN 1 END) as pendingSelections,
+            COUNT(CASE WHEN pay_state = 'confirmed' THEN 1 END) as confirmedSelections,
+            COUNT(DISTINCT student_users) as uniqueStudents
+        FROM student_course_selection scs
+        LEFT JOIN course_information ci ON scs.source_id = ci.course_information_id
+        WHERE ci.coach_user = #{coachId}
+    </select>
+
+    <!-- 获取教练的学员列表（按选课次数排序） -->
+    <select id="getStudentsByCoachId" resultType="java.util.Map">
+        SELECT 
+            scs.student_users as studentId,
+            scs.name as studentName,
+            scs.parents_phone_number as studentPhone,
+            COUNT(*) as selectionCount,
+            MAX(scs.create_time) as lastSelectionTime
+        FROM student_course_selection scs
+        LEFT JOIN course_information ci ON scs.source_id = ci.course_information_id
+        WHERE ci.coach_user = #{coachId}
+        GROUP BY scs.student_users, scs.name, scs.parents_phone_number
+        ORDER BY selectionCount DESC, lastSelectionTime DESC
+    </select>
+
+    <!-- 获取学员的选课历史 -->
+    <select id="getSelectionHistoryByStudentId" resultType="java.util.Map">
+        SELECT 
+            scs.*,
+            ci.course_start_time,
+            ci.course_end_time,
+            ci.status as courseStatus
+        FROM student_course_selection scs
+        LEFT JOIN course_information ci ON scs.source_id = ci.course_information_id
+        WHERE scs.student_users = #{studentId}
+        ORDER BY scs.create_time DESC
+    </select>
+
+</mapper>

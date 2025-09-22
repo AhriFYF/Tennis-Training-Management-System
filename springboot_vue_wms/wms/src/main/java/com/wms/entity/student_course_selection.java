@@ -76,6 +76,9 @@ public class student_course_selection {
     @Column(name = "source_user_id")
     private Integer sourceUserId;
 
+    @Column(name = "campus_id")
+    private Integer campusId;
+
     public String getDurationOfClassHours() {
         return durationOfClassHours;
     }
@@ -244,14 +247,22 @@ public class student_course_selection {
         this.sourceUserId = sourceUserId;
     }
 
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
     @Override
     public String toString() {
         return "student_course_selection{" +
-                "studentCourseSelectionId=" + studentCourseSelectionId +
+                "coachUser=" + coachUser +
+                ", studentCourseSelectionId=" + studentCourseSelectionId +
                 ", courseName='" + courseName + '\'' +
                 ", courseNumber='" + courseNumber + '\'' +
                 ", courseTypes='" + courseTypes + '\'' +
-                ", coachUser=" + coachUser +
                 ", coachName='" + coachName + '\'' +
                 ", courseHours=" + courseHours +
                 ", durationOfClassHours='" + durationOfClassHours + '\'' +
@@ -268,6 +279,7 @@ public class student_course_selection {
                 ", sourceTable='" + sourceTable + '\'' +
                 ", sourceId=" + sourceId +
                 ", sourceUserId=" + sourceUserId +
+                ", campusId=" + campusId +
                 '}';
     }
 }
