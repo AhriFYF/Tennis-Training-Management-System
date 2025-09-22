@@ -179,6 +179,14 @@ const routes = [
 
         ]
     },
+    {
+        path: '/student',
+        name: 'student',
+        component: () => import('../components/Student'),
+        children: [
+
+        ]
+    },
 
 
     {
