@@ -5,7 +5,12 @@ const routes = [
     {
         path:'/',
         name:'login',
-        component:()=>import('../components/Login')
+        component:()=>import('../components/Login.vue')
+    },
+    {
+        path:'/Register',
+        name:'Register',
+        component:()=>import('../components/Register.vue')
     },
     {
         path:'/SuperAdmin',

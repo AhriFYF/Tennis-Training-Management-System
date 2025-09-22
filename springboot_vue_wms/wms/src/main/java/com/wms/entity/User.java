@@ -50,8 +50,8 @@ public class User implements Serializable {
     private Integer roleId;
 
     @ApiModelProperty(value = "是否有效，Y有效，其他无效")
-    @TableField("isValid")
-    private String isValid;
+    @TableField("isvalid")
+    private String isvalid;
 
 
 
@@ -123,12 +123,12 @@ public class User implements Serializable {
         this.roleId = roleId;
     }
 
-    public String getIsValid() {
-        return isValid;
+    public String getIsvalid() {
+        return isvalid;
     }
 
-    public void setIsValid(String isValid) {
-        this.isValid = isValid;
+    public void setIsvalid(String isvalid) {
+        this.isvalid = isvalid;
     }
 
     public Integer getCampusId() {
@@ -150,7 +150,7 @@ public class User implements Serializable {
                 ", sex=" + sex +
                 ", phone='" + phone + '\'' +
                 ", roleId=" + roleId +
-                ", isValid='" + isValid + '\'' +
+                ", isvalid='" + isvalid + '\'' +
                 ", campusId=" + campusId +
                 '}';
     }
