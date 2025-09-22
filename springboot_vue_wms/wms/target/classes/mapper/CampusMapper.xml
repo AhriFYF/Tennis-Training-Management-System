@@ -11,13 +11,10 @@
         <result column="contact_email" property="contactEmail" />
         <result column="parent_campus_id" property="parentCampus" />
         <result column="is_center" property="isCenter" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, name, address, contact_person, contact_phone, contact_email, parent_campus_id,
-        is_center, create_time, update_time
+        id, name, address, contact_person, contact_phone, contact_email, parent_campus_id, is_center
     </sql>
 
     <select id="pageC" resultType="com.wms.entity.Campus">

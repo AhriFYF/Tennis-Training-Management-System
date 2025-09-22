@@ -58,6 +58,7 @@ public class SelectionController {
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");
         String courseTypes = (String) param.get("courseTypes");
+        String name = (String) param.get("name");
 
         Page<student_course_selection> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -73,6 +74,11 @@ public class SelectionController {
         // 根据课程类型进行精确查询
         if(StringUtils.isNotBlank(courseTypes) && !"null".equals(courseTypes)){
             lambdaQueryWrapper.eq(student_course_selection::getCourseTypes, courseTypes);
+        }
+
+        // 根据学生姓名进行模糊查询
+        if(StringUtils.isNotBlank(name) && !"null".equals(name)){
+            lambdaQueryWrapper.like(student_course_selection::getName, name);
         }
 
         IPage<student_course_selection> result = SelectionService.pageCC(page, lambdaQueryWrapper);

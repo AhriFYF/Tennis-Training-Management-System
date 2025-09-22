@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.entity.coach_scheduling;
+import com.wms.entity.student_course_selection;
 import com.wms.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,7 @@ public class ScheduleController {
     public Result listPageC1(@RequestBody QueryPageParam query){
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");
+        String name = (String) param.get("name");
 
         Page<coach_scheduling> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -67,6 +69,11 @@ public class ScheduleController {
         // 根据课程名称进行模糊查询
         if(StringUtils.isNotBlank(courseName) && !"null".equals(courseName)){
             lambdaQueryWrapper.like(coach_scheduling::getCourseName, courseName);
+        }
+
+        // 根据学生姓名进行模糊查询
+        if(StringUtils.isNotBlank(name) && !"null".equals(name)){
+            lambdaQueryWrapper.like(coach_scheduling::getName, name);
         }
 
         IPage<coach_scheduling> result = ScheduleService.pageCC(page, lambdaQueryWrapper);

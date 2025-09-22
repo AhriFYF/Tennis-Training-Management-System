@@ -25,10 +25,10 @@
     </sql>
 
     <select id="pageC" resultType="com.wms.entity.coach_cancels_class">
-        select * from course_information
+        select * from coach_cancels_class
     </select>
 
     <select id="pageCC" resultType="com.wms.entity.coach_cancels_class">
-        select * from course_information ${ew.customSqlSegment}
+        select * from coach_cancels_class ${ew.customSqlSegment}
     </select>
 </mapper>
