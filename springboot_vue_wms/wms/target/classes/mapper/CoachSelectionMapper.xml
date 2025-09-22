@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.CoachSelectionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.coach_selection">
+        <id column="selection_id" property="selectionId" />
+        <result column="student_id" property="studentId" />
+        <result column="coach_id" property="coachId" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        selection_id, student_id, coach_id, status
+    </sql>
+
+    <!-- 获取教练的待确认双选请求（带学员信息） -->
+    <select id="getPendingSelectionsWithStudentInfo" resultType="java.util.Map">
+        SELECT 
+            cs.selection_id,
+            cs.student_id,
+            cs.coach_id,
+            cs.status,
+            u.name as studentName,
+            u.phone as studentPhone,
+            u.age as studentAge,
+            u.sex as studentSex
+        FROM coach_selection cs
+        LEFT JOIN user u ON cs.student_id = u.id
+        WHERE cs.coach_id = #{coachId} AND cs.status = 'pending'
+        ORDER BY cs.selection_id DESC
+    </select>
+
+    <!-- 获取教练的已确认双选关系（带学员信息） -->
+    <select id="getAcceptedSelectionsWithStudentInfo" resultType="java.util.Map">
+        SELECT 
+            cs.selection_id,
+            cs.student_id,
+            cs.coach_id,
+            cs.status,
+            u.name as studentName,
+            u.phone as studentPhone,
+            u.age as studentAge,
+            u.sex as studentSex
+        FROM coach_selection cs
+        LEFT JOIN user u ON cs.student_id = u.id
+        WHERE cs.coach_id = #{coachId} AND cs.status = 'accepted'
+        ORDER BY cs.selection_id DESC
+    </select>
+
+    <!-- 统计教练的双选关系数量 -->
+    <select id="getSelectionStatsByCoachId" resultType="java.util.Map">
+        SELECT 
+            COUNT(CASE WHEN status = 'pending' THEN 1 END) as pendingCount,
+            COUNT(CASE WHEN status = 'accepted' THEN 1 END) as acceptedCount,
+            COUNT(CASE WHEN status = 'rejected' THEN 1 END) as rejectedCount,
+            COUNT(*) as totalCount
+        FROM coach_selection 
+        WHERE coach_id = #{coachId}
+    </select>
+
+</mapper>

@@ -116,6 +116,66 @@ const routes = [
         },
         component:()=>import('../components/admin/SystemLog')
     },
+
+    // 教练模块路由
+    {
+        path: '/profile',
+        name: 'CoachProfile',
+        meta: {
+            title: '个人信息管理'
+        },
+        component: () => import('../components/coach/CoachProfile')
+    },
+    {
+        path: '/selection',
+        name: 'CoachSelection',
+        meta: {
+            title: '学员双选管理'
+        },
+        component: () => import('../components/coach/CoachSelection')
+    },
+    {
+        path: '/schedule',
+        name: 'CourseSchedule',
+        meta: {
+            title: '课程时间管理'
+        },
+        component: () => import('../components/coach/CourseSchedule')
+    },
+    {
+        path: '/requests',
+        name: 'CourseRequests',
+        meta: {
+            title: '预约请求管理'
+        },
+        component: () => import('../components/coach/CourseRequests')
+    },
+    {
+        path: '/students',
+        name: 'MyStudents',
+        meta: {
+            title: '我的学员管理'
+        },
+        component: () => import('../components/coach/MyStudents')
+    },
+    {
+        path: '/courses',
+        name: 'ConfirmedCourses',
+        meta: {
+            title: '已确认课程'
+        },
+        component: () => import('../components/coach/ConfirmedCourses')
+    },
+    {
+        path: '/coach',
+        name: 'coach',
+        component: () => import('../components/coach/CoachDashboard'),
+        children: [
+
+        ]
+    },
+
+
     {
         path:'/Index',
         name:'index',
