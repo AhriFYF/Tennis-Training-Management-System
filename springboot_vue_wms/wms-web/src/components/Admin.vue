@@ -1,6 +1,6 @@
 <template>
   <div class="super-admin-container">
-    <h1 class="welcome-title">{{'超级管理员 ' + user.name}}</h1>
+    <h1 class="welcome-title">{{'管理员 ' + user.name}}</h1>
 
     <el-row :gutter="20">
       <el-col :span="10">

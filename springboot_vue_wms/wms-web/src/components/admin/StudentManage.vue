@@ -112,6 +112,11 @@
             <el-input v-model="form.campusId"></el-input>
           </el-col>
         </el-form-item>
+        <el-form-item label="角色" prop="roleId">
+          <el-col :span="20">
+            <el-input v-model="form.roleId"></el-input>
+          </el-col>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -235,12 +240,13 @@ export default {
         this.form.id = row.id
         this.form.no = row.no
         this.form.name = row.name
-        this.form.password = ''
+        this.form.password = row.password
         this.form.age = row.age +''
         this.form.sex = row.sex +''
         this.form.phone = row.phone
         this.form.roleId = row.roleId
         this.form.campusId = row.campusId
+        this.form.roleId = row.roleId
       })
     },
     add(){

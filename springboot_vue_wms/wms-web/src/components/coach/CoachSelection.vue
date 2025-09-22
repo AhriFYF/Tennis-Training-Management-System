@@ -21,7 +21,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="status" label="状态" width="100">
-              <template slot-scope="scope">
+              <template slot-scope="">
                 <el-tag type="warning">待确认</el-tag>
               </template>
             </el-table-column>
@@ -55,7 +55,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="status" label="状态" width="100">
-              <template slot-scope="scope">
+              <template slot-scope="">
                 <el-tag type="success">已确认</el-tag>
               </template>
             </el-table-column>

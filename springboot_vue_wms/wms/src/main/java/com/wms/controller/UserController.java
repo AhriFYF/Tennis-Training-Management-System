@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -155,6 +156,7 @@ public class UserController {
         String sex = (String)param.get("sex");
         String roleId = (String)param.get("roleId");
         String campusId = String.valueOf(param.get("campusId"));
+        System.out.println(param);
 
         Page<User> page = new Page();
         page.setCurrent(query.getPageNum());
@@ -169,6 +171,12 @@ public class UserController {
         }
         if(StringUtils.isNotBlank(roleId)){
             lambdaQueryWrapper.eq(User::getRoleId,roleId);
+        }
+
+        if(!Objects.equals(campusId, "0")) {
+            if (StringUtils.isNotBlank(campusId)) {
+                lambdaQueryWrapper.eq(User::getCampusId, campusId);
+            }
         }
 
         //IPage result = userService.pageC(page);
