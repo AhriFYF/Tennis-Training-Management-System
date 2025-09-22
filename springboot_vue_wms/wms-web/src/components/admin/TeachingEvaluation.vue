@@ -159,8 +159,11 @@ export default {
     },
     add() {
       this.centerDialogVisible = true;
-      this.$nextTick(() => {
-        this.resetForm();
+      this.$nextTick(()=>{
+        // 使用模板创建一个全新的表单对象
+        this.form = { ...this.formTemplate };
+        // 重置表单验证状态
+        this.$refs.form.resetFields();
       });
     },
     doSave() {

@@ -235,12 +235,13 @@
                 })
             },
             add(){
-
-                this.centerDialogVisible = true
-                this.$nextTick(()=>{
-                    this.resetForm()
-                })
-
+              this.centerDialogVisible = true;
+              this.$nextTick(()=>{
+                // 使用模板创建一个全新的表单对象
+                this.form = { ...this.formTemplate };
+                // 重置表单验证状态
+                this.$refs.form.resetFields();
+              });
             },
             doSave(){
                 this.$axios.post(this.$httpUrl+'/user/save',this.form).then(res=>res.data).then(res=>{

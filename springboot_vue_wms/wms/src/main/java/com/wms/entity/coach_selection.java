@@ -1,4 +1,6 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ public class coach_selection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "selection_id")
+    @TableId(value = "selection_id", type = IdType.AUTO)
     private Integer selectionId;
 
     @Column(name = "student_id")

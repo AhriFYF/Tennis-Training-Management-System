@@ -1,4 +1,6 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.util.Date;
@@ -11,6 +13,7 @@ public class coach_cancels_class {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coach_cancels_class_id")
+    @TableId(value = "coach_cancels_class_id", type = IdType.AUTO)
     private Integer coachCancelsClassId;
 
     @Column(name = "course_name")

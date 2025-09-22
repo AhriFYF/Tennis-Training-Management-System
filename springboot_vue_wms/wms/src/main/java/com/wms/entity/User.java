@@ -53,6 +53,9 @@ public class User implements Serializable {
     @TableField("isValid")
     private String isvalid;
 
+    @ApiModelProperty(value = "校区")
+    private Integer campusId;
+
     public Integer getSex() {
         return sex;
     }
@@ -125,18 +128,27 @@ public class User implements Serializable {
         this.isvalid = isvalid;
     }
 
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "roleId=" + roleId +
+                "phone='" + phone + '\'' +
                 ", id=" + id +
                 ", no='" + no + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", age=" + age +
                 ", sex=" + sex +
-                ", phone='" + phone + '\'' +
+                ", roleId=" + roleId +
                 ", isvalid='" + isvalid + '\'' +
+                ", campusId=" + campusId +
                 '}';
     }
 }

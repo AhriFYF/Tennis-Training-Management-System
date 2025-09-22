@@ -1,4 +1,6 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ public class coach_user {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coach_user_id")
+    @TableId(value = "coach_user_id", type = IdType.AUTO)
     private Integer coachUserId;
 
     @Column(name = "coach_name")
