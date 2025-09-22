@@ -1,12 +1,18 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payment_records")
+@TableName("payment_records")
 public class PaymentRecord {
     @Id
+    @TableId(value = "id", type = IdType.AUTO)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

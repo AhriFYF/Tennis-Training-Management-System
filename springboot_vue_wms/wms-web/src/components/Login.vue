@@ -14,10 +14,9 @@
                                   show-password autocomplete="off" size="small" @keyup.enter.native="confirm"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="confirm" :disabled="confirm_disabled">登录</el-button>
+                      <el-button type="primary" @click="confirm" :disabled="confirm_disabled">登录</el-button>
                       <el-button type="primary" @click="studentRegister" :disabled="confirm_disabled">学生注册</el-button>
                       <el-button type="primary" @click="coachRegister" :disabled="confirm_disabled">教练注册</el-button>
-
                     </el-form-item>
                 </el-form>
             </div>
@@ -63,7 +62,9 @@
           studentRegister(){
             this.$router.replace('/Register');
           },
-
+          coachRegister(){
+            this.$router.replace('/Register');
+          },
           confirm() {
             this.confirm_disabled = true;
             this.$refs.loginForm.validate((valid) => {

@@ -1,14 +1,20 @@
 package com.wms.entity;
 
 import javax.persistence.*;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "student_users")
+@TableName("student_users")
 public class student_users {
 
     @Id
+    @TableId(value = "student_id", type = IdType.AUTO)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
     private Integer studentId;

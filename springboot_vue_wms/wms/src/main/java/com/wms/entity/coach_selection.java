@@ -1,10 +1,16 @@
 package com.wms.entity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.*;
 
-@Table(name="coach_selection")
 @Entity
+@Table(name="coach_selection")
+@TableName("coach_selection")
 public class coach_selection {
     @Id
+    @TableId(value = "selection_id", type = IdType.AUTO)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "selection_id")
     private Integer selectionId;
