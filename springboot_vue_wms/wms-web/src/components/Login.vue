@@ -39,7 +39,7 @@
           </el-form-item>
 
           <el-form-item label="账号" prop="no">
-            <el-input v-model="formData.no" placeholder="4-20位字母数字组合"></el-input>
+            <el-input v-model="formData.no" placeholder="请输入账号"></el-input>
           </el-form-item>
 
           <el-form-item label="密码" prop="password">
@@ -47,7 +47,7 @@
                 v-model="formData.password"
                 type="password"
                 show-password
-                placeholder="8-16位，含字母、数字和特殊字符"
+                placeholder="请输入密码"
             ></el-input>
           </el-form-item>
 
@@ -79,15 +79,6 @@
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item label="年龄" prop="age">
-            <el-input-number
-                v-model="formData.age"
-                :min="5"
-                :max="80"
-                placeholder="选填"
-            ></el-input-number>
-          </el-form-item>
-
           <el-form-item label="校区" prop="campusId">
             <el-select v-model="formData.campusId" placeholder="请选择校区">
               <el-option
@@ -98,31 +89,6 @@
               ></el-option>
             </el-select>
           </el-form-item>
-
-          <!-- 教练特有字段 -->
-          <template v-if="formData.roleId === 2">
-            <el-form-item label="教练照片" prop="photoUrl">
-              <el-upload
-                  class="avatar-uploader"
-                  action="#"
-                  :show-file-list="false"
-                  :before-upload="beforeAvatarUpload"
-                  :http-request="handleAvatarUpload"
-              >
-                <img v-if="formData.photoUrl" :src="formData.photoUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-form-item>
-
-            <el-form-item label="比赛成绩" prop="achievements">
-              <el-input
-                  type="textarea"
-                  :rows="3"
-                  v-model="formData.achievements"
-                  placeholder="请输入以往比赛成绩（选填）"
-              ></el-input>
-            </el-form-item>
-          </template>
         </template>
 
         <el-form-item class="form-actions">
@@ -152,18 +118,6 @@
 export default {
   name: 'LoginPage',
   data() {
-    const validatePassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('请输入密码'));
-      } else if (value.length < 8 || value.length > 16) {
-        callback(new Error('密码长度需在8-16位之间'));
-      } else if (!/[A-Za-z]/.test(value) || !/\d/.test(value) || !/[^A-Za-z0-9]/.test(value)) {
-        callback(new Error('密码必须包含字母、数字和特殊字符'));
-      } else {
-        callback();
-      }
-    };
-
     const validateConfirmPassword = (rule, value, callback) => {
       if (value !== this.formData.password) {
         callback(new Error('两次输入的密码不一致'));
@@ -175,22 +129,17 @@ export default {
     return {
       isRegister: false,
       loading: false,
-      campusList: [], // 将从后端获取的校区列表
+      campusList: [],
       formData: {
-        roleId: 3, // 默认学员
+        roleId: 3,
         no: '',
         password: '',
         confirmPassword: '',
         name: '',
         phone: '',
         email: '',
-        gender: 1, // 默认男
-        age: null,
+        gender: 1,
         campusId: null,
-        // 教练特有字段
-        photoUrl: '',
-        achievements: '',
-        // 系统自动设置字段
         isValid: 'Y',
         auditStatus: 0
       },
@@ -199,26 +148,19 @@ export default {
           { required: true, message: '请选择用户类型', trigger: 'change' }
         ],
         no: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
-          { min: 4, max: 20, message: '长度在4到20个字符', trigger: 'blur' },
-          { pattern: /^[a-zA-Z0-9_]+$/, message: '只能包含字母、数字和下划线', trigger: 'blur' }
+          { required: true, message: '请输入账号', trigger: 'blur' }
         ],
         password: [
-          { required: true, validator: validatePassword, trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' }
         ],
         confirmPassword: [
           { required: true, validator: validateConfirmPassword, trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入真实姓名', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在2到10个字符', trigger: 'blur' }
+          { required: true, message: '请输入真实姓名', trigger: 'blur' }
         ],
         phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
-        ],
-        email: [
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+          { required: true, message: '请输入手机号', trigger: 'blur' }
         ],
         campusId: [
           { required: true, message: '请选择校区', trigger: 'change' }
@@ -230,7 +172,6 @@ export default {
     this.fetchCampusList();
   },
   methods: {
-    // 获取校区列表
     fetchCampusList() {
       this.$axios.get('/api/campus/list').then(res => {
         this.campusList = res.data || [];
@@ -239,7 +180,6 @@ export default {
       });
     },
 
-    // 切换登录/注册表单
     toggleFormMode() {
       this.isRegister = !this.isRegister;
       this.$refs.formRef.resetFields();
@@ -252,41 +192,12 @@ export default {
         phone: '',
         email: '',
         gender: 1,
-        age: null,
         campusId: null,
-        photoUrl: '',
-        achievements: '',
         isValid: 'Y',
         auditStatus: 0
       };
     },
 
-    // 处理头像上传
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
-    },
-
-    handleAvatarUpload(file) {
-      const formData = new FormData();
-      formData.append('file', file.file);
-
-      this.$axios.post('/api/upload/avatar', formData).then(res => {
-        this.formData.photoUrl = res.data.url;
-      }).catch(() => {
-        this.$message.error('头像上传失败');
-      });
-    },
-
-    // 提交表单
     handleSubmit() {
       this.$refs.formRef.validate(valid => {
         if (valid) {
@@ -300,7 +211,6 @@ export default {
       });
     },
 
-    // 处理登录
     handleLogin() {
       const { no, password } = this.formData;
 
@@ -310,10 +220,9 @@ export default {
               this.$store.commit('SET_USER', res.data.user);
               this.$store.commit('SET_TOKEN', res.data.token);
 
-              // 根据角色跳转
               switch(res.data.user.roleId) {
                 case 0:
-                  this.$router.push('/super-admin');
+                  this.$router.push('/SuperAdmin');
                   break;
                 case 1:
                   this.$router.push('/admin');
@@ -325,7 +234,7 @@ export default {
                   this.$router.push('/student');
                   break;
                 default:
-                  this.$router.push('/');
+                  this.$router.push('/');//----------------------------修改
               }
             } else {
               this.$message.error(res.message || '登录失败');
@@ -336,12 +245,10 @@ export default {
           });
     },
 
-    // 处理注册
     handleRegister() {
       const registerData = { ...this.formData };
       delete registerData.confirmPassword;
 
-      // 学员注册自动通过审核
       if (registerData.roleId === 3) {
         registerData.auditStatus = 1;
       }
@@ -351,10 +258,8 @@ export default {
             if (res.code === 200) {
               this.$message.success('注册成功');
               if (registerData.roleId === 3) {
-                // 学员注册后自动登录
                 this.handleLogin();
               } else {
-                // 教练注册需要审核
                 this.$message.info('教练注册申请已提交，请等待管理员审核');
                 this.toggleFormMode();
               }
@@ -415,34 +320,5 @@ export default {
 
 .toggle-btn {
   width: 100%;
-}
-
-.avatar-uploader {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  width: 150px;
-  height: 150px;
-}
-
-.avatar-uploader:hover {
-  border-color: #409EFF;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 150px;
-  height: 150px;
-  line-height: 150px;
-  text-align: center;
-}
-
-.avatar {
-  width: 150px;
-  height: 150px;
-  display: block;
 }
 </style>

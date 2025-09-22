@@ -51,14 +51,12 @@ public class User implements Serializable {
 
     @ApiModelProperty(value = "是否有效，Y有效，其他无效")
     @TableField("isValid")
-    private String isvalid;
+    private String isValid;
 
-    // 校区关联信息（非数据库字段）
-    @OneToOne
-    @JoinColumn(name = "campus_id")
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private Campus campus;  // 校区对象信息
+
+
+    @ApiModelProperty(value = "所属校区ID")
+    private Integer campusId;
 
 
     public Integer getSex() {
@@ -125,30 +123,35 @@ public class User implements Serializable {
         this.roleId = roleId;
     }
 
-    public String getIsvalid() {
-        return isvalid;
+    public String getIsValid() {
+        return isValid;
     }
 
-    public void setIsvalid(String isvalid) {
-        this.isvalid = isvalid;
+    public void setIsValid(String isValid) {
+        this.isValid = isValid;
+    }
+
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "roleId=" + roleId +
-                ", id=" + id +
+                "id=" + id +
                 ", no='" + no + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", age=" + age +
                 ", sex=" + sex +
                 ", phone='" + phone + '\'' +
-                ", isvalid='" + isvalid + '\'' +
+                ", roleId=" + roleId +
+                ", isValid='" + isValid + '\'' +
+                ", campusId=" + campusId +
                 '}';
-    }
-
-    public Object getCampusId() {
-        return campus;
     }
 }

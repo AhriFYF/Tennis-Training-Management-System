@@ -47,7 +47,7 @@ public class UserController {
         if(user.getRoleId() == null) {
             user.setRoleId(3); // 默认为学员
         }
-        user.setIsvalid("Y"); // 默认有效
+        user.setIsValid("Y"); // 默认有效
 
         return userService.save(user) ? Result.suc() : Result.fail("保存失败");
     }
@@ -64,7 +64,7 @@ public class UserController {
         return userService.removeById(id) ? Result.suc() : Result.fail();
     }
 
-    // 登录
+    // 登录 - 简化版
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
         User loginUser = userService.getOne(new LambdaQueryWrapper<User>()
@@ -75,7 +75,7 @@ public class UserController {
             return Result.fail("账号或密码错误");
         }
 
-        if(!"Y".equals(loginUser.getIsvalid())) {
+        if(!"Y".equals(loginUser.getIsValid())) {
             return Result.fail("账号已被禁用");
         }
 
@@ -107,46 +107,34 @@ public class UserController {
         return Result.suc(result.getRecords(), result.getTotal());
     }
 
-    // 学员注册
+    // 学员注册 - 简化版
     @PostMapping("/registerStudent")
     public Result registerStudent(@RequestBody User user) {
-        // 验证必填字段
+        // 仅验证必填字段
         if(StringUtils.isBlank(user.getNo()) || StringUtils.isBlank(user.getPassword()) ||
-                StringUtils.isBlank(user.getName()) || StringUtils.isBlank(user.getPhone()) ||
-                user.getCampusId() == null) {
+                StringUtils.isBlank(user.getName()) || StringUtils.isBlank(user.getPhone())) {
             return Result.fail("请填写完整信息");
-        }
-
-        // 验证密码复杂度
-        if(!user.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,16}$")) {
-            return Result.fail("密码必须包含字母、数字和特殊字符，长度8-16位");
         }
 
         // 设置学员属性
         user.setRoleId(3); // 学员角色
-        user.setIsvalid("Y");
+        user.setIsValid("Y");
 
         return this.save(user);
     }
 
-    // 教练注册
+    // 教练注册 - 简化版
     @PostMapping("/registerCoach")
     public Result registerCoach(@RequestBody User user) {
-        // 验证必填字段
+        // 仅验证必填字段
         if(StringUtils.isBlank(user.getNo()) || StringUtils.isBlank(user.getPassword()) ||
-                StringUtils.isBlank(user.getName()) || StringUtils.isBlank(user.getPhone()) ||
-                user.getCampusId() == null) {
+                StringUtils.isBlank(user.getName()) || StringUtils.isBlank(user.getPhone())) {
             return Result.fail("请填写完整信息");
-        }
-
-        // 验证密码复杂度
-        if(!user.getPassword().matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,16}$")) {
-            return Result.fail("密码必须包含字母、数字和特殊字符，长度8-16位");
         }
 
         // 设置教练属性
         user.setRoleId(2); // 教练角色
-        user.setIsvalid("Y");
+        user.setIsValid("Y");
 
         return this.save(user);
     }
