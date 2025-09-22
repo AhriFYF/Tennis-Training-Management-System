@@ -116,7 +116,7 @@ export default {
         ],
         contactPhone: [
           {required: true, message: '请输入联系电话', trigger: 'blur'},
-          {pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: "请输入正确的手机号码", trigger: "blur"}
+          {pattern: /^1[1|3|4|5|6|7|8|9][0-9]\d{8}$/, message: "请输入正确的手机号码", trigger: "blur"}
         ],
         contactEmail: [
           {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
@@ -152,8 +152,11 @@ export default {
     },
     add() {
       this.centerDialogVisible = true;
-      this.$nextTick(() => {
-        this.resetForm();
+      this.$nextTick(()=>{
+        // 使用模板创建一个全新的表单对象
+        this.form = { ...this.formTemplate };
+        // 重置表单验证状态
+        this.$refs.form.resetFields();
       });
     },
     doSave() {

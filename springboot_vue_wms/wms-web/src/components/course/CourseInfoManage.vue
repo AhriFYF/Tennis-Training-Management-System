@@ -74,7 +74,6 @@
         <el-form-item label="课程介绍" prop="courseIntroduction">
           <el-input type="textarea" v-model="form.courseIntroduction"></el-input>
         </el-form-item>
-        form-item
       </el-form>
       <span slot="footer" class="dialog-footer">
                 <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -197,7 +196,10 @@ export default {
     add(){
       this.centerDialogVisible = true;
       this.$nextTick(()=>{
-        this.resetForm();
+        // 使用模板创建一个全新的表单对象
+        this.form = { ...this.formTemplate };
+        // 重置表单验证状态
+        this.$refs.form.resetFields();
       });
     },
     doSave(){
@@ -239,6 +241,7 @@ export default {
     save(){
       this.$refs.form.validate((valid) => {
         if (valid) {
+          console.log("即将提交的表单数据：", this.form);
           if(this.form.courseInformationId){
             this.doMod();
           } else {
