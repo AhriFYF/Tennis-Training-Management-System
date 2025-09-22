@@ -11,7 +11,7 @@ import lombok.Data;
 @Entity
 @Table(name = "coach_users")
 @TableName("coach_users")
-public class coach_user {
+public class coach_users {
 
     @Id
     @TableId(value = "coach_id", type = IdType.AUTO)

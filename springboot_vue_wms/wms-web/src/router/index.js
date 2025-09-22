@@ -8,6 +8,11 @@ const routes = [
         component:()=>import('../components/Login.vue')
     },
     {
+        path:'/login',
+        name:'login',
+        component:()=>import('../components/Login.vue')
+    },
+    {
         path:'/Register',
         name:'Register',
         component:()=>import('../components/Register.vue')

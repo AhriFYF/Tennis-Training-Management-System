@@ -1,113 +1,152 @@
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <div class="login-header">
-        <h2>{{ isRegister ? '用户注册' : '用户登录' }}</h2>
+  <div class="register-container">
+    <div class="register-card">
+      <div class="register-header">
+        <h2 class="register-title">
+          {{ role === 'student' ? '学员注册' : '教练注册' }}
+        </h2>
+        <p class="register-subtitle">请填写以下信息完成注册</p>
       </div>
 
       <el-form
-          :model="formData"
-          :rules="rules"
-          ref="formRef"
-          class="login-form"
+          :model="registerForm"
+          ref="registerForm"
           label-width="100px"
+          class="register-form"
       >
-        <!-- 登录表单 -->
-        <template v-if="!isRegister">
-          <el-form-item label="账号" prop="no">
-            <el-input v-model="formData.no" placeholder="请输入账号"></el-input>
+        <!-- 通用字段 -->
+        <el-form-item label="用户名">
+          <el-input
+              v-model="registerForm.username"
+              placeholder="请输入用户名"
+              size="small"
+              style="width: 100%"
+          />
+        </el-form-item>
+
+        <el-form-item label="密码">
+          <el-input
+              v-model="registerForm.password"
+              type="password"
+              placeholder="请输入密码"
+              size="small"
+              style="width: 100%"
+              show-password
+          />
+        </el-form-item>
+
+        <el-form-item label="真实姓名">
+          <el-input
+              v-model="registerForm.realName"
+              placeholder="请输入真实姓名"
+              size="small"
+              style="width: 100%"
+          />
+        </el-form-item>
+
+        <el-form-item label="性别">
+          <el-select
+              v-model="registerForm.gender"
+              placeholder="请选择性别"
+              size="small"
+              style="width: 100%"
+          >
+            <el-option label="男" value="男" />
+            <el-option label="女" value="女" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="年龄">
+          <el-input-number
+              v-model="registerForm.age"
+              :min="1"
+              :max="120"
+              size="small"
+              style="width: 100%"
+          />
+        </el-form-item>
+
+        <el-form-item label="校区">
+          <el-select
+              v-model="registerForm.campus"
+              placeholder="请选择校区"
+              size="small"
+              style="width: 100%"
+          >
+            <el-option label="北京校区" value="北京校区" />
+            <el-option label="上海校区" value="上海校区" />
+            <el-option label="广州校区" value="广州校区" />
+            <el-option label="深圳校区" value="深圳校区" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="电话">
+          <el-input
+              v-model="registerForm.phone"
+              placeholder="请输入联系电话"
+              size="small"
+              style="width: 100%"
+          />
+        </el-form-item>
+
+        <el-form-item label="邮箱">
+          <el-input
+              v-model="registerForm.email"
+              placeholder="请输入邮箱（可选）"
+              size="small"
+              style="width: 100%"
+          />
+        </el-form-item>
+
+        <!-- 教练专属字段 -->
+        <template v-if="role === 'coach'">
+          <el-form-item label="教练照片">
+            <el-upload
+                class="photo-uploader"
+                action="#"
+                :auto-upload="false"
+                :show-file-list="false"
+                :on-change="handlePhotoChange"
+                accept="image/*"
+            >
+              <div v-if="photoUrl" class="photo-preview">
+                <img :src="photoUrl" alt="教练照片预览" />
+              </div>
+              <div v-else class="photo-placeholder">
+                <i class="el-icon-camera"></i>
+                <div>点击上传照片</div>
+              </div>
+            </el-upload>
           </el-form-item>
 
-          <el-form-item label="密码" prop="password">
+          <el-form-item label="比赛成绩">
             <el-input
-                v-model="formData.password"
-                type="password"
-                show-password
-                placeholder="请输入密码"
-                @keyup.enter.native="handleSubmit"
-            ></el-input>
+                v-model="registerForm.achievements"
+                type="textarea"
+                placeholder="请简要描述您的比赛成绩或经历"
+                :rows="4"
+                size="small"
+                style="width: 100%"
+            />
           </el-form-item>
         </template>
 
-        <!-- 注册表单 -->
-        <template v-else>
-          <el-form-item label="用户类型" prop="roleId">
-            <el-radio-group v-model="formData.roleId">
-              <el-radio :label="3">学员</el-radio>
-              <el-radio :label="2">教练</el-radio>
-            </el-radio-group>
-          </el-form-item>
-
-          <el-form-item label="账号" prop="no">
-            <el-input v-model="formData.no" placeholder="请输入账号"></el-input>
-          </el-form-item>
-
-          <el-form-item label="密码" prop="password">
-            <el-input
-                v-model="formData.password"
-                type="password"
-                show-password
-                placeholder="请输入密码"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="确认密码" prop="confirmPassword">
-            <el-input
-                v-model="formData.confirmPassword"
-                type="password"
-                show-password
-                placeholder="请再次输入密码"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="真实姓名" prop="name">
-            <el-input v-model="formData.name" placeholder="请输入真实姓名"></el-input>
-          </el-form-item>
-
-          <el-form-item label="手机号" prop="phone">
-            <el-input v-model="formData.phone" placeholder="请输入手机号"></el-input>
-          </el-form-item>
-
-          <el-form-item label="邮箱" prop="email">
-            <el-input v-model="formData.email" placeholder="请输入邮箱（选填）"></el-input>
-          </el-form-item>
-
-          <el-form-item label="性别" prop="gender">
-            <el-radio-group v-model="formData.gender">
-              <el-radio :label="1">男</el-radio>
-              <el-radio :label="0">女</el-radio>
-            </el-radio-group>
-          </el-form-item>
-
-          <el-form-item label="校区" prop="campusId">
-            <el-select v-model="formData.campusId" placeholder="请选择校区">
-              <el-option
-                  v-for="campus in campusList"
-                  :key="campus.id"
-                  :label="campus.name"
-                  :value="campus.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </template>
-
-        <el-form-item class="form-actions">
-          <el-button
-              type="primary"
-              @click="handleSubmit"
-              :loading="loading"
-              class="submit-btn"
-          >
-            {{ isRegister ? '注册' : '登录' }}
-          </el-button>
-
-          <el-button
-              type="text"
-              @click="toggleFormMode"
-              class="toggle-btn"
-          >
-            {{ isRegister ? '已有账号？去登录' : '没有账号？去注册' }}
-          </el-button>
+        <!-- 提交按钮 -->
+        <el-form-item>
+          <div style="display: flex; justify-content: center; gap: 10px;">
+            <el-button
+                type="primary"
+                @click="submitRegister"
+                :loading="submitting"
+                size="small"
+                style="width: 48%;"
+            >
+              提交注册
+            </el-button>
+            <el-button @click="goBack" size="small" style="width: 48%;">
+              返回登录
+            </el-button>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -115,210 +154,183 @@
 </template>
 
 <script>
-export default {
-  name: 'LoginPage',
-  data() {
-    const validateConfirmPassword = (rule, value, callback) => {
-      if (value !== this.formData.password) {
-        callback(new Error('两次输入的密码不一致'));
-      } else {
-        callback();
-      }
-    };
+import axios from "axios";
 
+export default {
+  data() {
     return {
-      isRegister: false,
-      loading: false,
-      campusList: [],
-      formData: {
-        roleId: 3,
-        no: '',
-        password: '',
-        confirmPassword: '',
-        name: '',
-        phone: '',
-        email: '',
-        gender: 1,
-        campusId: null,
-        isValid: 'Y',
-        auditStatus: 0
+      role: "student", // 'student' | 'coach'
+      submitting: false,
+      photoUrl: "",
+      registerForm: {
+        username: "",
+        password: "",
+        realName: "",
+        gender: "",
+        age: null,
+        campus: "",
+        phone: "",
+        email: "",
+        photo: null,
+        achievements: "",
       },
-      rules: {
-        roleId: [
-          { required: true, message: '请选择用户类型', trigger: 'change' }
-        ],
-        no: [
-          { required: true, message: '请输入账号', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
-        ],
-        confirmPassword: [
-          { required: true, validator: validateConfirmPassword, trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '请输入真实姓名', trigger: 'blur' }
-        ],
-        phone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' }
-        ],
-        campusId: [
-          { required: true, message: '请选择校区', trigger: 'change' }
-        ]
-      }
     };
   },
-  created() {
-    this.fetchCampusList();
+  mounted() {
+    this.role = this.$route.query.role || "student";
   },
   methods: {
-    fetchCampusList() {
-      this.$axios.get('/api/campus/list').then(res => {
-        this.campusList = res.data || [];
-      }).catch(() => {
-        this.$message.error('获取校区列表失败');
-      });
+    handlePhotoChange(file) {
+      this.registerForm.photo = file.raw;
+      this.photoUrl = URL.createObjectURL(file.raw);
     },
+    submitRegister() {
+      this.submitting = true;
 
-    toggleFormMode() {
-      this.isRegister = !this.isRegister;
-      this.$refs.formRef.resetFields();
-      this.formData = {
-        roleId: 3,
-        no: '',
-        password: '',
-        confirmPassword: '',
-        name: '',
-        phone: '',
-        email: '',
-        gender: 1,
-        campusId: null,
-        isValid: 'Y',
-        auditStatus: 0
-      };
-    },
+      const formData = new FormData();
+      formData.append("role", this.role);
+      formData.append("username", this.registerForm.username || "");
+      formData.append("password", this.registerForm.password || "");
+      formData.append("realName", this.registerForm.realName || "");
+      formData.append("gender", this.registerForm.gender || "");
+      formData.append("age", this.registerForm.age || "");
+      formData.append("campus", this.registerForm.campus || "");
+      formData.append("phone", this.registerForm.phone || "");
+      formData.append("email", this.registerForm.email || "");
 
-    handleSubmit() {
-      this.$refs.formRef.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          if (this.isRegister) {
-            this.handleRegister();
-          } else {
-            this.handleLogin();
-          }
-        }
-      });
-    },
-
-    handleLogin() {
-      const { no, password } = this.formData;
-
-      this.$axios.post('/user/login', { no, password })
-          .then(res => {
-            if (res.code === 200) {
-              this.$store.commit('SET_USER', res.data.user);
-              this.$store.commit('SET_TOKEN', res.data.token);
-
-              switch(res.data.user.roleId) {
-                case 0:
-                  this.$router.push('/SuperAdmin');
-                  break;
-                case 1:
-                  this.$router.push('/admin');
-                  break;
-                case 2:
-                  this.$router.push('/coach');
-                  break;
-                case 3:
-                  this.$router.push('/student');
-                  break;
-                default:
-                  this.$router.push('/');//----------------------------修改
-              }
-            } else {
-              this.$message.error(res.message || '登录失败');
-            }
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-    },
-
-    handleRegister() {
-      const registerData = { ...this.formData };
-      delete registerData.confirmPassword;
-
-      if (registerData.roleId === 3) {
-        registerData.auditStatus = 1;
+      if (this.registerForm.photo) {
+        formData.append("photo", this.registerForm.photo);
+      }
+      if (this.registerForm.achievements) {
+        formData.append("achievements", this.registerForm.achievements);
       }
 
-      this.$axios.post('/api/user/register', registerData)
-          .then(res => {
-            if (res.code === 200) {
-              this.$message.success('注册成功');
-              if (registerData.roleId === 3) {
-                this.handleLogin();
-              } else {
-                this.$message.info('教练注册申请已提交，请等待管理员审核');
-                this.toggleFormMode();
-              }
+      const url =
+          this.role === "student"
+              ? this.$httpUrl + "/user/registerStudent"
+              : this.$httpUrl + "/user/registerCoach";
+
+      axios
+          .post(url, formData)
+          .then((res) => {
+            if (res.data.code === 200) {
+              this.$message.success(
+                  this.role === "student"
+                      ? "学员注册成功！"
+                      : "教练注册提交成功，请等待审核！"
+              );
+              this.goBack();
             } else {
-              this.$message.error(res.message || '注册失败');
+              this.$message.error(res.data.message || "注册失败，请重试");
             }
           })
+          .catch(() => {
+            this.$message.error("网络错误，注册失败");
+          })
           .finally(() => {
-            this.loading = false;
+            this.submitting = false;
           });
-    }
-  }
+    },
+    goBack() {
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 
 <style scoped>
-.login-container {
+.register-container {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100vh;
-  background: url('~@/assets/login-bg.jpg') no-repeat center center;
-  background-size: cover;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.login-box {
-  width: 500px;
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+.register-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.login-header {
+.register-header {
   text-align: center;
   margin-bottom: 30px;
 }
 
-.login-header h2 {
-  color: #333;
+.register-title {
+  margin: 0 0 10px 0;
   font-size: 24px;
+  color: #303133;
+  font-weight: 600;
 }
 
-.login-form {
-  margin-top: 20px;
+.register-subtitle {
+  margin: 0;
+  color: #909399;
+  font-size: 14px;
 }
 
-.form-actions {
-  margin-top: 30px;
+.register-form {
+  width: 100%;
+}
+
+.register-form .el-form-item {
+  margin-bottom: 22px;
+}
+
+.register-form label {
+  font-weight: 500;
+  color: #606266;
+}
+
+.photo-uploader {
+  width: 100%;
+  border: 2px dashed #dcdfe6;
+  border-radius: 8px;
+  cursor: pointer;
   text-align: center;
+  transition: border-color 0.3s;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.submit-btn {
-  width: 100%;
-  margin-bottom: 15px;
+.photo-uploader:hover {
+  border-color: #409eff;
 }
 
-.toggle-btn {
+.photo-preview img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.photo-placeholder {
+  color: #909399;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.photo-placeholder i {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.el-button {
+  border-radius: 6px;
 }
 </style>
