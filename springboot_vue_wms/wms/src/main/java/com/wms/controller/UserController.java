@@ -154,6 +154,7 @@ public class UserController {
         String name = (String)param.get("name");
         String sex = (String)param.get("sex");
         String roleId = (String)param.get("roleId");
+        String campusId = String.valueOf(param.get("campusId"));
 
         Page<User> page = new Page();
         page.setCurrent(query.getPageNum());

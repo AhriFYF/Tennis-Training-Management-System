@@ -53,8 +53,7 @@ public class User implements Serializable {
     @TableField("isvalid")
     private String isvalid;
 
-
-
+    @TableField("campus_id")
     @ApiModelProperty(value = "所属校区ID")
     private Integer campusId;
 

@@ -43,8 +43,9 @@
                             (scope.row.roleId === 1 ? '管理员' : (scope.row.roleId === 2 ? '教练' :   '学生'))}}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="phone" label="电话" width="180">
-            </el-table-column>
+            <el-table-column prop="phone" label="电话" width="180"></el-table-column>
+          <el-table-column prop="campusId" label="校区" width="180"></el-table-column>
+
             <el-table-column prop="operate" label="操作">
                 <template slot-scope="scope">
                     <el-button size="small" type="success" @click="mod(scope.row)">编辑</el-button>
@@ -106,6 +107,11 @@
                         <el-input v-model="form.phone"></el-input>
                     </el-col>
                 </el-form-item>
+                <el-form-item label="校区" prop="campusId">
+                  <el-col :span="20">
+                    <el-input v-model="form.campusId"></el-input>
+                  </el-col>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
     <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -165,7 +171,8 @@
                     age:'',
                     phone:'',
                     sex:'0',
-                    roleId:'1'
+                    roleId:'1',
+                    campusId: ''
                 },
                 rules: {
                     no: [
@@ -232,6 +239,7 @@
                     this.form.sex = row.sex +''
                     this.form.phone = row.phone
                     this.form.roleId = row.roleId
+                  this.form.campusId = row.campusId
                 })
             },
             add(){

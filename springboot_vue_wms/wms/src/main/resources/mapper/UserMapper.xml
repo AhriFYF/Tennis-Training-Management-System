@@ -13,11 +13,12 @@
         <result column="phone" property="phone" />
         <result column="role_id" property="roleId" />
         <result column="isValid" property="isvalid" />
+        <result column="campusId" property="campusId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, no, name, password, age, sex, phone, role_id, isValid
+        id, no, name, password, age, sex, phone, role_id, isValid, campusId
     </sql>
 
     <select id="pageC" resultType="com.wms.entity.User">

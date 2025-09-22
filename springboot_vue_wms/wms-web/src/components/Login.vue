@@ -71,6 +71,22 @@
               if (valid) {
                 this.$axios.post(this.$httpUrl + '/user/login', this.loginForm).then(res => res.data).then(res => {
                   if (res.code == 200) {
+                    // 登录成功
+
+                    // 获取后端返回的用户和菜单信息
+                    const userInfo = res.data.user;
+                    const menuInfo = res.data.menu;
+
+                    // 1. 将用户信息转换为 JSON 字符串
+                    const userJson = JSON.stringify(userInfo);
+
+                    // 2. 将用户信息保存到 localStorage
+                    localStorage.setItem('user', userJson);
+
+                    // 3. 将菜单信息也保存到 localStorage (可选，但通常会这么做)
+                    const menuJson = JSON.stringify(menuInfo);
+                    localStorage.setItem('menu', menuJson);
+
                     sessionStorage.setItem("CurUser", JSON.stringify(res.data.user));
                     this.$store.commit("setMenu", res.data.menu);
 
