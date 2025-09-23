@@ -21,14 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author wms
- * @since 2022-10-16
- */
 @RestController
 @RequestMapping("/record")
 public class RecordController {
