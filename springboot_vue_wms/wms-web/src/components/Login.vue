@@ -1,5 +1,6 @@
 <template>
   <div class="loginBody">
+    <header-component />
     <div class="loginDiv">
       <div class="login-content">
         <h1 class="login-title">用户登录</h1>
@@ -9,7 +10,7 @@
                 v-model="loginForm.no"
                 placeholder="请输入用户名"
                 size="small"
-                style="width: 200px"
+                style="width: 250px"
                 autocomplete="off"
             ></el-input>
           </el-form-item>
@@ -19,7 +20,7 @@
                 type="password"
                 placeholder="请输入密码"
                 size="small"
-                style="width: 200px"
+                style="width: 250px"
                 show-password
                 autocomplete="off"
                 @keyup.enter.native="confirm"
@@ -37,8 +38,12 @@
 </template>
 
 <script>
+import HeaderComponent from './HeaderComponent.vue';
 export default {
   name: "Login",
+  components: {
+    HeaderComponent
+  },
   data() {
     return {
       confirm_disabled: false,
@@ -108,7 +113,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #b3c0d1;
+  background-color: #e0f2e0;
 }
 .loginDiv {
   position: absolute;
@@ -116,8 +121,8 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
-  height: 300px;
-  background: white;
+  height: 250px;
+  background: #f7f7f7;
   border-radius: 8px;
   padding: 20px;
 }

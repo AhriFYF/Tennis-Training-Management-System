@@ -4,8 +4,19 @@ import VueRouter from 'vue-router';
 const routes = [
     {
         path:'/',
-        name:'login',
-        component:()=>import('../components/Login.vue')
+        name:'HomePage',
+        meta:{
+            title:'主页'
+        },
+        component:()=>import('../components/HomePage.vue'),
+    },
+    {
+        path:'/HomePage',
+        name:'HomePage',
+        meta:{
+            title:'主页'
+        },
+        component:()=>import('../components/HomePage.vue'),
     },
     {
         path:'/login',
@@ -187,17 +198,12 @@ const routes = [
 
         ]
     },
-
-
+    /*
     {
         path:'/Index',
         name:'index',
         component:()=>import('../components/Index'),
         children:[
-            {
-                path:'', // 默认路径，当访问 /Index 时匹配
-                redirect:'/Home' // 重定向到 /Home
-            },
             {
                 path:'/Home',
                 name:'home',
@@ -205,25 +211,10 @@ const routes = [
                     title:'首页'
                 },
                 component:()=>import('../components/Home')
-            },
-            /*{
-                path:'/Admin',
-                name:'admin',
-                meta:{
-                    title:'管理员管理'
-                },
-                component:()=>import('../components/admin/AdminManage.vue')
-            },
-            {
-                path:'/User',
-                name:'user',
-                meta:{
-                    title:'用户管理'
-                },
-                component:()=>import('../components/user/UserManage.vue')
-            },*/
+            }
         ]
     }
+    */
 ]
 
 const router = new VueRouter({

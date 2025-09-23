@@ -1,149 +1,107 @@
 <template>
   <div class="student-container">
-    <!-- 顶部栏 -->
+    <!-- 顶部导航栏 -->
     <el-header class="student-header">
-      <h2>🏓 乒乓球培训管理系统 - 学员中心</h2>
+      <h1>乒乓球培训管理系统 - 学员中心</h1>
       <div class="user-info">
-        欢迎您，{{ currentUser.name }}（学员）
+        <el-avatar :size="40" :src="currentUser.photoUrl"></el-avatar>
+        <div class="user-name">{{ currentUser.name }}</div>
+        <div class="user-role">学员</div>
       </div>
     </el-header>
 
-    <el-main class="student-main">
-      <el-row :gutter="20">
-        <!-- 1. 个人信息维护 -->
-        <el-col :span="24" :md="12" :lg="8">
-          <el-card class="info-card">
-            <div slot="header" class="card-header">
-              <span>🔄 个人信息维护</span>
-            </div>
-            <div>
-              <p>修改您的联系方式、年龄、性别等信息</p>
-              <el-button type="primary" size="small" @click="goToProfile">
-                修改信息
-              </el-button>
-            </div>
-          </el-card>
-        </el-col>
+    <el-container class="main-content">
+      <!-- 侧边导航 -->
+      <el-aside width="200px" class="sidebar">
+        <el-menu
+            :default-active="$route.path"
+            class="el-menu-vertical-demo"
+            @select="handleSelect"
+            background-color="#f5f5f5"
+            text-color="#333"
+            active-text-color="#409EFF"
+        >
+          <el-menu-item index="/student-profile">
+            <i class="el-icon-user"></i>
+            <span slot="title">个人信息</span>
+          </el-menu-item>
+          <el-menu-item index="/student-bookings">
+            <i class="el-icon-date"></i>
+            <span slot="title">我的预约</span>
+          </el-menu-item>
+          <el-menu-item index="/student-coach-search">
+            <i class="el-icon-search"></i>
+            <span slot="title">教练查询</span>
+          </el-menu-item>
+          <el-menu-item index="/student-coach-application">
+            <i class="el-icon-edit"></i>
+            <span slot="title">教练申请</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
 
-        <!-- 2. 查询教练 -->
-        <el-col :span="24" :md="12" :lg="8">
-          <el-card class="info-card">
-            <div slot="header" class="card-header">
-              <span>🔍 查询教练</span>
-            </div>
-            <div>
-              <p>查找合适的教练，支持按条件筛选</p>
-              <el-button type="primary" size="small" @click="queryCoach">
-                查询教练
-              </el-button>
-            </div>
-          </el-card>
-        </el-col>
-
-        <!-- 3. 选择教练（仅按钮，无功能） -->
-        <el-col :span="24" :md="12" :lg="8">
-          <el-card class="info-card">
-            <div slot="header" class="card-header">
-              <span>👤 申请教练</span>
-            </div>
-            <div>
-              <p>选择教练作为您的主管教练（功能演示）</p>
-              <el-button type="success" size="small" @click="applyCoach">
-                🙋 申请教练
-              </el-button>
-            </div>
-          </el-card>
-        </el-col>
-
-        <!-- 4. 我的预约（预留） -->
-        <el-col :span="24" :md="12" :lg="8">
-          <el-card class="info-card">
-            <div slot="header" class="card-header">
-              <span>📅 我的预约</span>
-            </div>
-            <div>
-              <p>查看和管理您的课程预约</p>
-              <el-button type="warning" size="small" @click="viewBookings">
-                查看预约
-              </el-button>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-    </el-main>
+      <!-- 主内容区 -->
+      <el-main class="content-wrapper">
+        <router-view></router-view>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
 <script>
 export default {
   name: "Student",
-  data() {
-    return {
-      currentUser: {
-        name: "张三", // 模拟当前登录的学员姓名，实际应从 Vuex / Session 获取
-      },
-    };
+  computed: {
+    currentUser() {
+      return JSON.parse(sessionStorage.getItem("CurUser") || "{}");
+    }
   },
   methods: {
-    goToProfile() {
-      this.$message.info("跳转到个人信息修改页面");
-      // TODO: 实际跳转到 /student/profile
-    },
-    queryCoach() {
-      this.$message.info("跳转到教练查询页面");
-      // TODO: 实际跳转到 /student/coach/list 或查询页面
-    },
-    applyCoach() {
-      // ⚠️ 仅前端展示，不实现功能
-      this.$message({
-        message: "您已点击申请教练（此为演示按钮，暂未实现功能）",
-        type: "info",
-        duration: 3000,
-      });
-    },
-    viewBookings() {
-      this.$message.info("跳转到我的预约管理页面");
-      // TODO: 实际跳转到 /student/booking
-    },
-  },
+    handleSelect(key) {
+      this.$router.push(key);
+    }
+  }
 };
 </script>
 
 <style scoped>
 .student-container {
-  padding: 20px;
-  background-color: #f5f5f5;
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .student-header {
-  background-color: #409eff;
-  color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 0 20px;
-}
-
-.student-header h2 {
-  margin: 0;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .user-info {
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.student-main {
-  margin-top: 20px;
-}
-
-.info-card {
-  margin-bottom: 20px;
-  height: 140px;
-}
-
-.card-header {
+.user-name {
+  font-size: 18px;
   font-weight: bold;
-  font-size: 16px;
+}
+
+.user-role {
+  font-size: 14px;
+  color: #999;
+}
+
+.sidebar {
+  background-color: #f5f5f5;
+}
+
+.content-wrapper {
+  padding: 20px;
+  background-color: #ffffff;
 }
 </style>

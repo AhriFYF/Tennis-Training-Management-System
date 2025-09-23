@@ -8,14 +8,16 @@
         <p class="register-subtitle">请填写以下信息完成注册</p>
       </div>
 
+      <!-- 添加v-if确保数据已加载 -->
       <el-form
+          v-if="role"
           :model="registerForm"
           ref="registerForm"
           label-width="100px"
           class="register-form"
       >
         <!-- 通用字段 -->
-        <el-form-item label="用户名">
+        <el-form-item label="用户名" prop="username">
           <el-input
               v-model="registerForm.username"
               placeholder="请输入用户名"
@@ -24,7 +26,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="password">
           <el-input
               v-model="registerForm.password"
               type="password"
@@ -35,7 +37,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="真实姓名">
+        <el-form-item label="真实姓名" prop="realName">
           <el-input
               v-model="registerForm.realName"
               placeholder="请输入真实姓名"
@@ -44,19 +46,19 @@
           />
         </el-form-item>
 
-        <el-form-item label="性别">
+        <el-form-item label="性别" prop="gender">
           <el-select
               v-model="registerForm.gender"
               placeholder="请选择性别"
               size="small"
               style="width: 100%"
           >
-            <el-option label="男" value="男" />
-            <el-option label="女" value="女" />
+            <el-option label="男" value="M" />
+            <el-option label="女" value="F" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="年龄">
+        <el-form-item label="年龄" prop="age">
           <el-input-number
               v-model="registerForm.age"
               :min="1"
@@ -66,7 +68,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="校区">
+        <el-form-item label="校区" prop="campus">
           <el-select
               v-model="registerForm.campus"
               placeholder="请选择校区"
@@ -80,7 +82,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="电话">
+        <el-form-item label="电话" prop="phone">
           <el-input
               v-model="registerForm.phone"
               placeholder="请输入联系电话"
@@ -89,7 +91,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="邮箱">
+        <el-form-item label="邮箱" prop="email">
           <el-input
               v-model="registerForm.email"
               placeholder="请输入邮箱（可选）"
@@ -97,6 +99,18 @@
               style="width: 100%"
           />
         </el-form-item>
+
+        <!-- 学生专属字段 -->
+        <template v-if="role === 'student'">
+          <el-form-item label="班级信息">
+            <el-input
+                v-model="registerForm.classGrade"
+                placeholder="请输入班级信息（例如：2023级1班）"
+                size="small"
+                style="width: 100%"
+            />
+          </el-form-item>
+        </template>
 
         <!-- 教练专属字段 -->
         <template v-if="role === 'coach'">
@@ -154,12 +168,11 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
+  name: "Register",
   data() {
     return {
-      role: "student", // 'student' | 'coach'
+      role: null, // 初始化为null
       submitting: false,
       photoUrl: "",
       registerForm: {
@@ -171,13 +184,16 @@ export default {
         campus: "",
         phone: "",
         email: "",
+        classGrade: "",
         photo: null,
-        achievements: "",
-      },
+        achievements: ""
+      }
     };
   },
   mounted() {
-    this.role = this.$route.query.role || "student";
+    // 确保正确获取路由参数
+    this.role = this.$route.query.role || 'student';
+    console.log('Register component mounted, role:', this.role);
   },
   methods: {
     handlePhotoChange(file) {
@@ -186,59 +202,27 @@ export default {
     },
     submitRegister() {
       this.submitting = true;
+      console.log('Submitting register form:', this.registerForm);
 
-      const formData = new FormData();
-      formData.append("role", this.role);
-      formData.append("username", this.registerForm.username || "");
-      formData.append("password", this.registerForm.password || "");
-      formData.append("realName", this.registerForm.realName || "");
-      formData.append("gender", this.registerForm.gender || "");
-      formData.append("age", this.registerForm.age || "");
-      formData.append("campus", this.registerForm.campus || "");
-      formData.append("phone", this.registerForm.phone || "");
-      formData.append("email", this.registerForm.email || "");
-
-      if (this.registerForm.photo) {
-        formData.append("photo", this.registerForm.photo);
-      }
-      if (this.registerForm.achievements) {
-        formData.append("achievements", this.registerForm.achievements);
-      }
-
-      const url =
-          this.role === "student"
-              ? this.$httpUrl + "/user/registerStudent"
-              : this.$httpUrl + "/user/registerCoach";
-
-      axios
-          .post(url, formData)
-          .then((res) => {
-            if (res.data.code === 200) {
-              this.$message.success(
-                  this.role === "student"
-                      ? "学员注册成功！"
-                      : "教练注册提交成功，请等待审核！"
-              );
-              this.goBack();
-            } else {
-              this.$message.error(res.data.message || "注册失败，请重试");
-            }
-          })
-          .catch(() => {
-            this.$message.error("网络错误，注册失败");
-          })
-          .finally(() => {
-            this.submitting = false;
-          });
+      // 模拟API请求
+      setTimeout(() => {
+        this.submitting = false;
+        this.$message.success('注册请求已发送（模拟）');
+        console.log('注册数据:', {
+          role: this.role,
+          ...this.registerForm
+        });
+      }, 1500);
     },
     goBack() {
-      this.$router.push("/login");
-    },
-  },
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
 
 <style scoped>
+/* 添加临时背景色确保可见 */
 .register-container {
   position: absolute;
   top: 0;
@@ -256,7 +240,7 @@ export default {
   border-radius: 16px;
   padding: 40px;
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
@@ -286,11 +270,6 @@ export default {
   margin-bottom: 22px;
 }
 
-.register-form label {
-  font-weight: 500;
-  color: #606266;
-}
-
 .photo-uploader {
   width: 100%;
   border: 2px dashed #dcdfe6;
@@ -309,9 +288,8 @@ export default {
 }
 
 .photo-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
   border-radius: 6px;
 }
 
@@ -330,7 +308,8 @@ export default {
   margin-bottom: 8px;
 }
 
-.el-button {
-  border-radius: 6px;
+/* 调试用样式 */
+.debug-border {
+  border: 1px solid red !important;
 }
 </style>
