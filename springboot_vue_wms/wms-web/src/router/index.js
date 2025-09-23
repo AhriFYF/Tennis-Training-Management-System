@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 const routes = [
     {
         path:'/',
-        name:'login',
+        redirect:'login',
         component:()=>import('../components/Login.vue')
     },
     {
@@ -13,7 +13,7 @@ const routes = [
         component:()=>import('../components/Login.vue')
     },
     {
-        path:'/Register',
+        path:'/register',
         name:'Register',
         component:()=>import('../components/Register.vue')
     },
@@ -179,15 +179,37 @@ const routes = [
 
         ]
     },
+
+    // 学员模块路由（平铺结构）
     {
         path: '/student',
-        name: 'student',
-        component: () => import('../components/Student'),
-        children: [
-
-        ]
+        name: 'Student',
+        component: () => import('../components/Student.vue'),
     },
-
+    {
+        path: '/student-profile',
+        name: 'StudentProfile',
+        component: () => import('../components/student/Profile.vue'),
+        meta: { title: '个人信息', requiresAuth: true, role: 'student' }
+    },
+    {
+        path: '/student-bookings',
+        name: 'StudentBookings',
+        component: () => import('../components/student/Bookings.vue'),
+        meta: { title: '我的预约', requiresAuth: true, role: 'student' }
+    },
+    {
+        path: '/student-coach-search',
+        name: 'StudentCoachSearch',
+        component: () => import('../components/student/CoachSearch.vue'),
+        meta: { title: '教练查询', requiresAuth: true, role: 'student' }
+    },
+    {
+        path: '/student-coach-application',
+        name: 'StudentCoachApplication',
+        component: () => import('../components/student/CoachApplication.vue'),
+        meta: { title: '教练申请', requiresAuth: true, role: 'student' }
+    },
 
     {
         path:'/Index',
@@ -206,22 +228,6 @@ const routes = [
                 },
                 component:()=>import('../components/Home')
             },
-            /*{
-                path:'/Admin',
-                name:'admin',
-                meta:{
-                    title:'管理员管理'
-                },
-                component:()=>import('../components/admin/AdminManage.vue')
-            },
-            {
-                path:'/User',
-                name:'user',
-                meta:{
-                    title:'用户管理'
-                },
-                component:()=>import('../components/user/UserManage.vue')
-            },*/
         ]
     }
 ]
