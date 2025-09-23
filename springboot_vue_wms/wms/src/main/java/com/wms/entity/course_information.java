@@ -2,6 +2,7 @@ package com.wms.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -57,9 +58,11 @@ public class course_information {
     private String status;//0已上传上课时间但没人预约 1有人预约等待教练确认 2确定有预约
 
     @Column(name = "course_start_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime courseStartTime;
 
     @Column(name = "course_end_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime courseEndTime;
 
     @Column(name = "campus_id")
