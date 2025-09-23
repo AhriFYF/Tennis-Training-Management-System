@@ -35,7 +35,7 @@ public class Campus {
     private Long parentCampusId; // 父校区ID，null表示中心校区
 
     @Column(name = "is_center", nullable = false)
-    private Boolean isCenter = false; // 是否为中心校区
+    private Integer isCenter; // 是否为中心校区
 
     public String getContactEmail() {
         return contactEmail;
@@ -93,12 +93,12 @@ public class Campus {
         this.parentCampusId = parentCampusId;
     }
 
-    public Boolean getCenter() {
+    public Integer getIsCenter() {
         return isCenter;
     }
 
-    public void setCenter(Boolean center) {
-        isCenter = center;
+    public void setIsCenter(Integer isCenter) {
+        this.isCenter = isCenter;
     }
 
     @Override

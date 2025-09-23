@@ -14,6 +14,7 @@ import com.wms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -63,24 +64,40 @@ public class UserController {
 
     // 用户登录
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
-        List<User> list = userService.lambdaQuery()
+    public Result login(@RequestBody User user, HttpServletRequest request) {
+        // 1. 查询数据库中是否存在匹配的用户
+        List<User> userList = userService.lambdaQuery()
                 .eq(User::getNo, user.getNo())
                 .eq(User::getPassword, user.getPassword())
                 .list();
 
-        if (list.size() > 0) {
-            User loginUser = list.get(0);
-            // 查询该角色对应的菜单权限
+        // 2. 检查用户是否存在
+        if (userList.size() > 0) {
+            // 登录成功，获取用户信息
+            User loginUser = userList.get(0);
+
+            // 打印会话 ID
+            System.out.println("Login Request Session ID: " + request.getSession().getId());
+
+            // 这行代码将用户的 ID 存储到 HttpSession 中，以便后续的请求可以访问到
+            System.out.println("Login success, user ID is: " + loginUser.getId());
+            request.getSession().setAttribute("userId", loginUser.getId());
+
+            // 3. 查询该角色对应的菜单权限
             List<Menu> menuList = menuService.lambdaQuery()
                     .like(Menu::getMenuright, loginUser.getRoleId())
                     .list();
 
+            // 4. 构建返回给前端的数据
             HashMap<String, Object> res = new HashMap<>();
             res.put("user", loginUser);
             res.put("menu", menuList);
+
+            // 返回成功结果
             return Result.suc(res);
         }
+
+        // 用户名或密码错误，返回失败结果
         return Result.fail("用户名或密码错误");
     }
 

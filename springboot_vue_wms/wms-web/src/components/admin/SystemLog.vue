@@ -13,9 +13,10 @@
               :header-cell-style="{ background: '#f2f5fc', color: '#555555' }"
               border>
       <el-table-column prop="id" label="ID" width="60"></el-table-column>
-      <el-table-column prop="user.name" label="操作用户" width="120"></el-table-column>
+      <el-table-column prop="userId" label="操作用户ID" width="120"></el-table-column>
       <el-table-column prop="actionType" label="操作类型" width="120"></el-table-column>
-      <el-table-column prop="actionDetail" label="操作详情"></el-table-column>
+      <el-table-column prop="actionDetail" label="操作详情" width="200"></el-table-column>
+      <el-table-column prop="requestData" label="操作数据"></el-table-column>
       <el-table-column prop="ipAddress" label="IP地址" width="150"></el-table-column>
       <el-table-column prop="actionTime" label="操作时间" width="180"></el-table-column>
       <el-table-column prop="operate" label="操作" width="100">

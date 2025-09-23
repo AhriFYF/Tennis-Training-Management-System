@@ -1,5 +1,6 @@
 package com.wms.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -16,8 +17,9 @@ public class SystemLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @TableField("user_id")
     @Column(name = "user_id")
-    private Long user;
+    private Long userId;
 
     @Column(nullable = false)
     private String actionType;
@@ -49,12 +51,12 @@ public class SystemLog {
         this.id = id;
     }
 
-    public Long getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(Long user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getActionDetail() {
@@ -94,7 +96,7 @@ public class SystemLog {
         return "SystemLog{" +
                 "actionDetail='" + actionDetail + '\'' +
                 ", id=" + id +
-                ", user=" + user +
+                ", user=" + userId +
                 ", actionType='" + actionType + '\'' +
                 ", actionTime=" + actionTime +
                 ", ipAddress='" + ipAddress + '\'' +

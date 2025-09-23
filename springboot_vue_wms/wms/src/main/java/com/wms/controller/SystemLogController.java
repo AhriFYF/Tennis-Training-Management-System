@@ -66,7 +66,7 @@ public class SystemLogController {
 
         // 根据课程名称进行模糊查询
         if(StringUtils.isNotBlank(UserId) && !"null".equals(UserId)){
-            lambdaQueryWrapper.like(SystemLog::getUser, UserId);
+            lambdaQueryWrapper.like(SystemLog::getUserId, UserId);
         }
 
         IPage<SystemLog> result = SystemLogService.pageCC(page, lambdaQueryWrapper);

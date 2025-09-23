@@ -70,7 +70,12 @@
           <el-input v-model="form.contactEmail"></el-input>
         </el-form-item>
         <el-form-item label="是否为中心校区">
-          <el-switch v-model="form.isCenter" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <el-switch v-model="form.isCenter"
+                     :active-value="1"
+                     :inactive-value="0"
+                     active-color="#13ce66"
+                     inactive-color="#ff4949">
+          </el-switch>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -147,7 +152,7 @@ export default {
     mod(row) {
       this.centerDialogVisible = true;
       this.$nextTick(() => {
-        this.form = {...row};
+        this.form = {...row, isCenter: row.isCenter};
       });
     },
     add() {
