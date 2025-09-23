@@ -4,8 +4,19 @@ import VueRouter from 'vue-router';
 const routes = [
     {
         path:'/',
-        redirect:'login',
-        component:()=>import('../components/Login.vue')
+        name:'HomePage',
+        meta:{
+            title:'主页'
+        },
+        component:()=>import('../components/HomePage.vue'),
+    },
+    {
+        path:'/HomePage',
+        name:'HomePage',
+        meta:{
+            title:'主页'
+        },
+        component:()=>import('../components/HomePage.vue'),
     },
     {
         path:'/login',
@@ -13,7 +24,7 @@ const routes = [
         component:()=>import('../components/Login.vue')
     },
     {
-        path:'/register',
+        path:'/Register',
         name:'Register',
         component:()=>import('../components/Register.vue')
     },
@@ -179,47 +190,20 @@ const routes = [
 
         ]
     },
-
-    // 学员模块路由（平铺结构）
     {
         path: '/student',
-        name: 'Student',
-        component: () => import('../components/Student.vue'),
-    },
-    {
-        path: '/student-profile',
-        name: 'StudentProfile',
-        component: () => import('../components/student/Profile.vue'),
-        meta: { title: '个人信息', requiresAuth: true, role: 'student' }
-    },
-    {
-        path: '/student-bookings',
-        name: 'StudentBookings',
-        component: () => import('../components/student/Bookings.vue'),
-        meta: { title: '我的预约', requiresAuth: true, role: 'student' }
-    },
-    {
-        path: '/student-coach-search',
-        name: 'StudentCoachSearch',
-        component: () => import('../components/student/CoachSearch.vue'),
-        meta: { title: '教练查询', requiresAuth: true, role: 'student' }
-    },
-    {
-        path: '/student-coach-application',
-        name: 'StudentCoachApplication',
-        component: () => import('../components/student/CoachApplication.vue'),
-        meta: { title: '教练申请', requiresAuth: true, role: 'student' }
-    },
+        name: 'student',
+        component: () => import('../components/Student'),
+        children: [
 
+        ]
+    },
+    /*
     {
         path:'/Index',
         name:'index',
         component:()=>import('../components/Index'),
         children:[
-            {
-                path:'', // 默认路径，当访问 /Index 时匹配
-                redirect:'/Home' // 重定向到 /Home
-            },
             {
                 path:'/Home',
                 name:'home',
@@ -227,9 +211,10 @@ const routes = [
                     title:'首页'
                 },
                 component:()=>import('../components/Home')
-            },
+            }
         ]
     }
+    */
 ]
 
 const router = new VueRouter({
