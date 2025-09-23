@@ -1,117 +1,101 @@
 package com.wms.controller;
 
-import com.wms.common.Result;
-import com.wms.entity.coach_selection;
 import com.wms.service.CoachSelectionService;
+import com.wms.dto.CoachSelectionDTO;
+import com.wms.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/coach/selection")
-@CrossOrigin(origins = "*")
 public class CoachSelectionController {
-    
+
     @Autowired
     private CoachSelectionService coachSelectionService;
-    
+
     /**
-     * 获取教练的待确认双选请求
-     * @param coachId 教练ID
-     * @return 待确认的双选请求列表
+     * 获取待确认的双选请求
      */
     @GetMapping("/pending/{coachId}")
     public Result getPendingSelections(@PathVariable Integer coachId) {
         try {
-            List<Map<String, Object>> selections = coachSelectionService.getPendingSelectionsByCoachId(coachId);
-            return Result.suc(selections);
+            List<CoachSelectionDTO> pendingSelections = coachSelectionService.getPendingSelections(coachId);
+            // 使用新增的success方法，确保返回格式为{code:200, msg:"成功", data:...}
+            return Result.success(pendingSelections);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail();
+            return Result.error("获取待确认请求失败: " + e.getMessage());
         }
     }
-    
+
     /**
-     * 获取教练的已确认双选关系
-     * @param coachId 教练ID
-     * @return 已确认的双选关系列表
+     * 获取已确认的双选关系
      */
     @GetMapping("/accepted/{coachId}")
     public Result getAcceptedSelections(@PathVariable Integer coachId) {
         try {
-            List<Map<String, Object>> selections = coachSelectionService.getAcceptedSelectionsByCoachId(coachId);
-            return Result.suc(selections);
+            List<CoachSelectionDTO> acceptedSelections = coachSelectionService.getAcceptedSelections(coachId);
+            return Result.success(acceptedSelections);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail();
+            return Result.error("获取已确认关系失败: " + e.getMessage());
         }
     }
-    
+
     /**
-     * 处理双选请求（同意或拒绝）
-     * @param selectionId 双选关系ID
-     * @param status 新状态（accepted/rejected）
-     * @return 处理结果
+     * 处理双选请求（同意/拒绝）
      */
     @PutMapping("/process/{selectionId}")
-    public Result processSelectionRequest(@PathVariable Integer selectionId, @RequestParam String status) {
+    public Result processSelection(@PathVariable Integer selectionId,
+                                   @RequestParam String status) {
         try {
-            if (!"accepted".equals(status) && !"rejected".equals(status)) {
-                return Result.fail();
-            }
-            
-            boolean result = coachSelectionService.processSelectionRequest(selectionId, status);
-            if (result) {
-                return Result.suc();
+            // 转换前端状态值到数据库状态值
+            String dbStatus = "accepted".equals(status) ? "1" : "2";
+
+            boolean success = coachSelectionService.processSelection(selectionId, dbStatus);
+            if (success) {
+                String action = "accepted".equals(status) ? "同意" : "拒绝";
+                return Result.success(action + "成功");
             } else {
-                return Result.fail();
+                return Result.error("处理失败");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail();
+            return Result.error("处理请求失败: " + e.getMessage());
         }
     }
-    
+
     /**
-     * 删除双选关系
-     * @param selectionId 双选关系ID
-     * @return 删除结果
+     * 移除双选关系
      */
     @DeleteMapping("/{selectionId}")
-    public Result deleteSelection(@PathVariable Integer selectionId) {
+    public Result removeSelection(@PathVariable Integer selectionId) {
         try {
-            boolean result = coachSelectionService.deleteSelection(selectionId);
-            if (result) {
-                return Result.suc();
+            boolean success = coachSelectionService.removeSelection(selectionId);
+            if (success) {
+                return Result.success("移除成功");
             } else {
-                return Result.fail();
+                return Result.error("移除失败");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail();
+            return Result.error("移除失败: " + e.getMessage());
         }
     }
-    
+
     /**
-     * 检查双选关系是否存在
-     * @param coachId 教练ID
-     * @param studentId 学员ID
-     * @return 双选关系记录
+     * 创建双选请求（学员端使用）
      */
-    @GetMapping("/check")
-    public Result checkSelection(@RequestParam Integer coachId, @RequestParam Integer studentId) {
+    @PostMapping("/create")
+    public Result createSelection(@RequestParam Integer studentId,
+                                  @RequestParam Integer coachId) {
         try {
-            coach_selection selection = coachSelectionService.getSelectionByCoachAndStudent(coachId, studentId);
-            if (selection != null) {
-                return Result.suc(selection);
+            boolean success = coachSelectionService.createSelection(studentId, coachId);
+            if (success) {
+                return Result.success("双选请求发送成功");
             } else {
-                return Result.suc(null);
+                return Result.error("双选请求发送失败");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail();
+            return Result.error("创建请求失败: " + e.getMessage());
         }
     }
 }

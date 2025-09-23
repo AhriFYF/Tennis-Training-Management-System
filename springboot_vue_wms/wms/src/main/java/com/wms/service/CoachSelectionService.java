@@ -1,75 +1,35 @@
 package com.wms.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.wms.entity.coach_selection;
-import com.wms.mapper.CoachSelectionMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.wms.dto.CoachSelectionDTO;
 
 import java.util.List;
-import java.util.Map;
 
-@Service
-public class CoachSelectionService {
-    
-    @Autowired
-    private CoachSelectionMapper coachSelectionMapper;
-    
+public interface CoachSelectionService extends IService<coach_selection> {
+
     /**
-     * 获取教练的待确认双选请求
-     * @param coachId 教练ID
-     * @return 待确认的双选请求列表
+     * 获取待确认的双选请求
      */
-    public List<Map<String, Object>> getPendingSelectionsByCoachId(Integer coachId) {
-        return coachSelectionMapper.getPendingSelectionsByCoachId(coachId);
-    }
-    
+    List<CoachSelectionDTO> getPendingSelections(Integer coachId);
+
     /**
-     * 获取教练的已确认双选关系
-     * @param coachId 教练ID
-     * @return 已确认的双选关系列表
+     * 获取已确认的双选关系
      */
-    public List<Map<String, Object>> getAcceptedSelectionsByCoachId(Integer coachId) {
-        return coachSelectionMapper.getAcceptedSelectionsByCoachId(coachId);
-    }
-    
+    List<CoachSelectionDTO> getAcceptedSelections(Integer coachId);
+
     /**
-     * 处理双选请求（同意或拒绝）
-     * @param selectionId 双选关系ID
-     * @param status 新状态（accepted/rejected）
-     * @return 是否成功
+     * 处理双选请求（同意/拒绝）
      */
-    public boolean processSelectionRequest(Integer selectionId, String status) {
-        try {
-            int result = coachSelectionMapper.updateSelectionStatus(selectionId, status);
-            return result > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
+    boolean processSelection(Integer selectionId, String status);
+
     /**
-     * 检查双选关系是否存在
-     * @param coachId 教练ID
-     * @param studentId 学员ID
-     * @return 双选关系记录
+     * 移除双选关系
      */
-    public coach_selection getSelectionByCoachAndStudent(Integer coachId, Integer studentId) {
-        return coachSelectionMapper.getSelectionByCoachAndStudent(coachId, studentId);
-    }
-    
+    boolean removeSelection(Integer selectionId);
+
     /**
-     * 删除双选关系
-     * @param selectionId 双选关系ID
-     * @return 是否成功
+     * 创建双选请求
      */
-    public boolean deleteSelection(Integer selectionId) {
-        try {
-            int result = coachSelectionMapper.deleteById(selectionId);
-            return result > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    boolean createSelection(Integer studentId, Integer coachId);
 }

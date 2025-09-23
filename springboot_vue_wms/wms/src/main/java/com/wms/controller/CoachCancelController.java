@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wms.common.Loggable;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.entity.coach_cancels_class;
@@ -18,6 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/coachCancel")
 public class CoachCancelController {
@@ -26,12 +31,14 @@ public class CoachCancelController {
     private CoachCancelService CoachCancelService; // 注入课程信息Service
 
     @GetMapping("/list")
+    @Loggable(actionType = "获取 | 消课", actionDetail = "访问数据库获取信息")
     public List<coach_cancels_class> list(){
         return CoachCancelService.list();
     }
 
     // 根据ID查找（示例）
     @GetMapping("/findById")
+    @Loggable(actionType = "查询 | 消课", actionDetail = "访问数据库查询信息")
     public Result findById(@RequestParam Integer id){
         List<coach_cancels_class> list = CoachCancelService.lambdaQuery().eq(coach_cancels_class::getCoachCancelsClassId, id).list();
         return list.size() > 0 ? Result.suc(list) : Result.fail();
@@ -39,24 +46,28 @@ public class CoachCancelController {
 
     // 新增
     @PostMapping("/save")
+    @Loggable(actionType = "新增 | 消课", actionDetail = "新增信息")
     public Result save(@RequestBody coach_cancels_class courseInfo){
         return CoachCancelService.save(courseInfo) ? Result.suc() : Result.fail();
     }
 
     // 更新
     @PostMapping("/update")
+    @Loggable(actionType = "更新 | 消课", actionDetail = "更新信息")
     public Result update(@RequestBody coach_cancels_class courseInfo){
         return CoachCancelService.updateById(courseInfo) ? Result.suc() : Result.fail();
     }
 
     // 删除
     @GetMapping("/del")
+    @Loggable(actionType = "删除 | 消课", actionDetail = "删除信息")
     public Result del(@RequestParam Integer id){
         return CoachCancelService.removeById(id) ? Result.suc() : Result.fail();
     }
 
     // 模糊查询和分页
     @PostMapping("/listPageC1")
+    @Loggable(actionType = "查询 | 消课", actionDetail = "分页多条件模糊查询信息")
     public Result listPageC1(@RequestBody QueryPageParam query){
         HashMap param = query.getParam();
         String courseName = (String) param.get("courseName");

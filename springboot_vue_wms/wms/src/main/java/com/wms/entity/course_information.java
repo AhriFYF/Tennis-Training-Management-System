@@ -22,17 +22,15 @@ public class course_information {
     @Column(name = "course_types")
     private String courseTypes;
 
-    @Column(name = "coach_user")
+    @Column(name = "coach_user")//此处为上传课程的老师的coach_users中的coach_id
     private Integer coachUser;
 
     @Column(name = "coach_name")
     private String coachName;
 
-    @Column(name = "course_hours")
+    @Column(name = "course_hours")//课程时长
     private Double courseHours;
 
-    @Column(name = "duration_of_class_hours")
-    private String durationOfClassHours;
 
     @Column(name = "course_prices")
     private Double coursePrices;
@@ -43,23 +41,20 @@ public class course_information {
     @Column(name = "course_introduction", columnDefinition = "LONGTEXT")
     private String courseIntroduction;
 
-    @Column(name = "hits")
+    @Column(name = "hits")//点击量，默认为0
     private Integer hits;
 
-    @Column(name = "praise_len")
-    private Integer praiseLen;
-
-    @Column(name = "collect_len")
+    @Column(name = "collect_len")//收藏数，同上
     private Integer collectLen;
 
-    @Column(name = "comment_len")
+    @Column(name = "comment_len")//评论数，同上上
     private Integer commentLen;
 
-    @Column(name = "student_course_selection_limit_times")
+    @Column(name = "student_course_selection_limit_times")//学生最晚选课的截止时间，既课程开始时间即可
     private Integer studentCourseSelectionLimitTimes;
 
     @Column(name = "status")
-    private String status;//0有课没预约 1有预约 2确定
+    private String status;//0已上传上课时间但没人预约 1有人预约等待教练确认 2确定有预约
 
     @Column(name = "course_start_time")
     private LocalDateTime courseStartTime;
@@ -118,13 +113,6 @@ public class course_information {
         this.coachName = coachName;
     }
 
-    public String getDurationOfClassHours() {
-        return durationOfClassHours;
-    }
-
-    public void setDurationOfClassHours(String durationOfClassHours) {
-        this.durationOfClassHours = durationOfClassHours;
-    }
 
     public Double getCoursePrices() {
         return coursePrices;
@@ -158,13 +146,7 @@ public class course_information {
         this.hits = hits;
     }
 
-    public Integer getPraiseLen() {
-        return praiseLen;
-    }
 
-    public void setPraiseLen(Integer praiseLen) {
-        this.praiseLen = praiseLen;
-    }
 
     public Integer getCollectLen() {
         return collectLen;
@@ -232,11 +214,9 @@ public class course_information {
                 ", coachUser=" + coachUser +
                 ", coachName='" + coachName + '\'' +
                 ", courseHours=" + courseHours +
-                ", durationOfClassHours='" + durationOfClassHours + '\'' +
                 ", courseImages='" + courseImages + '\'' +
                 ", courseIntroduction='" + courseIntroduction + '\'' +
                 ", hits=" + hits +
-                ", praiseLen=" + praiseLen +
                 ", collectLen=" + collectLen +
                 ", commentLen=" + commentLen +
                 ", studentCourseSelectionLimitTimes=" + studentCourseSelectionLimitTimes +
