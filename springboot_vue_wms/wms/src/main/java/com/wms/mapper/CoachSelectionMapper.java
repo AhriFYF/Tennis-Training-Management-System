@@ -2,54 +2,37 @@ package com.wms.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wms.entity.coach_selection;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.wms.dto.CoachSelectionDTO;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface CoachSelectionMapper extends BaseMapper<coach_selection> {
-    
-    /**
-     * 根据教练ID获取待确认的双选请求
-     * @param coachId 教练ID
-     * @return 待确认的双选请求列表
-     */
-    @Select("SELECT cs.*, u.name as studentName, u.phone as studentPhone, u.age as studentAge " +
+
+    // 查询待确认的双选请求（包含学员信息）
+    @Select("SELECT cs.selection_id, cs.student_id, cs.coach_id, cs.status, " +
+            "su.name as student_name, su.phone as student_phone, su.age as student_age, " +
+            "CASE WHEN su.gender = 'M' THEN 1 ELSE 0 END as student_sex " +
             "FROM coach_selection cs " +
-            "LEFT JOIN user u ON cs.student_id = u.id " +
-            "WHERE cs.coach_id = #{coachId} AND cs.status = 'pending'")
-    List<Map<String, Object>> getPendingSelectionsByCoachId(@Param("coachId") Integer coachId);
-    
-    /**
-     * 根据教练ID获取已确认的双选关系
-     * @param coachId 教练ID
-     * @return 已确认的双选关系列表
-     */
-    @Select("SELECT cs.*, u.name as studentName, u.phone as studentPhone, u.age as studentAge " +
+            "LEFT JOIN student_users su ON cs.student_id = su.student_id " +
+            "WHERE cs.coach_id = #{coachId} AND cs.status = '0'")
+    List<CoachSelectionDTO> selectPendingSelections(@Param("coachId") Integer coachId);
+
+    // 查询已确认的双选关系（包含学员信息）
+    @Select("SELECT cs.selection_id, cs.student_id, cs.coach_id, cs.status, " +
+            "su.name as student_name, su.phone as student_phone, su.age as student_age, " +
+            "CASE WHEN su.gender = 'M' THEN 1 ELSE 0 END as student_sex " +
             "FROM coach_selection cs " +
-            "LEFT JOIN user u ON cs.student_id = u.id " +
-            "WHERE cs.coach_id = #{coachId} AND cs.status = 'accepted'")
-    List<Map<String, Object>> getAcceptedSelectionsByCoachId(@Param("coachId") Integer coachId);
-    
-    /**
-     * 更新双选关系状态
-     * @param selectionId 双选关系ID
-     * @param status 新状态
-     * @return 影响行数
-     */
+            "LEFT JOIN student_users su ON cs.student_id = su.student_id " +
+            "WHERE cs.coach_id = #{coachId} AND cs.status = '1'")
+    List<CoachSelectionDTO> selectAcceptedSelections(@Param("coachId") Integer coachId);
+
+    // 根据ID更新状态
     @Update("UPDATE coach_selection SET status = #{status} WHERE selection_id = #{selectionId}")
-    int updateSelectionStatus(@Param("selectionId") Integer selectionId, @Param("status") String status);
-    
-    /**
-     * 根据教练ID和学员ID检查双选关系是否存在
-     * @param coachId 教练ID
-     * @param studentId 学员ID
-     * @return 双选关系记录
-     */
-    @Select("SELECT * FROM coach_selection WHERE coach_id = #{coachId} AND student_id = #{studentId}")
-    coach_selection getSelectionByCoachAndStudent(@Param("coachId") Integer coachId, @Param("studentId") Integer studentId);
+    int updateStatus(@Param("selectionId") Integer selectionId, @Param("status") String status);
+
+    // 检查是否已存在双选关系
+    @Select("SELECT COUNT(*) FROM coach_selection WHERE student_id = #{studentId} AND coach_id = #{coachId}")
+    int existsSelection(@Param("studentId") Integer studentId, @Param("coachId") Integer coachId);
 }

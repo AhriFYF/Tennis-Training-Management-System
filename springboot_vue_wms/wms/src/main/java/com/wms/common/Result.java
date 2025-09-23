@@ -61,4 +61,45 @@ public class Result {
         this.extraData = new HashMap<>();
         return this;
     }
+
+    // ========== 新增方法：适配前端需要的格式 ==========
+
+    // 成功方法（适配前端）
+    public static Result success() {
+        return result(200, "成功", 0L, null);
+    }
+
+    public static Result success(Object data) {
+        return result(200, "成功", 0L, data);
+    }
+
+    public static Result success(String message) {
+        return result(200, message, 0L, null);
+    }
+
+    public static Result success(String message, Object data) {
+        return result(200, message, 0L, data);
+    }
+
+    // 错误方法（适配前端）
+    public static Result error(String message) {
+        return result(500, message, 0L, null);
+    }
+
+    public static Result error(int code, String message) {
+        return result(code, message, 0L, null);
+    }
+
+    // 兼容前端期望的格式（code为200表示成功）
+    public static Result ok() {
+        return result(200, "操作成功", 0L, null);
+    }
+
+    public static Result ok(Object data) {
+        return result(200, "操作成功", 0L, data);
+    }
+
+    public static Result ok(String message, Object data) {
+        return result(200, message, 0L, data);
+    }
 }

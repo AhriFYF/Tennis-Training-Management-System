@@ -307,7 +307,7 @@ export default {
           this.editMode = false;
 
           // 触发全局事件通知其他组件
-          this.$bus.$emit('coachInfoUpdated', this.profileForm);
+          //this.$bus.$emit('coachInfoUpdated', this.profileForm);
         } else {
           throw new Error(response.data.msg || '保存失败');
         }
@@ -327,8 +327,7 @@ export default {
 
     handleAvatarSuccess(response, file) {
       this.profileForm.photoUrl = URL.createObjectURL(file.raw);
-      // 实际项目中应该上传到服务器并返回URL
-      // this.profileForm.photoUrl = response.data.url;
+      this.profileForm.photoUrl = response.data.url;
     },
 
     beforeAvatarUpload(file) {

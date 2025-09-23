@@ -3,6 +3,7 @@ package com.wms.entity;
 import javax.persistence.*;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -64,5 +65,6 @@ public class coach_users {
 
     // 关联校区信息（非数据库字段）
     @Transient
+    @TableField(exist = false)
     private String campusName;
 }
