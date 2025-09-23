@@ -74,7 +74,7 @@ export default {
                   } else if (roleId === 1) {
                     this.$router.replace("/admin");
                   } else if (roleId === 2) {
-                    this.$router.replace("/coach");
+                    this.$router.replace("/coach-dashboard");
                   } else if (roleId === 3) {
                     this.$router.replace("/student");
                   }

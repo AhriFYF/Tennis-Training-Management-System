@@ -7,7 +7,7 @@ spring:
     url: jdbc:mysql://localhost:3306/tennis_system?useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123123
+    password: lijm2122
   jpa:
     show-sql: true
     properties:
@@ -17,6 +17,21 @@ spring:
     hibernate:
       ddl-auto: update
 
+# MyBatis-Plus 配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  # 可选：配置Mapper XML文件位置
+  mapper-locations: classpath*:/mapper/**/*.xml
+
 logging:
   level:
     com.wms: debug
+    com.baomidou.mybatisplus: debug

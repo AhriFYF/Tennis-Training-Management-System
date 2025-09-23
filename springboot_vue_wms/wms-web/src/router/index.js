@@ -124,7 +124,7 @@ const routes = [
 
     // 教练模块路由
     {
-        path: '/profile',
+        path: '/coach-profile',
         name: 'CoachProfile',
         meta: {
             title: '个人信息管理'
@@ -132,7 +132,7 @@ const routes = [
         component: () => import('../components/coach/CoachProfile')
     },
     {
-        path: '/selection',
+        path: '/coach-selection',
         name: 'CoachSelection',
         meta: {
             title: '学员双选管理'
@@ -140,7 +140,7 @@ const routes = [
         component: () => import('../components/coach/CoachSelection')
     },
     {
-        path: '/schedule',
+        path: '/coach-schedule',
         name: 'CourseSchedule',
         meta: {
             title: '课程时间管理'
@@ -148,7 +148,7 @@ const routes = [
         component: () => import('../components/coach/CourseSchedule')
     },
     {
-        path: '/requests',
+        path: '/coach-requests',
         name: 'CourseRequests',
         meta: {
             title: '预约请求管理'
@@ -156,7 +156,7 @@ const routes = [
         component: () => import('../components/coach/CourseRequests')
     },
     {
-        path: '/students',
+        path: '/coach-students',
         name: 'MyStudents',
         meta: {
             title: '我的学员管理'
@@ -164,7 +164,7 @@ const routes = [
         component: () => import('../components/coach/MyStudents')
     },
     {
-        path: '/courses',
+        path: '/coach-courses',
         name: 'ConfirmedCourses',
         meta: {
             title: '已确认课程'
@@ -172,7 +172,7 @@ const routes = [
         component: () => import('../components/coach/ConfirmedCourses')
     },
     {
-        path: '/coach',
+        path: '/coach-dashboard',
         name: 'coach',
         component: () => import('../components/coach/CoachDashboard'),
         children: [
