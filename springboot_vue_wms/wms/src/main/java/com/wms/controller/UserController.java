@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
+import com.wms.common.Loggable;
 import com.wms.entity.Menu;
 import com.wms.entity.User;
 import com.wms.service.MenuService;
@@ -48,12 +49,14 @@ public class UserController {
 
     // 更新用户
     @PostMapping("/update")
+    @Loggable(actionType = "更新", actionDetail = "用户更新了个人信息")
     public Result update(@RequestBody User user) {
         return userService.updateById(user) ? Result.suc() : Result.fail();
     }
 
     // 删除用户
     @GetMapping("/del")
+    @Loggable(actionType = "删除", actionDetail = "管理员删除了用户")
     public Result del(@RequestParam String id) {
         return userService.removeById(id) ? Result.suc() : Result.fail();
     }

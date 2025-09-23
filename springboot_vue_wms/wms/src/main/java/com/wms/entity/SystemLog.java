@@ -16,9 +16,8 @@ public class SystemLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long user;
 
     @Column(nullable = false)
     private String actionType;
@@ -34,12 +33,12 @@ public class SystemLog {
     @Column(columnDefinition = "TEXT")
     private String requestData;
 
-    public LocalDateTime getActionTime() {
-        return actionTime;
+    public String getActionType() {
+        return actionType;
     }
 
-    public void setActionTime(LocalDateTime actionTime) {
-        this.actionTime = actionTime;
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
     }
 
     public Long getId() {
@@ -50,20 +49,12 @@ public class SystemLog {
         this.id = id;
     }
 
-    public User getUser() {
+    public Long getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Long user) {
         this.user = user;
-    }
-
-    public String getActionType() {
-        return actionType;
-    }
-
-    public void setActionType(String actionType) {
-        this.actionType = actionType;
     }
 
     public String getActionDetail() {
@@ -72,6 +63,14 @@ public class SystemLog {
 
     public void setActionDetail(String actionDetail) {
         this.actionDetail = actionDetail;
+    }
+
+    public LocalDateTime getActionTime() {
+        return actionTime;
+    }
+
+    public void setActionTime(LocalDateTime actionTime) {
+        this.actionTime = actionTime;
     }
 
     public String getIpAddress() {
@@ -93,10 +92,10 @@ public class SystemLog {
     @Override
     public String toString() {
         return "SystemLog{" +
-                "id=" + id +
+                "actionDetail='" + actionDetail + '\'' +
+                ", id=" + id +
                 ", user=" + user +
                 ", actionType='" + actionType + '\'' +
-                ", actionDetail='" + actionDetail + '\'' +
                 ", actionTime=" + actionTime +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", requestData='" + requestData + '\'' +
