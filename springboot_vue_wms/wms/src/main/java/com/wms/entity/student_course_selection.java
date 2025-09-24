@@ -52,6 +52,9 @@ public class student_course_selection {
     @Column(name = "parents_phone_number")
     private String parentsPhoneNumber;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "pay_state")
     private String payState;
 
@@ -78,6 +81,9 @@ public class student_course_selection {
 
     @Column(name = "campus_id")
     private Integer campusId;
+
+    @Column(name = "status")
+    private String status;//0有课没预约 1有预约 2确定
 
     public String getDurationOfClassHours() {
         return durationOfClassHours;
@@ -255,15 +261,31 @@ public class student_course_selection {
         this.campusId = campusId;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "student_course_selection{" +
-                "coachUser=" + coachUser +
+                "coachName='" + coachName + '\'' +
                 ", studentCourseSelectionId=" + studentCourseSelectionId +
                 ", courseName='" + courseName + '\'' +
                 ", courseNumber='" + courseNumber + '\'' +
                 ", courseTypes='" + courseTypes + '\'' +
-                ", coachName='" + coachName + '\'' +
+                ", coachUser=" + coachUser +
                 ", courseHours=" + courseHours +
                 ", durationOfClassHours='" + durationOfClassHours + '\'' +
                 ", coursePrices=" + coursePrices +
@@ -271,6 +293,7 @@ public class student_course_selection {
                 ", name='" + name + '\'' +
                 ", studentAge='" + studentAge + '\'' +
                 ", parentsPhoneNumber='" + parentsPhoneNumber + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", payState='" + payState + '\'' +
                 ", payType='" + payType + '\'' +
                 ", coachSchedulingLimitTimes=" + coachSchedulingLimitTimes +
@@ -280,6 +303,7 @@ public class student_course_selection {
                 ", sourceId=" + sourceId +
                 ", sourceUserId=" + sourceUserId +
                 ", campusId=" + campusId +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

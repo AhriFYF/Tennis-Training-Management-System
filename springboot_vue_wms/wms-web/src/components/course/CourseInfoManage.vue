@@ -270,13 +270,13 @@ export default {
     },
     loadPost(){
       this.$axios.post(this.$httpUrl+'/course/listPageC1', {
-        pageSize: this.pageSize,
-        pageNum: this.pageNum,
-        param: {
-          courseName: this.courseName,
-          courseTypes: this.courseTypes,
-          campusId: this.user.campusId
-        }
+      pageSize: this.pageSize,
+      pageNum: this.pageNum,
+      param: {
+        courseName: this.courseName,
+        courseTypes: this.courseTypes,
+        campusId:  this.user.user.campusId
+      }
       }).then(res => res.data).then(res => {
         if(res.code == 200){
           this.tableData = res.data;

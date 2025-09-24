@@ -84,6 +84,7 @@ public class UserController {
 
             // 这行代码将用户的 ID 存储到 HttpSession 中，以便后续的请求可以访问到
             System.out.println("Login success, user ID is: " + loginUser.getId());
+            System.out.println("Login success, campus ID is: " + loginUser.getCampusId());
             request.getSession().setAttribute("userId", loginUser.getId());
 
             // 3. 查询该角色对应的菜单权限

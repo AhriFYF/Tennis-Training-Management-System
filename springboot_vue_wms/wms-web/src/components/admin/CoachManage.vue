@@ -343,7 +343,7 @@ export default {
           name:this.name,
           sex:this.sex,
           roleId:'2',
-          campusId: this.user.campusId
+          campusId: this.user.user.campusId
         }
       }).then(res=>res.data).then(res=>{
         console.log(res)

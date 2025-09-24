@@ -343,7 +343,7 @@
                         name:this.name,
                         sex:this.sex,
                         roleId:'1',
-                        campusId: this.user.campusId
+                        campusId: this.user.user.campusId
                     }
                 }).then(res=>res.data).then(res=>{
                     console.log(res)

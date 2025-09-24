@@ -84,7 +84,7 @@ public class CourseController {
             lambdaQueryWrapper.eq(course_information::getCourseTypes, courseTypes);
         }
 
-        System.out.println(campusId);
+        System.out.println("查询用户的campusId为" + campusId);
         if(!Objects.equals(campusId, "0")) {
             if (StringUtils.isNotBlank(campusId)) {
                 lambdaQueryWrapper.eq(course_information::getCampusId, campusId);
