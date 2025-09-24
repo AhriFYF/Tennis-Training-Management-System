@@ -25,4 +25,15 @@ public class CampusServiceImpl extends ServiceImpl<CampusMapper, Campus> impleme
     public IPage pageCC(IPage<Campus> page, Wrapper wrapper) {
         return CampusMapper.pageCC(page,wrapper);
     }
+
+    @Override
+    public Campus getCampusById(Integer id) {
+        return this.getById(id);
+    }
+
+    @Override
+    public String getCampusNameById(Integer id) {
+        Campus campus = this.getById(id);
+        return campus != null ? campus.getName() : "未知校区";
+    }
 }

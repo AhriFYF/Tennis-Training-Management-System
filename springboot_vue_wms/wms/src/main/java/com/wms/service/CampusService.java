@@ -12,4 +12,14 @@ public interface CampusService extends IService<Campus>{
     IPage pageC(IPage<Campus> page);
 
     IPage pageCC(IPage<Campus> page, Wrapper wrapper);
+
+    /**
+     * 根据校区ID获取校区名称
+     */
+    String getCampusNameById(Integer campusId);
+
+    /**
+     * 根据校区ID获取完整校区信息
+     */
+    Campus getCampusById(Integer campusId);
 }

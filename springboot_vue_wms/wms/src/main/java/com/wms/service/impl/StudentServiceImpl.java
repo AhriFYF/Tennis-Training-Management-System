@@ -7,6 +7,7 @@ import com.wms.entity.User;
 import com.wms.entity.student_users;
 import com.wms.mapper.UserMapper;
 import com.wms.mapper.StudentUsersMapper;
+import com.wms.service.CampusService;
 import com.wms.service.StudentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_users> implements StudentService {
 
@@ -23,6 +26,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
 
     @Autowired
     private StudentUsersMapper studentUsersMapper;
+
+    @Autowired
+    private CampusService campusService;
 
     @Override
     @Transactional
@@ -105,12 +111,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
         if (updatedInfo.getClassGrade() != null) {
             student.setClassGrade(updatedInfo.getClassGrade());
         }
-//        if (updatedInfo.getTrainingHours() != null) {
-//            student.setTrainingHours(updatedInfo.getTrainingHours());
-//        }
-//        if (updatedInfo.getPaymentStatus() != null) {
-//            student.setPaymentStatus(updatedInfo.getPaymentStatus());
-//        }
 
         int studentUpdated = studentUsersMapper.updateById(student);
         if (studentUpdated <= 0) {
@@ -191,12 +191,100 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
             return null;
         }
 
-        // 组合数据
-        StudentDetailDTO detail = new StudentDetailDTO();
-        BeanUtils.copyProperties(student, detail);
+        // 使用assembleStudentDetail方法组装详细信息（包含校区名称）
+        StudentDetailDTO detail = assembleStudentDetail(student);
+        // 设置用户名（学号）
         detail.setNo(user.getNo());
+        // 设置校区ID（从user表获取）
         detail.setCampusId(user.getCampusId());
 
         return detail;
+    }
+
+    @Override
+    public StudentDetailDTO findStudentDetailByStudentNo(String studentNo) {
+        try {
+            // 1. 查询基础学生信息
+            LambdaQueryWrapper<student_users> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(student_users::getStudentNo, studentNo);
+            student_users student = studentUsersMapper.selectOne(wrapper);
+
+            if (student == null) {
+                log.warn("未找到学号为 {} 的学生信息", studentNo);
+                return null;
+            }
+
+            // 2. 组装详细信息
+            return assembleStudentDetail(student);
+        } catch (Exception e) {
+            log.error("查询学号 {} 的学生详情失败: {}", studentNo, e.getMessage());
+            throw new RuntimeException("查询学生详情失败", e);
+        }
+    }
+
+    @Override
+    public StudentDetailDTO findStudentDetailByUserId(Integer userId) {
+        try {
+            // 1. 查询基础学生信息
+            LambdaQueryWrapper<student_users> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(student_users::getUserId, userId);
+            student_users student = studentUsersMapper.selectOne(wrapper);
+
+            if (student == null) {
+                log.warn("未找到用户ID为 {} 的学生信息", userId);
+                return null;
+            }
+
+            // 2. 组装详细信息
+            return assembleStudentDetail(student);
+        } catch (Exception e) {
+            log.error("查询用户ID {} 的学生详情失败: {}", userId, e.getMessage());
+            throw new RuntimeException("查询学生详情失败", e);
+        }
+    }
+
+    /**
+     * 组装学生详细信息（包含校区名称）
+     */
+    private StudentDetailDTO assembleStudentDetail(student_users student) {
+        StudentDetailDTO detailDTO = new StudentDetailDTO();
+
+        // 复制基础属性
+        BeanUtils.copyProperties(student, detailDTO);
+
+        // 获取并设置校区名称
+        if (student.getCampusId() != null) {
+            try {
+                String campusName = campusService.getCampusNameById(student.getCampusId());
+                detailDTO.setCampusName(campusName);
+            } catch (Exception e) {
+                log.warn("获取校区ID {} 的名称失败: {}", student.getCampusId(), e.getMessage());
+                detailDTO.setCampusName("未知校区");
+            }
+        } else {
+            detailDTO.setCampusName("未分配校区");
+        }
+
+        return detailDTO;
+    }
+
+    /**
+     * 根据用户ID查找学生信息（基础信息，不含校区名称）
+     */
+    @Override
+    public student_users findByUserId(Integer userId) {
+        LambdaQueryWrapper<student_users> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(student_users::getUserId, userId);
+        return studentUsersMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 根据学号查找学生信息（基础信息，不含校区名称）
+     */
+    @Override
+    public student_users findByStudentNo(String studentNo) {
+        LambdaQueryWrapper<student_users> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(student_users::getStudentNo, studentNo);
+        return studentUsersMapper.selectOne(wrapper);
     }
 }

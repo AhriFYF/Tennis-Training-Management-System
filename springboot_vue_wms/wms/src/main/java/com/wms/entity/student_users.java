@@ -67,7 +67,6 @@ public class student_users {
                 ", paymentStatus=" + paymentStatus +
                 ", campusId=" + campusId +
                 ", photoUrl='" + photoUrl + '\'' +
-                ", campusName='" + campusName + '\'' +
                 '}';
     }
 

@@ -30,4 +30,12 @@ public interface StudentService extends IService<student_users> {
      * 根据用户ID获取学生详细信息
      */
     StudentDetailDTO getStudentDetailByUserId(Integer userId);
+
+    StudentDetailDTO findStudentDetailByStudentNo(String studentNo);
+
+    StudentDetailDTO findStudentDetailByUserId(Integer userId);
+
+    student_users findByUserId(Integer userId);
+
+    student_users findByStudentNo(String studentNo);
 }
