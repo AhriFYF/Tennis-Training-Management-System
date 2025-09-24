@@ -1,7 +1,7 @@
 package com.wms.controller;
 
 import com.wms.entity.student_course_selection;
-import com.wms.mapper.StudentCourseSelectionMapper;
+import com.wms.mapper.CoachCourseSelectionMapper;
 import com.wms.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/student-course-selection")
-public class StudentCourseSelectionController {
+@RequestMapping("/api/coach-course-selection")
+public class CoachCourseSelectionController {
 
     @Autowired
-    private StudentCourseSelectionMapper studentCourseSelectionMapper;
+    private CoachCourseSelectionMapper coachCourseSelectionMapper;
 
     /**
      * 获取教练的待确认预约请求
      */
     @GetMapping("/pending-requests/{coachId}")
-    public Result getPendingRequests(@PathVariable Long coachId) {
+    public Result getPendingRequests(@PathVariable Integer coachId) {
         List<student_course_selection> pendingRequests =
-                studentCourseSelectionMapper.selectByCoachUserIdAndStatus(coachId, "0");
+                coachCourseSelectionMapper.selectByCoachUserIdAndStatus(coachId, "0");
         return Result.suc(pendingRequests);
     }
 
@@ -29,9 +29,9 @@ public class StudentCourseSelectionController {
      * 获取教练的已确认预约
      */
     @GetMapping("/confirmed/{coachId}")
-    public Result getConfirmedRequests(@PathVariable Long coachId) {
+    public Result getConfirmedRequests(@PathVariable Integer coachId) {
         List<student_course_selection> confirmedRequests =
-                studentCourseSelectionMapper.selectByCoachUserIdAndStatus(coachId, "1");
+                coachCourseSelectionMapper.selectByCoachUserIdAndStatus(coachId, "1");
         return Result.suc(confirmedRequests);
     }
 
@@ -39,8 +39,8 @@ public class StudentCourseSelectionController {
      * 处理预约请求（同意或拒绝）
      */
     @PutMapping("/process/{id}")
-    public Result processRequest(@PathVariable Long id, @RequestParam String status) {
-        int result = studentCourseSelectionMapper.updateStatus(id, status);
+    public Result processRequest(@PathVariable Integer id, @RequestParam String status) {
+        int result = coachCourseSelectionMapper.updateStatus(id, status);
         if (result > 0) {
             return Result.suc();
         } else {

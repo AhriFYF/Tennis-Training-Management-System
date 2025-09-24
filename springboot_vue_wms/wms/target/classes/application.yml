@@ -7,7 +7,7 @@ spring:
     url: jdbc:mysql://localhost:3306/tennis_system?useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123456
+    password: lijm2122
   jpa:
     show-sql: true
     properties:
@@ -22,6 +22,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.wms.entity
   global-config:
     db-config:
       id-type: auto
