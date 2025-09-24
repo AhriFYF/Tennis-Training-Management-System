@@ -114,7 +114,10 @@
               </el-form-item>
               <el-form-item label="角色" prop="roleId">
                 <el-col :span="20">
-                  <el-input v-model="form.roleId"></el-input>
+                  <el-input
+                      v-model="form.roleId"
+                      placeholder="0：超级管理员，1：管理员，2：教练，3：学生">
+                  </el-input>
                 </el-col>
               </el-form-item>
             </el-form>
@@ -342,7 +345,7 @@
                     param:{
                         name:this.name,
                         sex:this.sex,
-                        campusId: this.user.campusId
+                        campusId: this.user.user.campusId
                     }
                 }).then(res=>res.data).then(res=>{
                     console.log(res)

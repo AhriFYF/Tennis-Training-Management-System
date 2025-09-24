@@ -238,7 +238,7 @@ export default {
         param: {
           courseName: this.courseName,
           name: this.name,
-          campusId: this.user.campusId
+          campusId: this.user.user.campusId
         }
       }).then(res => res.data).then(res => {
         if (res.code == 200) {
