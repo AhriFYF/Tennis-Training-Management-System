@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wms.common.Loggable;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.entity.Goods;
@@ -30,6 +31,8 @@ public class RecordController {
 
     @Autowired
     private GoodsService goodsService;
+    
+    @Loggable(actionType = "查询 | 记录", actionDetail = "分页查询记录信息")
     @PostMapping("/listPage")
     public Result listPage(@RequestBody QueryPageParam query){
         HashMap param = query.getParam();
@@ -65,6 +68,7 @@ public class RecordController {
         return Result.suc(result.getRecords(),result.getTotal());
     }
     //新增
+    @Loggable(actionType = "新增 | 记录", actionDetail = "新增记录信息")
     @PostMapping("/save")
     public Result save(@RequestBody Record record){
         Goods goods = goodsService.getById(record.getGoods());

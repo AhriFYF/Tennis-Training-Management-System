@@ -1,6 +1,7 @@
 package com.wms.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.wms.common.Loggable;
 import com.wms.entity.course_information;
 import com.wms.entity.coach_users;
 import com.wms.service.CourseInformationService;
@@ -25,6 +26,7 @@ public class CoachCourseController {
     private CoachService coachUsersService;
 
     // 获取教练的课程列表
+    @Loggable(actionType = "获取 | 教练课程", actionDetail = "获取教练的课程列表信息")
     @GetMapping("/list/{coachId}")
     public ResponseEntity<Map<String, Object>> getCourseList(@PathVariable Integer coachId) {
         Map<String, Object> result = new HashMap<>();
@@ -46,6 +48,7 @@ public class CoachCourseController {
     }
 
     // 上传课程时间
+    @Loggable(actionType = "新增 | 课程时间", actionDetail = "上传教练的课程时间安排")
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadCourse(@RequestBody course_information courseInfo) {
         Map<String, Object> result = new HashMap<>();
@@ -138,6 +141,7 @@ public class CoachCourseController {
     }
 
     // 删除课程
+    @Loggable(actionType = "删除 | 课程", actionDetail = "删除教练的课程安排")
     @DeleteMapping("/{courseId}")
     public ResponseEntity<Map<String, Object>> deleteCourse(@PathVariable Integer courseId) {
         Map<String, Object> result = new HashMap<>();
@@ -174,6 +178,7 @@ public class CoachCourseController {
     }
 
     // 获取课程详情
+    @Loggable(actionType = "获取 | 课程详情", actionDetail = "获取教练课程的详细信息")
     @GetMapping("/detail/{courseId}")
     public ResponseEntity<Map<String, Object>> getCourseDetail(@PathVariable Integer courseId) {
         Map<String, Object> result = new HashMap<>();

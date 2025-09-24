@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.wms.common.Loggable;
 import com.wms.service.CoachSelectionService;
 import com.wms.dto.CoachSelectionDTO;
 import com.wms.common.Result;
@@ -18,6 +19,7 @@ public class CoachSelectionController {
     /**
      * 获取待确认的双选请求
      */
+    @Loggable(actionType = "获取 | 待确认双选", actionDetail = "获取教练待确认的双选请求列表")
     @GetMapping("/pending/{coachId}")
     public Result getPendingSelections(@PathVariable Integer coachId) {
         try {
@@ -32,6 +34,7 @@ public class CoachSelectionController {
     /**
      * 获取已确认的双选关系
      */
+    @Loggable(actionType = "获取 | 已确认双选", actionDetail = "获取教练已确认的双选关系列表")
     @GetMapping("/accepted/{coachId}")
     public Result getAcceptedSelections(@PathVariable Integer coachId) {
         try {
@@ -45,6 +48,7 @@ public class CoachSelectionController {
     /**
      * 处理双选请求（同意/拒绝）
      */
+    @Loggable(actionType = "处理 | 双选请求", actionDetail = "处理教练的双选请求（同意/拒绝）")
     @PutMapping("/process/{selectionId}")
     public Result processSelection(@PathVariable Integer selectionId,
                                    @RequestParam String status) {
@@ -67,6 +71,7 @@ public class CoachSelectionController {
     /**
      * 移除双选关系
      */
+    @Loggable(actionType = "删除 | 双选关系", actionDetail = "移除教练与学员的双选关系")
     @DeleteMapping("/{selectionId}")
     public Result removeSelection(@PathVariable Integer selectionId) {
         try {
@@ -84,6 +89,7 @@ public class CoachSelectionController {
     /**
      * 创建双选请求（学员端使用）
      */
+    @Loggable(actionType = "新增 | 双选请求", actionDetail = "创建学员与教练的双选请求")
     @PostMapping("/create")
     public Result createSelection(@RequestParam Integer studentId,
                                   @RequestParam Integer coachId) {
