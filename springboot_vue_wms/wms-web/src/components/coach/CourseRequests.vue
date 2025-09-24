@@ -34,7 +34,7 @@
                 <el-button type="success" size="mini" @click="handleRequest(scope.row, '2')">
                   确认
                 </el-button>
-                <el-button type="danger" size="mini" @click="handleRequest(scope.row, '0')">
+                <el-button type="danger" size="mini" @click="handleRequest(scope.row, '2')">
                   拒绝
                 </el-button>
                 <el-button type="info" size="mini" @click="viewRequestDetail(scope.row)">
@@ -58,8 +58,10 @@
             </el-table-column>
             <el-table-column prop="courseHours" label="课时" width="80"></el-table-column>
             <el-table-column prop="status" label="状态" width="100">
-              <template slot-scope="">
-                <el-tag type="success">已确认</el-tag>
+              <template slot-scope="scope">
+                <el-tag v-if="scope.row.status === '0'" type="info">未处理</el-tag>
+                <el-tag v-else-if="scope.row.status === '1'" type="success">已同意</el-tag>
+                <el-tag v-else-if="scope.row.status === '2'" type="danger">已拒绝</el-tag>
               </template>
             </el-table-column>
             <el-table-column prop="requestTime" label="申请时间" width="180">
@@ -92,9 +94,9 @@
           <el-descriptions-item label="课时">{{ selectedRequest.courseHours }}</el-descriptions-item>
           <el-descriptions-item label="申请时间">{{ formatDateTime(selectedRequest.requestTime) }}</el-descriptions-item>
           <el-descriptions-item label="状态" :span="2">
-            <el-tag v-if="selectedRequest.status === '0'" type="info">无人预约</el-tag>
-            <el-tag v-else-if="selectedRequest.status === '1'" type="warning">有人预约</el-tag>
-            <el-tag v-else-if="selectedRequest.status === '2'" type="success">已确认</el-tag>
+            <el-tag v-if="selectedRequest.status === '0'" type="info">未处理</el-tag>
+            <el-tag v-else-if="selectedRequest.status === '1'" type="success">已同意</el-tag>
+            <el-tag v-else-if="selectedRequest.status === '2'" type="danger">已拒绝</el-tag>
           </el-descriptions-item>
         </el-descriptions>
       </div>
@@ -125,28 +127,35 @@ export default {
     loadData() {
       this.loading = true
       const coachId = JSON.parse(sessionStorage.getItem('CurUser')).id
+      console.log('获取到的coachId:', coachId)
       
       // 加载待确认的预约请求
-      this.$axios.get(`/api/coach/course/pending-requests/${coachId}`)
+      this.$axios.get(`/api/student-course-selection/pending-requests/${coachId}`)
         .then(response => {
+          console.log(`获取待确认预约请求响应 (coachId: ${coachId}):`, response)
           if (response.data.code === 200) {
             this.pendingRequests = response.data.data
+          } else {
+            console.error(`获取待确认预约请求失败 (coachId: ${coachId}), 错误码: ${response.data.code}, 错误信息: ${response.data.msg || '未知错误'}`)
           }
         })
         .catch(error => {
-          console.error('加载待确认预约请求失败:', error)
+          console.error(`加载待确认预约请求失败 (coachId: ${coachId}):`, error.response || error.message || error)
           this.$message.error('加载待确认预约请求失败')
         })
 
       // 加载已确认的预约
-      this.$axios.get(`/api/coach/course/confirmed/${coachId}`)
+      this.$axios.get(`/api/student-course-selection/confirmed/${coachId}`)
         .then(response => {
+          console.log(`获取已确认预约响应 (coachId: ${coachId}):`, response)
           if (response.data.code === 200) {
             this.confirmedRequests = response.data.data
+          } else {
+            console.error(`获取已确认预约失败 (coachId: ${coachId}), 错误码: ${response.data.code}, 错误信息: ${response.data.msg || '未知错误'}`)
           }
         })
         .catch(error => {
-          console.error('加载已确认预约失败:', error)
+          console.error(`加载已确认预约失败 (coachId: ${coachId}):`, error.response || error.message || error)
           this.$message.error('加载已确认预约失败')
         })
         .finally(() => {
@@ -157,25 +166,30 @@ export default {
       this.activeTab = tab.name
     },
     handleRequest(row, status) {
-      const action = status === '2' ? '确认' : '拒绝'
+      const action = status === '1' ? '确认' : '拒绝'
+      console.log(`处理预约请求 (ID: ${row.id}, 状态: ${status})`)
       this.$confirm(`确定要${action}该预约请求吗？`, '确认操作', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.put(`/api/coach/course/process/${row.courseInformationId}?status=${status}`)
+        this.$axios.put(`/api/student-course-selection/process/${row.id}?status=${status}`)
           .then(response => {
+            console.log(`处理预约请求响应 (ID: ${row.id}):`, response)
             if (response.data.code === 200) {
               this.$message.success(`${action}成功`)
               this.loadData()
             } else {
-              this.$message.error(response.data.message || `${action}失败`)
+              console.error(`处理预约请求失败 (ID: ${row.id}), 错误码: ${response.data.code}, 错误信息: ${response.data.msg || '未知错误'}`)
+              this.$message.error(response.data.msg || `${action}失败`)
             }
           })
           .catch(error => {
-            console.error(`${action}失败:`, error)
-            this.$message.error(`${action}失败`)
+            console.error(`处理预约请求失败 (ID: ${row.id}):`, error.response || error.message || error)
+            this.$message.error(`${action}失败: ${error.response?.data?.message || error.message || '未知错误'}`)
           })
+      }).catch(() => {
+        console.log('取消操作')
       })
     },
     viewRequestDetail(row) {

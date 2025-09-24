@@ -89,11 +89,11 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card class="nav-card" @click.native="navigateTo('ConfirmedCourses')">
+        <el-card class="nav-card" @click.native="logout">
           <div class="nav-content">
-            <i class="el-icon-s-data nav-icon"></i>
-            <h3>确认课程查看</h3>
-            <p>查看已确认的课程</p>
+            <i class="el-icon-switch-button nav-icon"></i>
+            <h3>退出登录</h3>
+            <p>退出当前账号</p>
           </div>
         </el-card>
       </el-col>
@@ -193,6 +193,16 @@ export default {
               this.$message.error('导航失败，请检查控制台获取详细信息');
             }
           });
+    },
+    logout() {
+      // 清除用户信息
+      sessionStorage.removeItem('CurUser');
+      // 跳转到登录页面
+      this.$router.push('/').then(() => {
+        this.$message.success('已退出登录');
+      }).catch(error => {
+        console.error('跳转失败:', error);
+      });
     },
     refreshActivities() {
       // 刷新最近活动

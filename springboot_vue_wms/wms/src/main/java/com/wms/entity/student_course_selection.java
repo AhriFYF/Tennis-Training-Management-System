@@ -83,7 +83,7 @@ public class student_course_selection {
     private Integer campusId;
 
     @Column(name = "status")
-    private String status;//0有课没预约 1有预约 2确定
+    private String status;//0:未确认 1：已确认
 
     public String getDurationOfClassHours() {
         return durationOfClassHours;

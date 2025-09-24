@@ -26,13 +26,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="courseHours" label="课时" width="80"></el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === '0'" type="info">无人预约</el-tag>
-            <el-tag v-else-if="scope.row.status === '1'" type="warning">有人预约</el-tag>
-            <el-tag v-else-if="scope.row.status === '2'" type="success">已确认</el-tag>
-          </template>
-        </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button type="danger" size="mini" @click="deleteCourse(scope.row)"
@@ -103,11 +96,6 @@
           <el-descriptions-item label="课时">{{ selectedCourse.courseHours }}小时</el-descriptions-item>
           <el-descriptions-item label="开始时间">{{ formatDateTime(selectedCourse.courseStartTime) }}</el-descriptions-item>
           <el-descriptions-item label="结束时间">{{ formatDateTime(selectedCourse.courseEndTime) }}</el-descriptions-item>
-          <el-descriptions-item label="状态">
-            <el-tag v-if="selectedCourse.status === '0'" type="info">无人预约</el-tag>
-            <el-tag v-else-if="selectedCourse.status === '1'" type="warning">有人预约</el-tag>
-            <el-tag v-else-if="selectedCourse.status === '2'" type="success">已确认</el-tag>
-          </el-descriptions-item>
           <el-descriptions-item label="课程介绍" :span="2">
             {{ selectedCourse.courseIntroduction || '暂无介绍' }}
           </el-descriptions-item>
