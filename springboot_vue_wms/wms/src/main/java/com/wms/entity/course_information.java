@@ -2,6 +2,7 @@ package com.wms.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,9 +32,6 @@ public class course_information {
     @Column(name = "course_hours")
     private Double courseHours;
 
-    @Column(name = "duration_of_class_hours")
-    private String durationOfClassHours;
-
     @Column(name = "course_prices")
     private Double coursePrices;
 
@@ -45,9 +43,6 @@ public class course_information {
 
     @Column(name = "hits")
     private Integer hits;
-
-    @Column(name = "praise_len")
-    private Integer praiseLen;
 
     @Column(name = "collect_len")
     private Integer collectLen;
@@ -62,9 +57,11 @@ public class course_information {
     private String status;//0有课没预约 1有预约 2确定
 
     @Column(name = "course_start_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime courseStartTime;
 
     @Column(name = "course_end_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime courseEndTime;
 
     @Column(name = "campus_id")
@@ -118,14 +115,6 @@ public class course_information {
         this.coachName = coachName;
     }
 
-    public String getDurationOfClassHours() {
-        return durationOfClassHours;
-    }
-
-    public void setDurationOfClassHours(String durationOfClassHours) {
-        this.durationOfClassHours = durationOfClassHours;
-    }
-
     public Double getCoursePrices() {
         return coursePrices;
     }
@@ -157,15 +146,6 @@ public class course_information {
     public void setHits(Integer hits) {
         this.hits = hits;
     }
-
-    public Integer getPraiseLen() {
-        return praiseLen;
-    }
-
-    public void setPraiseLen(Integer praiseLen) {
-        this.praiseLen = praiseLen;
-    }
-
     public Integer getCollectLen() {
         return collectLen;
     }
@@ -232,11 +212,11 @@ public class course_information {
                 ", coachUser=" + coachUser +
                 ", coachName='" + coachName + '\'' +
                 ", courseHours=" + courseHours +
-                ", durationOfClassHours='" + durationOfClassHours + '\'' +
+
                 ", courseImages='" + courseImages + '\'' +
                 ", courseIntroduction='" + courseIntroduction + '\'' +
                 ", hits=" + hits +
-                ", praiseLen=" + praiseLen +
+
                 ", collectLen=" + collectLen +
                 ", commentLen=" + commentLen +
                 ", studentCourseSelectionLimitTimes=" + studentCourseSelectionLimitTimes +
