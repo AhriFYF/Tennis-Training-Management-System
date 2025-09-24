@@ -19,6 +19,9 @@ public class student_users {
     @Column(name = "student_id")
     private Integer studentId;
 
+    @Column(name = "student_no", unique = true, nullable = false)
+    private String studentNo; // 学号
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -42,6 +45,135 @@ public class student_users {
 
     @Column(name = "payment_status")
     private Integer paymentStatus = 0; // 0-未缴费, 1-已缴费
+
+    @Column(name = "campus_id")
+    private Integer campusId; // 所属校区
+
+    @Column(name = "photo_url")
+    private String photoUrl;
+
+    @Override
+    public String toString() {
+        return "student_users{" +
+                "studentId=" + studentId +
+                ", studentNo='" + studentNo + '\'' +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", phone='" + phone + '\'' +
+                ", userId=" + userId +
+                ", classGrade='" + classGrade + '\'' +
+                ", trainingHours=" + trainingHours +
+                ", paymentStatus=" + paymentStatus +
+                ", campusId=" + campusId +
+                ", photoUrl='" + photoUrl + '\'' +
+                ", campusName='" + campusName + '\'' +
+                '}';
+    }
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getStudentNo() {
+        return studentNo;
+    }
+
+    public void setStudentNo(String studentNo) {
+        this.studentNo = studentNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getClassGrade() {
+        return classGrade;
+    }
+
+    public void setClassGrade(String classGrade) {
+        this.classGrade = classGrade;
+    }
+
+    public Integer getTrainingHours() {
+        return trainingHours;
+    }
+
+    public void setTrainingHours(Integer trainingHours) {
+        this.trainingHours = trainingHours;
+    }
+
+    public Integer getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(Integer paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public String getCampusName() {
+        return campusName;
+    }
+
+    public void setCampusName(String campusName) {
+        this.campusName = campusName;
+    }
 
     // 关联校区信息（非数据库字段）
     @Transient

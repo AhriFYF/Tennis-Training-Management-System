@@ -20,6 +20,9 @@ public class coach_users {
     @Column(name = "coach_id")
     private Integer coachId;
 
+    @Column(name = "coach_no", unique = true, nullable = false)
+    private String coachNo; // 教练编号
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -52,6 +55,134 @@ public class coach_users {
 
     @Column(name = "hourly_rate")
     private Integer hourlyRate; // 课时费(元/小时)
+
+    public Integer getCoachId() {
+        return coachId;
+    }
+
+    @Override
+    public String toString() {
+        return "coach_users{" +
+                "coachId=" + coachId +
+                ", coachNo='" + coachNo + '\'' +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", phone='" + phone + '\'' +
+                ", userId=" + userId +
+                ", campusId=" + campusId +
+                ", achievements='" + achievements + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
+                ", level=" + level +
+                ", auditStatus=" + auditStatus +
+                ", hourlyRate=" + hourlyRate +
+                ", campusName='" + campusName + '\'' +
+                '}';
+    }
+
+    public void setCoachId(Integer coachId) {
+        this.coachId = coachId;
+    }
+
+    public String getCoachNo() {
+        return coachNo;
+    }
+
+    public void setCoachNo(String coachNo) {
+        this.coachNo = coachNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
+    }
+
+    public String getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(String achievements) {
+        this.achievements = achievements;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Integer getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(Integer auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public void setHourlyRate(Integer hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
+
+    public String getCampusName() {
+        return campusName;
+    }
+
+    public void setCampusName(String campusName) {
+        this.campusName = campusName;
+    }
 
     // 自动计算课时费
     public Integer getHourlyRate() {

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,13 +28,40 @@ public class StudentController {
     /**
      * 学生注册
      */
+    // 修正注册方法中的检查逻辑
     @PostMapping("/register")
     public Result register(@RequestBody StudentRegisterDTO dto) {
         try {
+            // 检查学号是否已存在（直接使用Service中的方法）
+            StudentDetailDTO existingStudent = studentService.getStudentByNo(dto.getNo());
+            if (existingStudent != null) {
+                return Result.fail("学号已存在");
+            }
+
             boolean success = studentService.registerStudent(dto);
             return success ? Result.suc("注册成功") : Result.fail("注册失败");
         } catch (Exception e) {
             return Result.fail(e.getMessage());
+        }
+    }
+
+    // 修正获取所有学生列表的方法，返回详细信息而非基本实体
+    @GetMapping("/list")
+    public Result getAllStudents() {
+        try {
+            List<student_users> students = studentService.list();
+            List<StudentDetailDTO> studentDetails = new ArrayList<>();
+
+            for (student_users student : students) {
+                StudentDetailDTO detail = studentService.getStudentDetail(student.getStudentId());
+                if (detail != null) {
+                    studentDetails.add(detail);
+                }
+            }
+
+            return Result.suc(studentDetails);
+        } catch (Exception e) {
+            return Result.fail("获取学生列表失败: " + e.getMessage());
         }
     }
 
@@ -93,15 +121,7 @@ public class StudentController {
         return Result.suc(student);
     }
 
-    /**
-     * 获取所有学生列表
-     */
-    @GetMapping("/list")
-    public Result getAllStudents() {
-        LambdaQueryWrapper<student_users> wrapper = new LambdaQueryWrapper<>();
-        List<student_users> students = studentService.list(wrapper);
-        return Result.suc(students);
-    }
+
 
     /**
      * 根据学生ID获取详细信息

@@ -105,24 +105,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
         if (updatedInfo.getClassGrade() != null) {
             student.setClassGrade(updatedInfo.getClassGrade());
         }
-        if (updatedInfo.getTrainingHours() != null) {
-            student.setTrainingHours(updatedInfo.getTrainingHours());
-        }
-        if (updatedInfo.getPaymentStatus() != null) {
-            student.setPaymentStatus(updatedInfo.getPaymentStatus());
-        }
-        if (updatedInfo.getGender() != null) {
-            student.setGender(updatedInfo.getGender());
-        }
-        if (updatedInfo.getAge() != null) {
-            student.setAge(updatedInfo.getAge());
-        }
-        if (updatedInfo.getName() != null) {
-            student.setName(updatedInfo.getName());
-        }
-        if (updatedInfo.getPhone() != null) {
-            student.setPhone(updatedInfo.getPhone());
-        }
+//        if (updatedInfo.getTrainingHours() != null) {
+//            student.setTrainingHours(updatedInfo.getTrainingHours());
+//        }
+//        if (updatedInfo.getPaymentStatus() != null) {
+//            student.setPaymentStatus(updatedInfo.getPaymentStatus());
+//        }
 
         int studentUpdated = studentUsersMapper.updateById(student);
         if (studentUpdated <= 0) {
