@@ -7,10 +7,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.common.QueryPageParam;
 import com.wms.common.Result;
 import com.wms.common.Loggable;
+import com.wms.dto.CoachRegisterDTO;
+import com.wms.dto.StudentRegisterDTO;
 import com.wms.entity.Menu;
 import com.wms.entity.User;
+import com.wms.entity.coach_users;
+import com.wms.entity.student_users;
 import com.wms.service.MenuService;
 import com.wms.service.UserService;
+import com.wms.service.StudentUsersService;
+import com.wms.service.CoachUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +34,12 @@ public class UserController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private StudentUsersService studentUsersService;
+
+    @Autowired
+    private CoachUsersService coachUsersService;
 
     // 获取所有用户列表（未分页）
     @GetMapping("/list")
@@ -196,41 +208,132 @@ public class UserController {
     }
 
     // ========== 【学员注册接口】 ==========
-    // 接收前端提交的 User 对象，设置 roleId=3（学员），保存到数据库
     @PostMapping("/registerStudent")
     @Loggable(actionType = "注册 | 用户", actionDetail = "学员注册")
-    public Result registerStudent(@RequestBody User user) {
+    public Result registerStudent(@RequestBody StudentRegisterDTO studentDTO) {
         // 基础非空校验
-        if (StringUtils.isBlank(user.getNo()) ||
-                StringUtils.isBlank(user.getPassword()) ||
-                StringUtils.isBlank(user.getName()) ||
-                StringUtils.isBlank(user.getPhone())) {
-            return Result.fail("请填写用户名、密码、姓名、电话");
+        if (StringUtils.isBlank(studentDTO.getNo()) ||
+                StringUtils.isBlank(studentDTO.getPassword()) ||
+                StringUtils.isBlank(studentDTO.getName()) ||
+                StringUtils.isBlank(studentDTO.getPhone()) ||
+                StringUtils.isBlank(studentDTO.getStudentNo())) {
+            return Result.fail("请填写用户名、密码、姓名、电话和学号");
         }
 
-        // 设置为学员角色
-        user.setRoleId(3); // 3 = 学员
-        user.setIsvalid("Y"); // 默认有效
+        // 检查学号是否已存在
+        student_users existingStudent = studentUsersService.findByStudentNo(studentDTO.getStudentNo());
+        if (existingStudent != null) {
+            return Result.fail("学号已存在");
+        }
 
-        return this.save(user); // 调用通用保存方法
+        // 检查用户名是否已存在
+        List<User> existingUsers = userService.lambdaQuery().eq(User::getNo, studentDTO.getNo()).list();
+        if (!existingUsers.isEmpty()) {
+            return Result.fail("用户名已存在");
+        }
+
+        // 创建用户基础信息
+        User user = new User();
+        user.setNo(studentDTO.getNo());
+        user.setPassword(studentDTO.getPassword());
+        user.setName(studentDTO.getName());
+        user.setPhone(studentDTO.getPhone());
+        user.setAge(studentDTO.getAge());
+        user.setSex("M".equals(studentDTO.getGender()) ? 1 : 0);
+        user.setRoleId(3); // 学员角色
+        user.setIsvalid("Y");
+        user.setCampusId(studentDTO.getCampusId());
+
+        // 保存用户信息
+        if (!userService.save(user)) {
+            return Result.fail("用户信息保存失败");
+        }
+
+        // 创建学员详细信息
+        student_users student = new student_users();
+        student.setUserId(user.getId());
+        student.setName(studentDTO.getName());
+        student.setGender(studentDTO.getGender());
+        student.setAge(studentDTO.getAge());
+        student.setPhone(studentDTO.getPhone());
+        student.setStudentNo(studentDTO.getStudentNo());
+        student.setClassGrade(studentDTO.getClassGrade());
+        student.setTrainingHours(0);
+        student.setPaymentStatus(0);
+        student.setCampusId(studentDTO.getCampusId());
+
+        // 保存学员详细信息
+        if (!studentUsersService.save(student)) {
+            // 如果失败，删除已创建的用户记录
+            userService.removeById(user.getId());
+            return Result.fail("学员信息保存失败");
+        }
+
+        return Result.suc("注册成功");
     }
 
     // ========== 【教练注册接口】 ==========
     @PostMapping("/registerCoach")
     @Loggable(actionType = "注册 | 用户", actionDetail = "教练注册")
-    public Result registerCoach(@RequestBody User user) {
+    public Result registerCoach(@RequestBody CoachRegisterDTO coachDTO) {
         // 基础非空校验
-        if (StringUtils.isBlank(user.getNo()) ||
-                StringUtils.isBlank(user.getPassword()) ||
-                StringUtils.isBlank(user.getName()) ||
-                StringUtils.isBlank(user.getPhone())) {
-            return Result.fail("请填写用户名、密码、姓名、电话");
+        if (StringUtils.isBlank(coachDTO.getNo()) ||
+                StringUtils.isBlank(coachDTO.getPassword()) ||
+                StringUtils.isBlank(coachDTO.getName()) ||
+                StringUtils.isBlank(coachDTO.getPhone()) ||
+                StringUtils.isBlank(coachDTO.getCoachNo())) {
+            return Result.fail("请填写用户名、密码、姓名、电话和教练编号");
         }
 
-        // 设置为教练角色
-        user.setRoleId(2); // 2 = 教练
-        user.setIsvalid("Y"); // 默认有效
+        // 检查教练编号是否已存在
+        coach_users existingCoach = coachUsersService.findByCoachNo(coachDTO.getCoachNo());
+        if (existingCoach != null) {
+            return Result.fail("教练编号已存在");
+        }
 
-        return this.save(user); // 调用通用保存方法
+        // 检查用户名是否已存在
+        List<User> existingUsers = userService.lambdaQuery().eq(User::getNo, coachDTO.getNo()).list();
+        if (!existingUsers.isEmpty()) {
+            return Result.fail("用户名已存在");
+        }
+
+        // 创建用户基础信息
+        User user = new User();
+        user.setNo(coachDTO.getNo());
+        user.setPassword(coachDTO.getPassword());
+        user.setName(coachDTO.getName());
+        user.setPhone(coachDTO.getPhone());
+        user.setAge(coachDTO.getAge());
+        user.setSex("M".equals(coachDTO.getGender()) ? 1 : 0);
+        user.setRoleId(2); // 教练角色
+        user.setIsvalid("Y");
+        user.setCampusId(coachDTO.getCampusId());
+
+        // 保存用户信息
+        if (!userService.save(user)) {
+            return Result.fail("用户信息保存失败");
+        }
+
+        // 创建教练详细信息
+        coach_users coach = new coach_users();
+        coach.setUserId(user.getId());
+        coach.setName(coachDTO.getName());
+        coach.setGender(coachDTO.getGender());
+        coach.setAge(coachDTO.getAge());
+        coach.setPhone(coachDTO.getPhone());
+        coach.setCoachNo(coachDTO.getCoachNo());
+        coach.setLevel(coachDTO.getLevel());
+        coach.setAchievements(coachDTO.getAchievements());
+        coach.setCampusId(coachDTO.getCampusId());
+        coach.setAuditStatus(0); // 待审核状态
+
+        // 保存教练详细信息
+        if (!coachUsersService.save(coach)) {
+            // 如果失败，删除已创建的用户记录
+            userService.removeById(user.getId());
+            return Result.fail("教练信息保存失败");
+        }
+
+        return Result.suc("注册成功，等待管理员审核");
     }
 }
