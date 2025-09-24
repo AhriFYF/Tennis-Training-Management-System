@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -56,6 +57,10 @@ public class User implements Serializable {
     @TableField("campus_id")
     @ApiModelProperty(value = "所属校区ID")
     private Integer campusId;
+
+    @ApiModelProperty(value = "账户余额")
+    @TableField("balance")
+    private BigDecimal balance = BigDecimal.ZERO; // 默认余额为0
 
 
     public Integer getSex() {
@@ -138,6 +143,14 @@ public class User implements Serializable {
         this.campusId = campusId;
     }
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -151,6 +164,7 @@ public class User implements Serializable {
                 ", roleId=" + roleId +
                 ", isvalid='" + isvalid + '\'' +
                 ", campusId=" + campusId +
+                ", balance=" + balance +
                 '}';
     }
 }

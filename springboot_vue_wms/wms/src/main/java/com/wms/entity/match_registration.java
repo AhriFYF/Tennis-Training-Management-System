@@ -24,10 +24,10 @@ public class match_registration {
     private String groupType; // 组别: '甲', '乙', '丙'
 
     @Column(name = "registration_fee", precision = 10, scale = 2)
-    private BigDecimal registrationFee; // 报名费: 30.00
+    private BigDecimal registrationFee = new BigDecimal("30.00"); // 报名费: 30.00
 
     @Column(name = "payment_status", length = 20)
-    private String paymentStatus; // '已支付', '未支付'
+    private String paymentStatus = "未支付"; // '已支付', '未支付'
 
     @Column(name = "registration_date")
     private LocalDateTime registrationDate; // 报名时间

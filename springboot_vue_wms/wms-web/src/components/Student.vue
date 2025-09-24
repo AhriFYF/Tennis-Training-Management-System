@@ -37,6 +37,14 @@
             <i class="el-icon-edit"></i>
             <span slot="title">教练申请</span>
           </el-menu-item>
+          <el-menu-item index="/student-monthly-match-registration">
+            <i class="el-icon-edit"></i>
+            <span slot="title">月赛报名</span>
+          </el-menu-item>
+          <el-menu-item index="/student-monthly-match-schedule">
+            <i class="el-icon-time"></i>
+            <span slot="title">月赛赛程</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 

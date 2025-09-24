@@ -246,6 +246,22 @@ const routes = [
 
         ]
     },
+    {
+        path: '/student-monthly-match-registration',
+        name: 'monthlyMatchRegistration',
+        component: () => import('../components/student/MonthlyMatchRegistration.vue'),
+        children: [
+
+        ]
+    },
+    {
+        path: '/student-monthly-match-schedule',
+        name: 'monthlyMatchSchedule',
+        component: () => import('../components/student/MonthlyMatchSchedule.vue'),
+        children: [
+
+        ]
+    },
 
 ]
 
