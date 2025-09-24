@@ -67,7 +67,6 @@ public class UserController {
 
     // 用户登录
     @PostMapping("/login")
-    @Loggable(actionType = "登录 | 用户", actionDetail = "用户登录")
     public Result login(@RequestBody User user, HttpServletRequest request) {
         // 1. 查询数据库中是否存在匹配的用户
         List<User> userList = userService.lambdaQuery()

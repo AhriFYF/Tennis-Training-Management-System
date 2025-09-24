@@ -68,6 +68,7 @@ export default {
               .then((res) => {
                 if (res.code == 200) {
                   sessionStorage.setItem("CurUser", JSON.stringify(res.data.user));
+                  localStorage.setItem("user", JSON.stringify(res.data));
                   const menu = res.data.menu;
                   this.$store.commit("setMenu", menu); // 假定您有 Vuex store
 
