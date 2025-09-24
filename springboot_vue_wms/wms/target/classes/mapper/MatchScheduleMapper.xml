@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.MatchScheduleMapper">
+
+    <resultMap id="BaseResultMap" type="com.wms.entity.match_schedule">
+        <id column="id" property="id" />
+        <result column="match_round" property="match_round" />
+        <result column="group_type" property="group_type" />
+        <result column="player1_id" property="player1_id" />
+        <result column="player2_id" property="player2_id" />
+        <result column="court_number" property="court_number" />
+        <result column="match_time" property="match_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, match_round, group_type, player1_id, player2_id, court_number, match_time
+    </sql>
+
+    <select id="pageC" resultType="com.wms.entity.match_schedule">
+        select * from match_schedule
+    </select>
+
+    <select id="pageCC" resultType="com.wms.entity.match_schedule">
+        select * from match_schedule ${ew.customSqlSegment}
+    </select>
+</mapper>

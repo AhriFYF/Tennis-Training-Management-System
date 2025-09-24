@@ -7,7 +7,7 @@ spring:
     url: jdbc:mysql://localhost:3306/tennis_system?useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: lijm2122
+    password: 123123
   jpa:
     show-sql: true
     properties:

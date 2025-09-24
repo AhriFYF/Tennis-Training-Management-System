@@ -132,6 +132,22 @@ const routes = [
         },
         component:()=>import('../components/admin/SystemLog')
     },
+    {
+        path:'/MatchRegister',
+        name:'MatchRegister',
+        meta:{
+            title:'比赛注册'
+        },
+        component:()=>import('../components/match/MatchRegistration.vue')
+    },
+    {
+        path:'/MatchSchedule',
+        name:'MatchSchedule',
+        meta:{
+            title:'赛程安排'
+        },
+        component:()=>import('../components/match/MatchSchedule')
+    },
 
     // 教练模块路由
     {
