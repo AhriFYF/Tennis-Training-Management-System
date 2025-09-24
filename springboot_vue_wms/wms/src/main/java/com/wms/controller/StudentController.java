@@ -1,6 +1,7 @@
 package com.wms.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.wms.common.Loggable;
 import com.wms.common.Result;
 import com.wms.dto.StudentRegisterDTO;
 import com.wms.dto.StudentDetailDTO;
@@ -27,6 +28,7 @@ public class StudentController {
     /**
      * 学生注册
      */
+    @Loggable(actionType = "注册 | 学生", actionDetail = "学生用户注册")
     @PostMapping("/register")
     public Result register(@RequestBody StudentRegisterDTO dto) {
         try {
@@ -40,6 +42,7 @@ public class StudentController {
     /**
      * 获取当前登录学生详细信息
      */
+    @Loggable(actionType = "获取 | 学生信息", actionDetail = "获取当前登录学生详细信息")
     @GetMapping("/profile")
     public Result getProfile(HttpServletRequest request) {
         // 从session获取用户ID
@@ -59,6 +62,7 @@ public class StudentController {
     /**
      * 更新学生个人信息
      */
+    @Loggable(actionType = "更新 | 学生信息", actionDetail = "更新学生个人信息")
     @PutMapping("/profile")
     public Result updateProfile(@RequestBody StudentRegisterDTO updatedInfo, HttpServletRequest request) {
         // 从session获取用户ID
@@ -84,6 +88,7 @@ public class StudentController {
     /**
      * 根据学号查询学生详细信息
      */
+    @Loggable(actionType = "查询 | 学生信息", actionDetail = "根据学号查询学生详细信息")
     @GetMapping("/byNo/{no}")
     public Result getStudentByNo(@PathVariable String no) {
         StudentDetailDTO student = studentService.getStudentByNo(no);
@@ -96,6 +101,7 @@ public class StudentController {
     /**
      * 获取所有学生列表
      */
+    @Loggable(actionType = "获取 | 学生列表", actionDetail = "获取所有学生列表信息")
     @GetMapping("/list")
     public Result getAllStudents() {
         LambdaQueryWrapper<student_users> wrapper = new LambdaQueryWrapper<>();
@@ -106,6 +112,7 @@ public class StudentController {
     /**
      * 根据学生ID获取详细信息
      */
+    @Loggable(actionType = "获取 | 学生详情", actionDetail = "根据学生ID获取详细信息")
     @GetMapping("/{studentId}")
     public Result getStudentById(@PathVariable Integer studentId) {
         StudentDetailDTO studentDetail = studentService.getStudentDetail(studentId);

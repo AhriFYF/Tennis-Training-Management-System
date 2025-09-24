@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.wms.common.Loggable;
 import com.wms.entity.coach_users;
 import com.wms.service.CoachService;
 import com.wms.vo.ResultVO;
@@ -22,6 +23,7 @@ public class CoachProfileController {
      * @param userId 用户ID（从sessionStorage中获取的CurUser的id）
      * @return 教练信息
      */
+    @Loggable(actionType = "获取 | 教练信息", actionDetail = "根据用户ID获取教练信息")
     @GetMapping("/profile/user/{userId}")
     public ResultVO getCoachByUserId(@PathVariable Integer userId) {
         try {
@@ -42,6 +44,7 @@ public class CoachProfileController {
      * @param coachId 教练ID
      * @return 教练信息
      */
+    @Loggable(actionType = "获取 | 教练信息", actionDetail = "根据教练ID获取教练信息")
     @GetMapping("/profile/{coachId}")
     public ResultVO getCoachById(@PathVariable Integer coachId) {
         try {
@@ -62,6 +65,7 @@ public class CoachProfileController {
      * @param coach 教练信息
      * @return 更新结果
      */
+    @Loggable(actionType = "更新 | 教练信息", actionDetail = "更新教练个人信息")
     @PutMapping("/profile")
     public ResultVO updateCoach(@RequestBody coach_users coach) {
         try {
@@ -82,6 +86,7 @@ public class CoachProfileController {
      * @param coach 教练信息
      * @return 创建结果
      */
+    @Loggable(actionType = "新增 | 教练信息", actionDetail = "创建新的教练信息")
     @PostMapping("/profile")
     public ResultVO createCoach(@RequestBody coach_users coach) {
         try {
@@ -102,6 +107,7 @@ public class CoachProfileController {
      * @param userId 用户ID
      * @return 统计信息
      */
+    @Loggable(actionType = "获取 | 教练统计", actionDetail = "获取教练的统计数据")
     @GetMapping("/stats/{userId}")
     public ResultVO getCoachStats(@PathVariable Integer userId) {
         try {

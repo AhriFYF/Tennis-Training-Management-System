@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.wms.common.Loggable;
 import com.wms.common.Result;
 import com.wms.entity.student_users;
 import com.wms.service.CoachFindStudentsService;
@@ -18,6 +19,7 @@ public class CoachFindStudentsController {
     /**
      * 根据教练ID获取学员列表
      */
+    @Loggable(actionType = "获取 | 学员列表", actionDetail = "根据教练ID获取学员列表信息")
     @GetMapping("/students/{coachId}")
     public Result getStudentsByCoachId(@PathVariable Integer coachId) {
         try {
@@ -32,6 +34,7 @@ public class CoachFindStudentsController {
     /**
      * 获取学员统计信息
      */
+    @Loggable(actionType = "获取 | 学员统计", actionDetail = "获取教练的学员统计信息")
     @GetMapping("/students/{coachId}/stats")
     public Result getStudentStats(@PathVariable Integer coachId) {
         try {
@@ -46,6 +49,7 @@ public class CoachFindStudentsController {
     /**
      * 获取当前登录教练的学员列表
      */
+    @Loggable(actionType = "获取 | 我的学员", actionDetail = "获取当前登录教练的学员列表")
     @GetMapping("/my-students")
     public Result getMyStudents(@SessionAttribute("CurUser") Object curUser) {
         try {

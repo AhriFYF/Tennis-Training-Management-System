@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.wms.common.Loggable;
 import com.wms.entity.student_course_selection;
 import com.wms.mapper.CoachCourseSelectionMapper;
 import com.wms.common.Result;
@@ -18,6 +19,7 @@ public class CoachCourseSelectionController {
     /**
      * 获取教练的待确认预约请求
      */
+    @Loggable(actionType = "获取 | 待确认预约", actionDetail = "获取教练的待确认预约请求列表")
     @GetMapping("/pending-requests/{coachId}")
     public Result getPendingRequests(@PathVariable Integer coachId) {
         List<student_course_selection> pendingRequests =
@@ -28,6 +30,7 @@ public class CoachCourseSelectionController {
     /**
      * 获取教练的已确认预约
      */
+    @Loggable(actionType = "获取 | 已确认预约", actionDetail = "获取教练的已确认预约列表")
     @GetMapping("/confirmed/{coachId}")
     public Result getConfirmedRequests(@PathVariable Integer coachId) {
         List<student_course_selection> confirmedRequests =
@@ -38,6 +41,7 @@ public class CoachCourseSelectionController {
     /**
      * 处理预约请求（同意或拒绝）
      */
+    @Loggable(actionType = "处理 | 预约请求", actionDetail = "处理教练的预约请求（同意或拒绝）")
     @PutMapping("/process/{id}")
     public Result processRequest(@PathVariable Integer id, @RequestParam String status) {
         int result = coachCourseSelectionMapper.updateStatus(id, status);

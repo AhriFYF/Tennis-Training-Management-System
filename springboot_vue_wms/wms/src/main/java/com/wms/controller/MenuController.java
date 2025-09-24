@@ -1,6 +1,7 @@
 package com.wms.controller;
 
 
+import com.wms.common.Loggable;
 import com.wms.common.Result;
 import com.wms.entity.Menu;
 import com.wms.entity.User;
@@ -20,6 +21,8 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
+    
+    @Loggable(actionType = "获取 | 菜单", actionDetail = "根据角色ID获取菜单列表")
     @GetMapping("/list")
     public Result list(@RequestParam String roleId){
         List list = menuService.lambdaQuery().like(Menu::getMenuright,roleId).list();
