@@ -20,7 +20,6 @@
       <el-table-column prop="coursePrices" label="课程价格" width="100"></el-table-column>
       <el-table-column prop="courseHours" label="课时数" width="100"></el-table-column>
       <el-table-column prop="durationOfClassHours" label="课时时长" width="120"></el-table-column>
-      <el-table-column prop="status" label="状态" width="80"></el-table-column>
       <el-table-column prop="operate" label="操作" width="200">
         <template slot-scope="scope">
           <el-button size="small" type="success" @click="mod(scope.row)">编辑</el-button>

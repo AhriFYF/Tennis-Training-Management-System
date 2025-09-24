@@ -198,23 +198,39 @@ const routes = [
 
         ]
     },
-    /*
     {
-        path:'/Index',
-        name:'index',
-        component:()=>import('../components/Index'),
-        children:[
-            {
-                path:'/Home',
-                name:'home',
-                meta:{
-                    title:'首页'
-                },
-                component:()=>import('../components/Home')
-            }
+        path: '/student-profile',
+        name: 'studentProfile',
+        component: () => import('../components/student/Profile.vue'),
+        children: [
+
         ]
-    }
-    */
+    },
+    {
+        path: '/student-bookings',
+        name: 'studentBookings',
+        component: () => import('../components/student/Bookings.vue'),
+        children: [
+
+        ]
+    },
+    {
+        path: '/student-coach-search',
+        name: 'studentCoachSearch',
+        component: () => import('../components/student/CoachSearch.vue'),
+        children: [
+
+        ]
+    },
+    {
+        path: '/student-coach-application',
+        name: 'studentCoachApplication',
+        component: () => import('../components/student/CoachApplication.vue'),
+        children: [
+
+        ]
+    },
+
 ]
 
 const router = new VueRouter({
