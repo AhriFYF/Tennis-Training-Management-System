@@ -25,11 +25,13 @@ public class CampusController {
     @Autowired
     private CampusService CampusService; // 注入课程信息Service
 
-    @GetMapping("/list")
-    @Loggable(actionType = "获取 | 校区", actionDetail = "访问数据库获取信息")
-    public List<Campus> list(){
-        return CampusService.list();
-    }
+
+@GetMapping("/list")
+@Loggable(actionType = "获取 | 校区", actionDetail = "访问数据库获取信息")
+public Result list(){
+    List<Campus> campuses = CampusService.list();
+    return Result.suc(campuses);
+}
 
     // 根据ID查找（示例）
     @GetMapping("/findById")
