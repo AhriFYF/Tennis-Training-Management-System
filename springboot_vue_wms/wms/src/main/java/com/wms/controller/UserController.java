@@ -19,11 +19,14 @@ import com.wms.service.StudentUsersService;
 import com.wms.service.CoachUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -204,7 +207,53 @@ public class UserController {
         }
 
         IPage<User> result = userService.pageCC(page, wrapper);
-        return Result.suc(result.getRecords(), result.getTotal());
+        List<User> userList = result.getRecords();
+
+        if (!Objects.equals(roleId, "2")) {
+            return Result.suc(result.getRecords(), result.getTotal());
+        }
+        else{
+            // 获取所有教练用户的ID
+            List<Integer> coachUserIds = userList.stream()
+                    .map(User::getId) // 假设 User 的 id 字段是 userId
+                    .collect(Collectors.toList());
+
+            // 批量查询教练表，获取审核状态
+            // 假设 Coach 实体中有一个 userId 字段关联 User 表
+            LambdaQueryWrapper<coach_users> coachWrapper = new LambdaQueryWrapper<>();
+            coachWrapper.in(coach_users::getUserId, coachUserIds);
+            List<coach_users> coachList = coachUsersService.list(coachWrapper);
+
+            // 将教练数据（包括审核状态）映射到一个 Map 中，方便查找
+            Map<Integer, Integer> auditStatusMap = coachList.stream()
+                    .collect(Collectors.toMap(coach_users::getUserId, coach_users::getAuditStatus));
+
+            // 将审核状态添加到 User 对象中
+            // 这里我们需要一种方式来添加字段，可以创建一个 DTO 或使用 Map
+            List<Map<String, Object>> userMapList = userList.stream().map(user -> {
+                Map<String, Object> userMap = new HashMap<>();
+                userMap.put("id", user.getId());
+                userMap.put("no", user.getNo());
+                userMap.put("name", user.getName());
+                userMap.put("password", user.getPassword());
+                userMap.put("age", user.getAge());
+                userMap.put("sex", user.getSex());
+                userMap.put("phone", user.getPhone());
+                userMap.put("role_id", user.getRoleId());
+                userMap.put("isvalid", user.getIsvalid());
+                userMap.put("campusId", user.getCampusId());
+                userMap.put("balance", user.getBalance());
+
+                // 添加教练的特有字段
+                if (auditStatusMap.containsKey(user.getId())) {
+                    userMap.put("auditStatus", auditStatusMap.get(user.getId()));
+                }
+                return userMap;
+            }).collect(Collectors.toList());
+
+            // 返回处理后的列表和总数
+            return Result.suc(userMapList, result.getTotal());
+        }
     }
 
     // ========== 【学员注册接口】 ==========
@@ -275,39 +324,51 @@ public class UserController {
     // ========== 【教练注册接口】 ==========
     @PostMapping("/registerCoach")
     @Loggable(actionType = "注册 | 用户", actionDetail = "教练注册")
-    public Result registerCoach(@RequestBody CoachRegisterDTO coachDTO) {
+    public Result registerCoach(
+            @RequestParam("no") String no,
+            @RequestParam("password") String password,
+            @RequestParam("name") String name,
+            @RequestParam("phone") String phone,
+            @RequestParam("age") Integer age,
+            @RequestParam("sex") Integer sex, // 假设 sex 是 1/0
+            @RequestParam("campusId") Integer campusId,
+            @RequestParam("roleId") Integer roleId,
+            @RequestParam("isvalid") String isvalid,
+            @RequestParam("coachNo") String coachNo,
+            @RequestParam("level") Integer level,
+            @RequestParam("achievements") String achievements,
+            @RequestParam(value = "photo", required = false) MultipartFile photo // 接收文件
+    ){
         // 基础非空校验
-        if (StringUtils.isBlank(coachDTO.getNo()) ||
-                StringUtils.isBlank(coachDTO.getPassword()) ||
-                StringUtils.isBlank(coachDTO.getName()) ||
-                StringUtils.isBlank(coachDTO.getPhone()) ||
-                StringUtils.isBlank(coachDTO.getCoachNo())) {
+        if (no == null || no.isEmpty() || password == null || password.isEmpty() ||
+                name == null || name.isEmpty()  || phone == null || phone.isEmpty() || coachNo == null || coachNo.isEmpty()
+            ) {
             return Result.fail("请填写用户名、密码、姓名、电话和教练编号");
         }
 
         // 检查教练编号是否已存在
-        coach_users existingCoach = coachUsersService.findByCoachNo(coachDTO.getCoachNo());
+        coach_users existingCoach = coachUsersService.findByCoachNo(coachNo);
         if (existingCoach != null) {
             return Result.fail("教练编号已存在");
         }
 
         // 检查用户名是否已存在
-        List<User> existingUsers = userService.lambdaQuery().eq(User::getNo, coachDTO.getNo()).list();
+        List<User> existingUsers = userService.lambdaQuery().eq(User::getNo, no).list();
         if (!existingUsers.isEmpty()) {
             return Result.fail("用户名已存在");
         }
 
         // 创建用户基础信息
         User user = new User();
-        user.setNo(coachDTO.getNo());
-        user.setPassword(coachDTO.getPassword());
-        user.setName(coachDTO.getName());
-        user.setPhone(coachDTO.getPhone());
-        user.setAge(coachDTO.getAge());
-        user.setSex("M".equals(coachDTO.getGender()) ? 1 : 0);
+        user.setNo(no);
+        user.setPassword(password);
+        user.setName(name);
+        user.setPhone(phone);
+        user.setAge(age);
+        user.setSex("M".equals(sex) ? 1 : 0);
         user.setRoleId(2); // 教练角色
         user.setIsvalid("Y");
-        user.setCampusId(coachDTO.getCampusId());
+        user.setCampusId(campusId);
 
         // 保存用户信息
         if (!userService.save(user)) {
@@ -317,14 +378,14 @@ public class UserController {
         // 创建教练详细信息
         coach_users coach = new coach_users();
         coach.setUserId(user.getId());
-        coach.setName(coachDTO.getName());
-        coach.setGender(coachDTO.getGender());
-        coach.setAge(coachDTO.getAge());
-        coach.setPhone(coachDTO.getPhone());
-        coach.setCoachNo(coachDTO.getCoachNo());
-        coach.setLevel(coachDTO.getLevel());
-        coach.setAchievements(coachDTO.getAchievements());
-        coach.setCampusId(coachDTO.getCampusId());
+        coach.setName(name);
+        coach.setGender(String.valueOf(sex));
+        coach.setAge(age);
+        coach.setPhone(phone);
+        coach.setCoachNo(coachNo);
+        coach.setLevel(level);
+        coach.setAchievements(achievements);
+        coach.setCampusId(campusId);
         coach.setAuditStatus(0); // 待审核状态
 
         // 保存教练详细信息
