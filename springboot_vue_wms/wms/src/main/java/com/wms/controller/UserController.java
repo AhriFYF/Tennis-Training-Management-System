@@ -18,6 +18,16 @@ import com.wms.service.UserService;
 import com.wms.service.StudentUsersService;
 import com.wms.service.CoachUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -103,12 +113,34 @@ public class UserController {
             System.out.println("Login success, campus ID is: " + loginUser.getCampusId());
             request.getSession().setAttribute("userId", loginUser.getId());
 
-            // 3. 查询该角色对应的菜单权限
+            // 3. 如果是超级管理员，检查是否需要密钥验证
+            if (loginUser.getRoleId() == 0) { // 0表示超级管理员
+                // 检查是否已生成密钥
+                if (loginUser.getSuperAdminKey() == null || loginUser.getSuperAdminKey().isEmpty()) {
+                    // 未生成密钥，需要生成
+                    HashMap<String, Object> res = new HashMap<>();
+                    res.put("user", loginUser);
+                    res.put("needKeyGeneration", true);
+                    return Result.suc(res, 200L);
+                } else {
+                    // 已有密钥，检查是否已验证
+                    Boolean keyVerified = (Boolean) request.getSession().getAttribute("superAdminKeyVerified");
+                    if (keyVerified == null || !keyVerified) {
+                        // 未验证，需要验证密钥
+                        HashMap<String, Object> res = new HashMap<>();
+                        res.put("user", loginUser);
+                        res.put("needKeyVerification", true);
+                        return Result.suc(res, 200L);
+                    }
+                }
+            }
+
+            // 4. 查询该角色对应的菜单权限
             List<Menu> menuList = menuService.lambdaQuery()
                     .like(Menu::getMenuright, loginUser.getRoleId())
                     .list();
 
-            // 4. 构建返回给前端的数据
+            // 5. 构建返回给前端的数据
             HashMap<String, Object> res = new HashMap<>();
             res.put("user", loginUser);
             res.put("menu", menuList);
@@ -119,6 +151,104 @@ public class UserController {
 
         // 用户名或密码错误，返回失败结果
         return Result.fail("用户名或密码错误");
+    }
+
+    // 为超级管理员生成密钥
+    @PostMapping("/generateSuperAdminKey")
+    @Loggable(actionType = "生成 | 超级管理员密钥", actionDetail = "为超级管理员生成唯一密钥")
+    public Result generateSuperAdminKey(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+        Integer userId = (Integer) params.get("userId");
+        String deviceId = (String) params.get("deviceId");
+        
+        // 参数校验
+        if (userId == null || deviceId == null || deviceId.isEmpty()) {
+            return Result.fail("参数错误");
+        }
+        
+        // 查询用户
+        User user = userService.getById(userId);
+        if (user == null) {
+            return Result.fail("用户不存在");
+        }
+        
+        // 检查是否为超级管理员
+        if (user.getRoleId() != 0) {
+            return Result.fail("只有超级管理员可以生成密钥");
+        }
+        
+        // 生成唯一密钥 (使用UUID)
+        String key = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 16);
+        
+        // 设置密钥信息
+        user.setSuperAdminKey(key);
+        user.setDeviceId(deviceId);
+        LocalDateTime now = LocalDateTime.now();
+        user.setKeyCreatedTime(now);
+        user.setKeyExpiredTime(now.plusYears(1)); // 有效期一年
+        
+        // 保存更新
+        if (userService.updateById(user)) {
+            // 将密钥验证状态存入session
+            request.getSession().setAttribute("superAdminKeyVerified", true);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("key", key);
+            result.put("expiredTime", user.getKeyExpiredTime());
+            return Result.suc(result, 200L);
+        } else {
+            return Result.fail("密钥生成失败");
+        }
+    }
+    
+    // 验证超级管理员密钥
+    @PostMapping("/verifySuperAdminKey")
+    @Loggable(actionType = "验证 | 超级管理员密钥", actionDetail = "验证超级管理员密钥")
+    public Result verifySuperAdminKey(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+        Integer userId = (Integer) params.get("userId");
+        String key = (String) params.get("key");
+        String deviceId = (String) params.get("deviceId");
+        
+        // 参数校验
+        if (userId == null || key == null || key.isEmpty() || deviceId == null || deviceId.isEmpty()) {
+            return Result.fail("参数错误");
+        }
+        
+        // 查询用户
+        User user = userService.getById(userId);
+        if (user == null) {
+            return Result.fail("用户不存在");
+        }
+        
+        // 检查是否为超级管理员
+        if (user.getRoleId() != 0) {
+            return Result.fail("只有超级管理员需要验证密钥");
+        }
+        
+        // 检查密钥是否存在
+        if (user.getSuperAdminKey() == null || user.getSuperAdminKey().isEmpty()) {
+            return Result.fail("未生成密钥，请先生成密钥");
+        }
+        
+        // 检查密钥是否正确
+        if (!user.getSuperAdminKey().equals(key)) {
+            return Result.fail("密钥错误");
+        }
+        
+        // 检查密钥是否过期
+        LocalDateTime now = LocalDateTime.now();
+        if (user.getKeyExpiredTime().isBefore(now)) {
+            return Result.fail("密钥已过期，请重新生成");
+        }
+        
+        // 检查设备是否匹配
+        if (!user.getDeviceId().equals(deviceId)) {
+            return Result.fail("设备不匹配，密钥只能用于一台设备");
+        }
+        
+        // 验证通过，将验证状态存入session
+        request.getSession().setAttribute("superAdminKeyVerified", true);
+        
+        return Result.suc("密钥验证成功");
     }
 
     // 修改用户（别名）
