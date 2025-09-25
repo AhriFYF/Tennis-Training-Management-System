@@ -62,7 +62,7 @@
       <el-table :data="myBookings" style="width: 100%" stripe>
         <el-table-column prop="coachName" label="教练" width="120"></el-table-column>
         <el-table-column prop="courseName" label="课程" width="150"></el-table-column>
-        <el-table-column prop="scheduleDate" label预约时间 width="180">
+        <el-table-column prop="scheduleDate" label="预约时间" width="180">
           <template slot-scope="scope">
             {{ formatDateTime(scope.row.scheduleDate) }}
           </template>
@@ -78,7 +78,7 @@
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button
-                v-if="scope.row.status === 0"
+                v-if="scope.row.status === '0'"
                 size="mini"
                 type="danger"
                 @click="handleCancel(scope.row)"
@@ -157,25 +157,25 @@ export default {
     },
     getStatusTagType(status) {
       switch(status) {
-        case 1: return 'success'; // 已确认
-        case 0: return 'warning'; // 待确认
-        case 2: return 'info';    // 已取消
-        case 3: return '';        // 已完成
+        case '1': return 'success'; // 已确认
+        case '0': return 'warning'; // 待确认
+        case '2': return 'info';    // 已取消
+        case '3': return '';        // 已完成
         default: return '';
       }
     },
     getStatusText(status) {
       const statusMap = {
-        0: '待确认',
-        1: '已确认',
-        2: '已取消',
-        3: '已完成'
+        '0': '待确认',
+        '1': '已确认',
+        '2': '已取消',
+        '3': '已完成'
       };
       return statusMap[status] || '未知';
     },
-    // 加载可选教练列表
+    // 加载已确认的教练列表
     loadAvailableCoaches() {
-      this.$axios.get(`${this.$httpUrl}/coach/selected`)
+      this.$axios.get(`${this.$httpUrl}/api/student/coach/my/list/${this.currentUser.id}`)
           .then(res => res.data)
           .then(res => {
             if (res.code === 200) {
@@ -192,7 +192,7 @@ export default {
       const coach = this.availableCoaches.find(c => c.coachId === coachId);
       this.selectedCoachName = coach ? coach.name : '';
 
-      this.$axios.get(`${this.$httpUrl}/course/coach/${coachId}`)
+      this.$axios.get(`${this.$httpUrl}/api/student/course/coach/${coachId}`)
           .then(res => res.data)
           .then(res => {
             if (res.code === 200) {
@@ -208,7 +208,7 @@ export default {
     loadMyBookings() {
       if (!this.currentUser) return;
 
-      this.$axios.get(`${this.$httpUrl}/booking/student/${this.currentUser.id}`)
+      this.$axios.get(`${this.$httpUrl}/api/student/course/selection/${this.currentUser.id}`)
           .then(res => res.data)
           .then(res => {
             if (res.code === 200) {
@@ -231,20 +231,11 @@ export default {
 
       const bookingData = {
         studentId: this.currentUser.id,
-        coachId: this.selectedCoach,
-        courseName: this.selectedCourse.courseName,
-        courseNumber: this.selectedCourse.courseNumber,
-        scheduleDate: this.selectedCourse.courseStartTime,
-        schedulingPeriod: this.calculateTimePeriod(
-            this.selectedCourse.courseStartTime,
-            this.selectedCourse.courseEndTime
-        ),
-        status: 0, // 待确认
-        campusId: this.currentUser.campusId,
+        courseInformationId: this.selectedCourse.courseInformationId,
         notes: this.bookForm.notes
       };
 
-      this.$axios.post(`${this.$httpUrl}/booking/create`, bookingData)
+      this.$axios.post(`${this.$httpUrl}/api/student/course/selection/create`, bookingData)
           .then(res => res.data)
           .then(res => {
             if (res.code === 200) {
@@ -262,12 +253,6 @@ export default {
             console.error(error);
           });
     },
-    // 计算时间段
-    calculateTimePeriod(startTime, endTime) {
-      const start = new Date(startTime);
-      const end = new Date(endTime);
-      return `${start.getHours()}:${start.getMinutes().toString().padStart(2, '0')}-${end.getHours()}:${end.getMinutes().toString().padStart(2, '0')}`;
-    },
     // 处理取消预约
     handleCancel(booking) {
       this.$confirm('确定要取消此预约吗?', '提示', {
@@ -275,7 +260,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.post(`${this.$httpUrl}/booking/cancel/${booking.bookingId}`)
+        this.$axios.delete(`${this.$httpUrl}/api/student/course/selection/cancel/${booking.studentCourseSelectionId}`)
             .then(res => res.data)
             .then(res => {
               if (res.code === 200) {
