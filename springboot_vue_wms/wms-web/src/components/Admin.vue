@@ -1,6 +1,13 @@
 <template>
   <div class="super-admin-container">
-    <h1 class="welcome-title">{{'管理员 ' + user.name}}</h1>
+    <div class="welcome-container">
+      <div class="welcome-header">
+        <h1 class="welcome-title">
+          {{'管理员 ' + user.name}}
+        </h1>
+        <p class="campus-name">{{ '管理校区：' + user.campusId }}</p>
+      </div>
+    </div>
 
     <el-row :gutter="20">
       <el-col :span="10">
@@ -148,5 +155,28 @@ export default {
 }
 .el-button {
   margin: 0 !important; /* 移除默认的 margin */
+}
+.welcome-header {
+  /* 开启 Flexbox 布局 */
+  display: flex;
+  /* 子元素垂直居中对齐 */
+  align-items: center;
+}
+
+.welcome-title {
+  /* 允许 .welcome-title 占据剩余空间，将 .campus-name 推到最右边 */
+  flex-grow: 1;
+  /* 调整字体大小和颜色 */
+  font-size: 40px;
+  color: #333;
+  margin: 0 0 20px 100px;
+}
+
+.campus-name {
+  /* 调整小标题的样式 */
+  font-size: 14px;
+  color: #666;
+  margin-left: 10px; /* 在大标题和小标题之间添加一些间距 */
+  white-space: nowrap; /* 防止文本换行 */
 }
 </style>

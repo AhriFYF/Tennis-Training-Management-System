@@ -80,6 +80,11 @@ public class User implements Serializable {
     @TableField("device_id")
     private String deviceId;
 
+    // IP地址限制字段
+    @ApiModelProperty(value = "绑定的IP地址")
+    @TableField("bound_ip_address")
+    private String boundIpAddress;
+
 
     public Integer getSex() {
         return sex;
@@ -201,6 +206,14 @@ public class User implements Serializable {
         this.deviceId = deviceId;
     }
 
+    public String getBoundIpAddress() {
+        return boundIpAddress;
+    }
+
+    public void setBoundIpAddress(String boundIpAddress) {
+        this.boundIpAddress = boundIpAddress;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -219,6 +232,7 @@ public class User implements Serializable {
                 ", keyCreatedTime=" + keyCreatedTime +
                 ", keyExpiredTime=" + keyExpiredTime +
                 ", deviceId='" + deviceId + '\'' +
+                ", boundIpAddress='" + boundIpAddress + '\'' +
                 '}';
     }
 }

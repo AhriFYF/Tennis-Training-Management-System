@@ -72,7 +72,7 @@ export default {
                   sessionStorage.setItem("loginResponse", JSON.stringify(res));
                   localStorage.setItem("user", JSON.stringify(res.data));
                   const menu = res.data.menu;
-                  this.$store.commit("setMenu", menu); // 假定您有 Vuex store
+                  this.$store.commit("setMenu", menu);
 
                   const user = res.data.user;
                   const roleId = user.roleId;
@@ -95,7 +95,12 @@ export default {
                   }
                 } else {
                   this.confirm_disabled = false;
-                  this.$message.error(res.message || "用户名或密码错误");
+                  // 检查是否是IP地址不匹配的错误
+                  if (res.message && res.message.includes("IP地址")) {
+                    this.$message.error("当前账号已绑定其他设备");
+                  } else {
+                    this.$message.error(res.message || "用户名或密码错误");
+                  }
                 }
               })
               .catch(() => {

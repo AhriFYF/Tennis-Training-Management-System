@@ -42,6 +42,31 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    
+    // 获取客户端真实IP地址的方法
+    private String getClientIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        // 如果是多个IP地址，取第一个非unknown的有效IP字符串
+        if (ip != null && ip.contains(",")) {
+            ip = ip.split(",")[0];
+        }
+        return ip;
+    }
 
     @Autowired
     private UserService userService;
@@ -115,6 +140,16 @@ public class UserController {
 
             // 3. 如果是超级管理员，检查是否需要密钥验证
             if (loginUser.getRoleId() == 0) { // 0表示超级管理员
+                // 检查IP地址限制
+                String clientIpAddress = getClientIpAddress(request);
+                if (loginUser.getBoundIpAddress() != null && !loginUser.getBoundIpAddress().isEmpty()) {
+                    // 已绑定IP地址，需要验证
+                    if (!loginUser.getBoundIpAddress().equals(clientIpAddress)) {
+                        System.out.println(clientIpAddress + "登录IP地址与绑定IP地址不匹配，拒绝登录");
+                        return Result.fail("登录IP地址与绑定IP地址不匹配，拒绝登录");
+                    }
+                }
+                
                 // 检查是否已生成密钥
                 if (loginUser.getSuperAdminKey() == null || loginUser.getSuperAdminKey().isEmpty()) {
                     // 未生成密钥，需要生成
@@ -176,12 +211,16 @@ public class UserController {
             return Result.fail("只有超级管理员可以生成密钥");
         }
         
+        // 获取客户端IP地址
+        String clientIpAddress = getClientIpAddress(request);
+        
         // 生成唯一密钥 (使用UUID)
         String key = UUID.randomUUID().toString().replace("-", "").toUpperCase().substring(0, 16);
         
         // 设置密钥信息
         user.setSuperAdminKey(key);
         user.setDeviceId(deviceId);
+        user.setBoundIpAddress(clientIpAddress); // 记录IP地址
         LocalDateTime now = LocalDateTime.now();
         user.setKeyCreatedTime(now);
         user.setKeyExpiredTime(now.plusYears(1)); // 有效期一年
