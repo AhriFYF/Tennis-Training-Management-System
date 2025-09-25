@@ -52,6 +52,13 @@ public class student_users {
     @Column(name = "photo_url")
     private String photoUrl;
 
+    @Column(name = "campus_name")
+    private String campusName;
+
+    @Column(name = "balance")
+    private Integer balance;
+
+
     @Override
     public String toString() {
         return "student_users{" +
@@ -67,6 +74,8 @@ public class student_users {
                 ", paymentStatus=" + paymentStatus +
                 ", campusId=" + campusId +
                 ", photoUrl='" + photoUrl + '\'' +
+                ", campusName='" + campusName + '\'' +
+                ", balance=" + balance +
                 '}';
     }
 
@@ -174,7 +183,12 @@ public class student_users {
         this.campusName = campusName;
     }
 
-    // 关联校区信息（非数据库字段）
-    @Transient
-    private String campusName;
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
+
 }

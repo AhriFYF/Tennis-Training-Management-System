@@ -78,17 +78,17 @@ public class StudentUsersServiceImpl extends ServiceImpl<StudentUsersMapper, stu
         BeanUtils.copyProperties(student, detailDTO);
 
         // 获取并设置校区名称
-        if (student.getCampusId() != null) {
-            try {
-                String campusName = campusService.getCampusNameById(student.getCampusId());
-                detailDTO.setCampusName(campusName);
-            } catch (Exception e) {
-                log.warn("获取校区ID {} 的名称失败: {}", student.getCampusId(), e.getMessage());
-                detailDTO.setCampusName("未知校区");
-            }
-        } else {
-            detailDTO.setCampusName("未分配校区");
-        }
+//        if (student.getCampusId() != null) {
+//            try {
+//                String campusName = campusService.getCampusNameById(student.getCampusId());
+//                detailDTO.setCampusName(campusName);
+//            } catch (Exception e) {
+//                log.warn("获取校区ID {} 的名称失败: {}", student.getCampusId(), e.getMessage());
+//                detailDTO.setCampusName("未知校区");
+//            }
+//        } else {
+//            detailDTO.setCampusName("未分配校区");
+//        }
 
         return detailDTO;
     }
