@@ -53,15 +53,22 @@ public class CoachSelectionController {
     public Result processSelection(@PathVariable Integer selectionId,
                                    @RequestParam String status) {
         try {
-            // 转换前端状态值到数据库状态值
-            String dbStatus = "accepted".equals(status) ? "1" : "2";
-
-            boolean success = coachSelectionService.processSelection(selectionId, dbStatus);
-            if (success) {
-                String action = "accepted".equals(status) ? "同意" : "拒绝";
-                return Result.success(action + "成功");
+            if ("accepted".equals(status)) {
+                // 同意请求，设置状态为"1"
+                boolean success = coachSelectionService.processSelection(selectionId, "1");
+                if (success) {
+                    return Result.success("同意成功");
+                } else {
+                    return Result.error("同意失败");
+                }
             } else {
-                return Result.error("处理失败");
+                // 拒绝请求，直接删除记录
+                boolean success = coachSelectionService.removeSelection(selectionId);
+                if (success) {
+                    return Result.success("拒绝成功");
+                } else {
+                    return Result.error("拒绝失败");
+                }
             }
         } catch (Exception e) {
             return Result.error("处理请求失败: " + e.getMessage());
