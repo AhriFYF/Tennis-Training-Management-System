@@ -372,7 +372,7 @@ public class UserController {
         if (StringUtils.isNotBlank(roleId)) {
             wrapper.eq(User::getRoleId, roleId);
         }
-        if (!"0".equals(campusId) && StringUtils.isNotBlank(campusId)) {
+        if (!"1".equals(campusId) && StringUtils.isNotBlank(campusId)) {
             wrapper.eq(User::getCampusId, campusId);
         }
 
