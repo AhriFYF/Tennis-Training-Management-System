@@ -39,8 +39,8 @@ public class CoachSelectionServiceImpl extends ServiceImpl<CoachSelectionMapper,
     @Transactional
     public boolean processSelection(Integer selectionId, String status) {
         try {
-            // 验证状态值
-            if (!"1".equals(status) && !"2".equals(status)) {
+            // 验证状态值（只允许设置为"1"，即同意）
+            if (!"1".equals(status)) {
                 throw new IllegalArgumentException("状态值无效");
             }
 

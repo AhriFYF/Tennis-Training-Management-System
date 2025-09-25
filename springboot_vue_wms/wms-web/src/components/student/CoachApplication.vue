@@ -255,7 +255,7 @@ export default {
         type: 'warning'
       }).then(() => {
         const user = JSON.parse(sessionStorage.getItem('CurUser'));
-        this.$axios.delete(`${this.$httpUrl}/api/student/coach/release/${user.id}/${coach.coachId}`)
+        this.$axios.delete(`${this.$httpUrl}/api/student/coach/release/${user.id}/${coach.userId}`)
             .then(res => res.data)
             .then(res => {
               if (res.code === 200) {
