@@ -7,6 +7,7 @@ D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\dto\CoachRegisterDTO.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\student_users.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\dto\CoachApplicationDTO.java
+D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\mapper\CoachSchedulingMapper.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\impl\SystemLogServiceImpl.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\impl\CoachSelectionServiceImpl.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\impl\BookingServiceImpl.java
@@ -45,6 +46,7 @@ D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\dto\StudentDetailDTO.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\Storage.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\common\AutoFillMetaInfoHandler.java
+D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\controller\StudentBookingController.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\EvaluationService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\CampusService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\impl\CoachUsersServiceImpl.java
@@ -92,6 +94,7 @@ D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\impl\SchedulingServiceImpl.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\ScheduleService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\course_information.java
+D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\mapper\StudentCourseSelectionMapper.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\SystemMessage.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\SelectionService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\Goods.java
@@ -111,6 +114,7 @@ D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\MenuService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\teaching_evaluation.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\CompetitionGroup.java
+D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\impl\StudentCourseSelectionServiceImpl.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\MonthlyCompetitionRegistration.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\mapper\RecordMapper.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\impl\StudentUsersServiceImpl.java
@@ -130,6 +134,7 @@ D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\mapper\C0achFindStudentMapper.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\common\CodeGenerator.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\controller\SystemLogController.java
+D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\controller\StudentCourseSelectionController.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\mapper\CoachUsersMapper.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\coach_selection.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\controller\UserController.java
@@ -138,5 +143,7 @@ D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\StorageService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\entity\Goodstype.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\mapper\GoodstypeMapper.java
+D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\StudentCourseSelectionService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\service\CoachFindStudentsService.java
 D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\common\Result.java
+D:\ideaproject\Tennis-Training-Management-System\springboot_vue_wms\wms\src\main\java\com\wms\controller\StudentCourseController.java

@@ -240,14 +240,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
             student_users student = studentUsersMapper.selectOne(wrapper);
 
             if (student == null) {
-                log.warn("未找到学号为 {} 的学生信息", studentNo);
+                log.warn("未找到学号为 " + studentNo + " 的学生信息");
                 return null;
             }
 
             // 2. 组装详细信息
             return assembleStudentDetail(student);
         } catch (Exception e) {
-            log.error("查询学号 {} 的学生详情失败: {}", studentNo, e.getMessage());
+            log.error("查询学号 " + studentNo + " 的学生详情失败: " + e.getMessage());
             throw new RuntimeException("查询学生详情失败", e);
         }
     }
@@ -261,14 +261,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
             student_users student = studentUsersMapper.selectOne(wrapper);
 
             if (student == null) {
-                log.warn("未找到用户ID为 {} 的学生信息", userId);
+                log.warn("未找到用户ID为 " + userId + " 的学生信息");
                 return null;
             }
 
             // 2. 组装详细信息
             return assembleStudentDetail(student);
         } catch (Exception e) {
-            log.error("查询用户ID {} 的学生详情失败: {}", userId, e.getMessage());
+            log.error("查询用户ID " + userId + " 的学生详情失败: " + e.getMessage());
             throw new RuntimeException("查询学生详情失败", e);
         }
     }
@@ -288,7 +288,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
                 String campusName = campusService.getCampusNameById(student.getCampusId());
                 detailDTO.setCampusName(campusName);
             } catch (Exception e) {
-                log.warn("获取校区ID {} 的名称失败: {}", student.getCampusId(), e.getMessage());
+                log.warn("获取校区ID " + student.getCampusId() + " 的名称失败: " + e.getMessage());
                 detailDTO.setCampusName("未知校区");
             }
         } else {

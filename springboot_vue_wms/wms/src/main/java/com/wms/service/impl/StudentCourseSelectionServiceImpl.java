@@ -47,7 +47,7 @@ public class StudentCourseSelectionServiceImpl extends ServiceImpl<StudentCourse
                 return false;
             }
 
-            // 2. 获取学生信息
+            // 2. 获取学生信息（从user表）
             User student = userMapper.selectById(selection.getStudentUsers());
             if (student == null) {
                 return false;
@@ -76,7 +76,7 @@ public class StudentCourseSelectionServiceImpl extends ServiceImpl<StudentCourse
             selection.setSourceTable("course_information");
             selection.setCampusId(student.getCampusId());
 
-            // 5. 扣除学生余额
+            // 5. 扣除学生余额（从user表）
             BigDecimal newBalance = student.getBalance().subtract(BigDecimal.valueOf(course.getCoursePrices()));
             student.setBalance(newBalance);
             userMapper.updateById(student);
@@ -126,13 +126,13 @@ public class StudentCourseSelectionServiceImpl extends ServiceImpl<StudentCourse
             }
 
 
-            // 3. 获取学生信息
+            // 3. 获取学生信息（从user表）
             User student = userMapper.selectById(selection.getStudentUsers());
             if (student == null) {
                 return false;
             }
 
-            // 4. 退还余额
+            // 4. 退还余额（到user表）
             BigDecimal newBalance = student.getBalance().add(BigDecimal.valueOf(selection.getCoursePrices()));
             student.setBalance(newBalance);
             userMapper.updateById(student);
@@ -161,6 +161,7 @@ public class StudentCourseSelectionServiceImpl extends ServiceImpl<StudentCourse
 
     @Override
     public boolean checkStudentBalance(Integer studentId, Double coursePrice) {
+        // 从user表检查学生余额
         User student = userMapper.selectById(studentId);
         if (student == null) {
             return false;

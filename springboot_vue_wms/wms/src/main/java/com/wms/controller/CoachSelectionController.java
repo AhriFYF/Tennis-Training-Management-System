@@ -102,6 +102,7 @@ public class CoachSelectionController {
                                   @RequestParam Integer coachId) {
         try {
             boolean success = coachSelectionService.createSelection(studentId, coachId);
+            System.out.println(studentId);
             if (success) {
                 return Result.success("双选请求发送成功");
             } else {

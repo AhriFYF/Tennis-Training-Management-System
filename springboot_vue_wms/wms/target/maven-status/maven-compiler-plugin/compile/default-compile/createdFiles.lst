@@ -141,5 +141,6 @@ com\wms\controller\StorageController.class
 com\wms\service\CampusService.class
 com\wms\mapper\EvaluationMapper.class
 com\wms\service\impl\RecordServiceImpl.class
+com\wms\controller\StudentBookingController.class
 com\wms\service\SchedulingService.class
 com\wms\service\CoachFindStudentsService.class
