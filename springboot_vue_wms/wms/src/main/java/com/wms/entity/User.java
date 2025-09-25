@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -61,6 +62,28 @@ public class User implements Serializable {
     @ApiModelProperty(value = "账户余额")
     @TableField("balance")
     private BigDecimal balance = BigDecimal.ZERO; // 默认余额为0
+
+    // 超级管理员密钥相关字段
+    @ApiModelProperty(value = "超级管理员密钥")
+    @TableField("super_admin_key")
+    private String superAdminKey;
+
+    @ApiModelProperty(value = "密钥创建时间")
+    @TableField("key_created_time")
+    private LocalDateTime keyCreatedTime;
+
+    @ApiModelProperty(value = "密钥过期时间")
+    @TableField("key_expired_time")
+    private LocalDateTime keyExpiredTime;
+
+    @ApiModelProperty(value = "设备标识")
+    @TableField("device_id")
+    private String deviceId;
+
+    // IP地址限制字段
+    @ApiModelProperty(value = "绑定的IP地址")
+    @TableField("bound_ip_address")
+    private String boundIpAddress;
 
 
     public Integer getSex() {
@@ -151,6 +174,46 @@ public class User implements Serializable {
         this.balance = balance;
     }
 
+    public String getSuperAdminKey() {
+        return superAdminKey;
+    }
+
+    public void setSuperAdminKey(String superAdminKey) {
+        this.superAdminKey = superAdminKey;
+    }
+
+    public LocalDateTime getKeyCreatedTime() {
+        return keyCreatedTime;
+    }
+
+    public void setKeyCreatedTime(LocalDateTime keyCreatedTime) {
+        this.keyCreatedTime = keyCreatedTime;
+    }
+
+    public LocalDateTime getKeyExpiredTime() {
+        return keyExpiredTime;
+    }
+
+    public void setKeyExpiredTime(LocalDateTime keyExpiredTime) {
+        this.keyExpiredTime = keyExpiredTime;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getBoundIpAddress() {
+        return boundIpAddress;
+    }
+
+    public void setBoundIpAddress(String boundIpAddress) {
+        this.boundIpAddress = boundIpAddress;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -165,6 +228,11 @@ public class User implements Serializable {
                 ", isvalid='" + isvalid + '\'' +
                 ", campusId=" + campusId +
                 ", balance=" + balance +
+                ", superAdminKey='" + superAdminKey + '\'' +
+                ", keyCreatedTime=" + keyCreatedTime +
+                ", keyExpiredTime=" + keyExpiredTime +
+                ", deviceId='" + deviceId + '\'' +
+                ", boundIpAddress='" + boundIpAddress + '\'' +
                 '}';
     }
 }
