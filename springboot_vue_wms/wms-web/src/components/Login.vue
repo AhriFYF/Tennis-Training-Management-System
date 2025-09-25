@@ -96,10 +96,10 @@ export default {
                 } else {
                   this.confirm_disabled = false;
                   // 检查是否是IP地址不匹配的错误
-                  if (res.message && res.message.includes("IP地址")) {
+                  if (res.msg && res.msg.includes("IP地址")) {
                     this.$message.error("当前账号已绑定其他设备");
                   } else {
-                    this.$message.error(res.message || "用户名或密码错误");
+                    this.$message.error(res.msg || "用户名或密码错误");
                   }
                 }
               })
