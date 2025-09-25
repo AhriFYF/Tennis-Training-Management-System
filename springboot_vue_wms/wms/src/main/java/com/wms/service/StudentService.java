@@ -1,6 +1,7 @@
 package com.wms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wms.dto.StudentUpdateDTO;
 import com.wms.entity.student_users;
 import com.wms.dto.StudentRegisterDTO;
 import com.wms.dto.StudentDetailDTO;
@@ -14,7 +15,7 @@ public interface StudentService extends IService<student_users> {
     /**
      * 更新学生个人信息
      */
-    boolean updateStudentProfile(Integer studentId, StudentRegisterDTO updatedInfo);
+    boolean updateStudentProfile(Integer studentId, StudentUpdateDTO updatedInfo);
 
     /**
      * 根据学号查找学生（联合查询）
