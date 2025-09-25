@@ -225,7 +225,7 @@ export default {
       this.loadPost();
     },
     loadPost() {
-      this.$axios.post(this.$httpUrl + '/matchRegistration/listPage', {
+      this.$axios.post(this.$httpUrl + '/matchRegistration/listPageC1', {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         param: {

@@ -16,10 +16,10 @@
     </sql>
 
     <select id="pageC" resultType="com.wms.entity.match_registration">
-        select * from match_registration
+        select * from monthly_match_registration
     </select>
 
     <select id="pageCC" resultType="com.wms.entity.match_registration">
-        select * from match_registration ${ew.customSqlSegment}
+        select * from monthly_match_registration ${ew.customSqlSegment}
     </select>
 </mapper>
