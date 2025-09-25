@@ -183,7 +183,6 @@ export default {
         case 1: return '初级';
         case 2: return '中级';
         case 3: return '高级';
-        default: return '初级';
       }
     },
     getStatusTagType(status) {

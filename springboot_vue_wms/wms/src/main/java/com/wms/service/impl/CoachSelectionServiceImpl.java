@@ -126,12 +126,15 @@ public class CoachSelectionServiceImpl extends ServiceImpl<CoachSelectionMapper,
             } else {
                 dto.setStatus("未同意");
             }
-            
+
             // 根据coach_id获取教练信息
             coach_users coach = coachUsersService.findByCoachId(application.getCoachId());
             if (coach != null) {
                 dto.setCoachName(coach.getName());  // 设置教练姓名
+
             }
+
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++"+application.getCoachId());
             
             return dto;
         }).collect(Collectors.toList());

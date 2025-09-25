@@ -15,7 +15,7 @@ public interface CoachSelectionMapper extends BaseMapper<coach_selection> {
             "su.name as student_name, su.phone as student_phone, su.age as student_age, " +
             "CASE WHEN su.gender = 'M' THEN 1 ELSE 0 END as student_sex " +
             "FROM coach_selection cs " +
-            "LEFT JOIN student_users su ON cs.student_id = su.student_id " +
+            "LEFT JOIN student_users su ON cs.student_id = su.user_id " +
             "WHERE cs.coach_id = #{coachId} AND cs.status = '0'")
     List<CoachSelectionDTO> selectPendingSelections(@Param("coachId") Integer coachId);
 
@@ -24,7 +24,7 @@ public interface CoachSelectionMapper extends BaseMapper<coach_selection> {
             "su.name as student_name, su.phone as student_phone, su.age as student_age, " +
             "CASE WHEN su.gender = 'M' THEN 1 ELSE 0 END as student_sex " +
             "FROM coach_selection cs " +
-            "LEFT JOIN student_users su ON cs.student_id = su.student_id " +
+            "LEFT JOIN student_users su ON cs.student_id = su.user_id " +
             "WHERE cs.coach_id = #{coachId} AND cs.status = '1'")
     List<CoachSelectionDTO> selectAcceptedSelections(@Param("coachId") Integer coachId);
 
