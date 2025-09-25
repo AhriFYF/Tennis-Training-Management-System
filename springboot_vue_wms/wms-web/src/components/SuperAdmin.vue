@@ -80,6 +80,8 @@
           <div class="button-group">
             <el-button type="info" plain @click="goTo('/SuperAdmin-campus')">校区管理</el-button>
             <el-button type="info" plain @click="goTo('/SuperAdmin-systemLog')">系统日志</el-button>
+            <el-button type="info" plain @click="goTo('/MatchRegister')">月赛注册</el-button>
+            <el-button type="info" plain @click="goTo('/MatchSchedule')">月赛安排</el-button>
           </div>
         </el-card>
       </el-col>

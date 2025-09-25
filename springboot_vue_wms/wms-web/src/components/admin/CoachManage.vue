@@ -45,7 +45,14 @@
       </el-table-column>
       <el-table-column prop="phone" label="电话" width="180"></el-table-column>
       <el-table-column prop="campusId" label="校区" width="180"></el-table-column>
-
+      <el-table-column prop="auditStatus" label="审核状态" width="120">
+        <template slot-scope="scope">
+          <el-tag
+              :type="scope.row.auditStatus === 0 ? 'danger' : (scope.row.auditStatus === 1 ? 'primary' : 'success')"
+              disable-transitions>{{scope.row.auditStatus === 0 ? '待审核' :
+              (scope.row.auditStatus === 1 ? '通过' : '拒绝')}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="operate" label="操作">
         <template slot-scope="scope">
           <el-button size="small" type="success" @click="mod(scope.row)">编辑</el-button>
@@ -117,6 +124,15 @@
             <el-input v-model="form.roleId"></el-input>
           </el-col>
         </el-form-item>
+        <el-form-item label="审核状态" prop="roleId">
+          <el-col :span="20">
+            <el-select v-model="form.auditStatus" placeholder="是否通过审核">
+              <el-option label="待审核" :value="0"></el-option>
+              <el-option label="通过" :value="1"></el-option>
+              <el-option label="拒绝" :value="2"></el-option>
+            </el-select>
+          </el-col>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -178,7 +194,8 @@ export default {
         phone:'',
         sex:'0',
         roleId:'1',
-        campusId: ''
+        campusId: '',
+        auditStatus:''
       },
       rules: {
         no: [
@@ -247,6 +264,7 @@ export default {
         this.form.roleId = row.roleId
         this.form.campusId = row.campusId
         this.form.roleId = row.roleId
+        this.form.auditStatus = row.auditStatus
       })
     },
     add(){
