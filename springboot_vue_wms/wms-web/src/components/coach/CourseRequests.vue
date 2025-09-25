@@ -151,7 +151,7 @@ export default {
 
       // 使用完整的URL路径，避免相对路径问题
       const baseUrl = process.env.NODE_ENV === 'development'
-          ? 'http://localhost:8080'
+          ? 'http://10.67.41.194:8080'
           : window.location.origin
 
       // 加载待确认的预约请求
