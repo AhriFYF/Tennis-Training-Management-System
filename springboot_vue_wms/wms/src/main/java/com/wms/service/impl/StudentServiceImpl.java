@@ -109,9 +109,28 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
         }
 
         // 2. 更新student_users表
+
+
         if (updatedInfo.getClassGrade() != null) {
             student.setClassGrade(updatedInfo.getClassGrade());
         }
+
+        if (updatedInfo.getName() != null) {
+            student.setName(updatedInfo.getName());
+        }
+
+        if (updatedInfo.getPhone() != null) {
+            student.setPhone(updatedInfo.getPhone());
+        }
+
+        if(updatedInfo.getGender() != null) {
+            student.setGender(updatedInfo.getGender());
+        }
+
+        if(updatedInfo.getAge() != null) {
+            student.setAge(updatedInfo.getAge());
+        }
+
 
         // 更新照片URL（如果提供了）
         if (updatedInfo.getPhotoUrl() != null) {

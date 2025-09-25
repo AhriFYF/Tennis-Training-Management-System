@@ -20,12 +20,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="学号">
-              <el-input v-model="studentForm.studentNo" disabled></el-input>
+              <el-input v-model="studentForm.no" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="姓名" prop="name">
-              <el-input v-model="studentForm.name"></el-input>
+              <el-input v-model="studentForm.name"  ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -84,6 +84,7 @@
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload">
+            <!-- 添加条件判断 -->
             <img v-if="studentForm.photoUrl" :src="studentForm.photoUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -134,7 +135,7 @@ export default {
       isEditing: false,
       studentForm: {
         studentId: '',
-        studentNo: '',
+        no: '',
         name: '',
         gender: '',
         age: null,
@@ -143,7 +144,8 @@ export default {
         campusId: null,
         trainingHours: 0,
         balance: 0,
-        photoUrl: ''
+        photoUrl: '',
+        userId: null // 添加userId字段
       },
       originalForm: {},
       campusList: [],
@@ -174,8 +176,15 @@ export default {
           .then(response => {
             const res = response.data;
             if (res.code === 200) {
-              this.studentForm = { ...res.data };
+              // 确保所有字段都被正确赋值，包括userId
+
+
+              this.studentForm = {
+                ...this.studentForm,
+                ...res.data
+              };
               this.originalForm = { ...res.data };
+              this.$forceUpdate();
             } else {
               this.$message.error(res.msg || '加载个人信息失败');
             }
@@ -193,7 +202,6 @@ export default {
             const res = response.data;
             if (res.code === 200) {
               this.campusList = res.data;
-              console.log('校区列表加载成功:', this.campusList); // 添加日志
             } else {
               this.$message.error('加载校区列表失败');
               console.error('加载校区列表失败:', res.msg);
@@ -207,14 +215,31 @@ export default {
 
     // 保存个人信息
     saveProfile() {
-      this.$axios.put('/student/profile', this.studentForm)
+      // 确保传递所有必要字段给后端
+      const updateData = {
+        studentId: this.studentForm.studentId,
+        name: this.studentForm.name,
+        gender: this.studentForm.gender,
+        age: this.studentForm.age,
+        phone: this.studentForm.phone,
+        classGrade: this.studentForm.classGrade,
+        campusId: this.studentForm.campusId,
+        photoUrl: this.studentForm.photoUrl,
+        // 这些字段虽然在前端是只读的，但确保后端有完整数据
+        no: this.studentForm.no,
+        trainingHours: this.studentForm.trainingHours,
+        balance: this.studentForm.balance,
+        userId: this.studentForm.userId
+      };
+
+      this.$axios.put('/student/profile', updateData)
           .then(response => {
             const res = response.data;
             if (res.code === 200) {
               this.$message.success('个人信息更新成功');
               this.isEditing = false;
-              this.originalForm = { ...this.studentForm };
-              this.loadStudentProfile(); // 重新加载确保数据最新
+              // 重新加载完整的学生信息
+              this.loadStudentProfile();
             } else {
               this.$message.error(res.msg || '更新失败');
             }
@@ -227,7 +252,7 @@ export default {
 
     // 取消编辑
     cancelEdit() {
-      this.studentForm = { ...this.originalForm };
+      this.studentForm = JSON.parse(JSON.stringify(this.originalForm));
       this.isEditing = false;
     },
 
@@ -264,11 +289,10 @@ export default {
     },
 
     // 头像上传成功
-    // eslint-disable-next-line no-unused-vars
-    handleAvatarSuccess(res, file) {
+    handleAvatarSuccess(res) {
       if (res.code === 200) {
         this.studentForm.photoUrl = res.data.url;
-        this.saveProfile(); // 自动保存
+        this.$message.success('头像上传成功');
       } else {
         this.$message.error('头像上传失败');
       }
@@ -311,6 +335,9 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  width: 120px;
+  height: 120px;
+  display: block;
 }
 
 .avatar-uploader >>> .el-upload:hover {
