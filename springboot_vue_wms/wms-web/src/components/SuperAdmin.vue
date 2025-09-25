@@ -83,7 +83,7 @@
               type="danger"
               style="display: flex; justify-content: center; align-items: center; width: 100px; height: 50px; color: white; border-color: #ac6464; font-size: 20px"
               @click="showKeyInfo">
-            密钥状态
+            密钥信息
           </el-button>
         </div>
         <div style="text-align: center; padding: 10px;">
@@ -96,7 +96,7 @@
         </div>
         <div style="text-align: center; padding: 10px;">
           <el-button
-              type="primary"
+              type="success"
               style="display: flex; justify-content: center; align-items: center; width: 100px; height: 50px; color: white; border-color: #ac6464; font-size: 20px"
               @click="showGenerationDialog">
             生成密钥
