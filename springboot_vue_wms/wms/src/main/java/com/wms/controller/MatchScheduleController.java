@@ -102,6 +102,17 @@ public class MatchScheduleController {
         // 3. 根据结果返回
         return result ? Result.suc("删除成功") : Result.fail("删除失败");
     }
+    
+    // 删除所有赛程
+    @DeleteMapping("/deleteAll")
+    @Loggable(actionType = "删除 | 月赛赛程", actionDetail = "删除所有月赛赛程")
+    public Result deleteAll() {
+        // 1. 调用 Service 的 remove 方法，删除所有记录
+        boolean result = matchScheduleService.remove(new LambdaQueryWrapper<match_schedule>());
+
+        // 2. 根据结果返回
+        return result ? Result.suc("删除成功") : Result.fail("删除失败");
+    }
 
     // 模糊查询和分页
     @PostMapping("/listPageC1")

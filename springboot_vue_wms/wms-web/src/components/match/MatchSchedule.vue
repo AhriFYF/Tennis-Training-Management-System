@@ -9,6 +9,7 @@
                 @keyup.enter.native="loadPost"></el-input>
       <el-button type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
       <el-button type="success" @click="resetParam">重置</el-button>
+      <el-button type="warning" @click="autoSchedule">Automatic Scheduling</el-button>
     </div>
 
     <el-table :data="tableData"
@@ -236,8 +237,84 @@ export default {
       this.player2Id = '';
       this.loadPost();
     },
+    autoSchedule() {
+      this.$confirm('此操作将为所有组别自动生成赛程, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 先删除所有现有赛程
+        this.$axios.delete(this.$httpUrl+'/matchSchedule/deleteAll')
+            .then(res => res.data)
+            .then(res => {
+              if(res.code === 200) {
+                // 为所有组别生成赛程
+                const groups = ['甲', '乙', '丙'];
+                let successCount = 0;
+                let failCount = 0;
+                const messages = [];
+                
+                const generateForGroup = (index) => {
+                  if (index >= groups.length) {
+                    // 所有组别处理完成
+                    this.$message({
+                      message: `赛程生成完成！成功: ${successCount}组, 失败: ${failCount}组`,
+                      type: successCount > 0 ? 'success' : 'warning'
+                    });
+                    if (messages.length > 0) {
+                      this.$alert(messages.join('<br>'), '生成结果', {
+                        dangerouslyUseHTMLString: true,
+                        type: successCount > 0 ? 'success' : 'warning'
+                      });
+                    }
+                    this.loadPost(); // 重新加载数据
+                    return;
+                  }
+                  
+                  const group = groups[index];
+                  this.$axios.post(this.$httpUrl+'/matchSchedule/generate/' + group)
+                      .then(res => res.data)
+                      .then(res => {
+                        if(res.code === 200) {
+                          successCount++;
+                          messages.push(`组别${group}: 成功`);
+                        } else {
+                          failCount++;
+                          messages.push(`组别${group}: ${res.msg}`);
+                        }
+                      })
+                      .catch(() => {
+                        failCount++;
+                        messages.push(`组别${group}: 请求失败`);
+                      })
+                      .finally(() => {
+                        generateForGroup(index + 1);
+                      });
+                };
+                
+                generateForGroup(0);
+              } else {
+                this.$message({
+                  message: '清空现有赛程失败: ' + res.msg,
+                  type: 'error'
+                });
+              }
+            })
+            .catch(() => {
+              this.$message({
+                message: '清空现有赛程请求失败',
+                type: 'error'
+              });
+            });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
+    },
     loadPost(){
-      this.$axios.post(this.$httpUrl+'/matchSchedule/listPage', {
+      this.$axios.post(this.$httpUrl+'/matchSchedule/listPageC1', {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         param: {
