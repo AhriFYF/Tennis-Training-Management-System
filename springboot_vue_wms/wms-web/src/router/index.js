@@ -262,7 +262,14 @@ const routes = [
 
         ]
     },
+    {
+        path: '/student-recharge',
+        name: 'studentRecharge',
+        component: () => import('../components/student/Recharge.vue'),
+        children: [
 
+        ]
+    }
 ]
 
 const router = new VueRouter({

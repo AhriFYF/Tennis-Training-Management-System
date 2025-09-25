@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -396,5 +397,36 @@ public class UserController {
         }
 
         return Result.suc("注册成功，等待管理员审核");
+    }
+
+    // ========== 【用户充值接口】 ==========
+    @PostMapping("/recharge")
+    @Loggable(actionType = "充值 | 用户", actionDetail = "用户账户充值")
+    public Result recharge(@RequestParam Integer userId, @RequestParam BigDecimal amount) {
+        // 参数校验
+        if (userId == null || amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            return Result.fail("参数错误");
+        }
+
+        // 查询用户
+        User user = userService.getById(userId);
+        if (user == null) {
+            return Result.fail("用户不存在");
+        }
+
+        // 更新余额
+        BigDecimal currentBalance = user.getBalance() != null ? user.getBalance() : BigDecimal.ZERO;
+        BigDecimal newBalance = currentBalance.add(amount);
+        user.setBalance(newBalance);
+
+        // 保存更新
+        if (userService.updateById(user)) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("balance", newBalance);
+            result.put("amount", amount);
+            return Result.suc(result, 200L);
+        } else {
+            return Result.fail("充值失败");
+        }
     }
 }
