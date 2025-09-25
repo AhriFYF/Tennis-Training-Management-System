@@ -1,85 +1,121 @@
 <template>
   <div class="bookings-container">
-    <h2>我的课程预约</h2>
-    <el-alert
-        title="每月最多取消3次预约，取消需对方确认"
-        type="info"
-        show-icon
-        style="margin-bottom: 20px;"
-    ></el-alert>
+    <h2>课程预约</h2>
 
-    <el-table :data="bookings" style="width: 100%" stripe v-loading="loading">
-      <el-table-column prop="coachName" label="教练" width="120"></el-table-column>
-      <el-table-column prop="courseStartTime" label="开始时间" width="180">
-        <template slot-scope="scope">
-          {{ formatDateTime(scope.row.courseStartTime) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="courseEndTime" label="结束时间" width="180">
-        <template slot-scope="scope">
-          {{ formatDateTime(scope.row.courseEndTime) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="courtNumber" label="球台" width="100"></el-table-column>
-      <el-table-column prop="coursePrices" label="费用(元)" width="100">
-        <template slot-scope="scope">
-          {{ scope.row.coursePrices.toFixed(2) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="status" label="状态" width="120">
-        <template slot-scope="scope">
-          <el-tag :type="getStatusTagType(scope.row.status)">
-            {{ scope.row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="200">
-        <template slot-scope="scope">
-          <el-button
-              v-if="canCancel(scope.row)"
-              size="mini"
-              type="danger"
-              @click="handleCancel(scope.row)"
-          >
-            取消预约 (剩余{{ remainingCancels }}次)
-          </el-button>
-          <el-button
-              v-else-if="scope.row.status === '已取消'"
-              size="mini"
-              type="info"
-              disabled
-          >
-            已取消
-          </el-button>
-          <span v-else-if="!canCancel(scope.row) && scope.row.status === '已确认'">
-            无法取消
+    <!-- 教练选择区域 -->
+    <div class="coach-selection">
+      <el-select v-model="selectedCoach" placeholder="请选择教练" @change="loadCoachCourses">
+        <el-option
+            v-for="coach in availableCoaches"
+            :key="coach.coachId"
+            :label="coach.name"
+            :value="coach.coachId"
+        >
+          <span style="float: left">{{ coach.name }}</span>
+          <span style="float: right; color: #8492a6; font-size: 13px">
+            {{ coach.level | levelText }} - {{ coach.hourlyRate }}元/小时
           </span>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <div v-if="bookings.length === 0 && !loading" class="empty-tip">
-      <el-alert title="暂无预约记录" type="info" show-icon></el-alert>
+        </el-option>
+      </el-select>
     </div>
 
-    <!-- 取消预约对话框 -->
+    <!-- 课程列表 -->
+    <div class="courses-container" v-if="selectedCoach">
+      <h3>{{ selectedCoachName }}的可用课程</h3>
+      <el-table :data="coachCourses" style="width: 100%" stripe v-loading="loading">
+        <el-table-column prop="courseName" label="课程名称" width="150"></el-table-column>
+        <el-table-column prop="courseTypes" label="课程类型" width="120"></el-table-column>
+        <el-table-column prop="courseHours" label="课时(小时)" width="100"></el-table-column>
+        <el-table-column prop="coursePrices" label="费用(元)" width="100">
+          <template slot-scope="scope">
+            {{ scope.row.coursePrices.toFixed(2) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="courseStartTime" label="开始时间" width="180">
+          <template slot-scope="scope">
+            {{ formatDateTime(scope.row.courseStartTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="courseEndTime" label="结束时间" width="180">
+          <template slot-scope="scope">
+            {{ formatDateTime(scope.row.courseEndTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="120">
+          <template slot-scope="scope">
+            <el-button
+                size="mini"
+                type="primary"
+                @click="handleBook(scope.row)"
+                :disabled="scope.row.status !== '0'"
+            >
+              {{ scope.row.status === '0' ? '预约' : '已预约' }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <!-- 我的预约记录 -->
+    <div class="my-bookings">
+      <h3>我的预约记录</h3>
+      <el-table :data="myBookings" style="width: 100%" stripe>
+        <el-table-column prop="coachName" label="教练" width="120"></el-table-column>
+        <el-table-column prop="courseName" label="课程" width="150"></el-table-column>
+        <el-table-column prop="scheduleDate" label预约时间 width="180">
+          <template slot-scope="scope">
+            {{ formatDateTime(scope.row.scheduleDate) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="schedulingPeriod" label="时间段" width="100"></el-table-column>
+        <el-table-column prop="status" label="状态" width="100">
+          <template slot-scope="scope">
+            <el-tag :type="getStatusTagType(scope.row.status)">
+              {{ getStatusText(scope.row.status) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="150">
+          <template slot-scope="scope">
+            <el-button
+                v-if="scope.row.status === 0"
+                size="mini"
+                type="danger"
+                @click="handleCancel(scope.row)"
+            >
+              取消预约
+            </el-button>
+            <span v-else>无法取消</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <!-- 预约对话框 -->
     <el-dialog
-        title="取消预约"
-        :visible.sync="cancelDialogVisible"
+        title="确认预约"
+        :visible.sync="bookDialogVisible"
         width="30%">
-      <el-form :model="cancelForm">
-        <el-form-item label="取消原因">
-          <el-input
-              type="textarea"
-              :rows="3"
-              placeholder="请输入取消原因"
-              v-model="cancelForm.reason">
-          </el-input>
-        </el-form-item>
-      </el-form>
+      <div v-if="selectedCourse">
+        <p><strong>课程：</strong>{{ selectedCourse.courseName }}</p>
+        <p><strong>教练：</strong>{{ selectedCoachName }}</p>
+        <p><strong>时间：</strong>{{ formatDateTime(selectedCourse.courseStartTime) }} - {{ formatDateTime(selectedCourse.courseEndTime) }}</p>
+        <p><strong>费用：</strong>{{ selectedCourse.coursePrices }}元</p>
+
+        <el-form :model="bookForm" label-width="80px">
+          <el-form-item label="备注">
+            <el-input
+                type="textarea"
+                :rows="3"
+                placeholder="请输入备注信息"
+                v-model="bookForm.notes">
+            </el-input>
+          </el-form-item>
+        </el-form>
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmCancel">确 定</el-button>
+        <el-button @click="bookDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmBook">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -88,17 +124,30 @@
 <script>
 export default {
   name: "Bookings",
+  filters: {
+    levelText(level) {
+      const levelMap = {
+        1: '初级',
+        2: '中级',
+        3: '高级'
+      };
+      return levelMap[level] || '未知';
+    }
+  },
   data() {
     return {
-      bookings: [],
-      remainingCancels: 3,
-      currentUserId: null,
+      availableCoaches: [],
+      selectedCoach: null,
+      selectedCoachName: '',
+      coachCourses: [],
+      myBookings: [],
       loading: false,
-      cancelDialogVisible: false,
-      cancelForm: {
-        bookingId: null,
-        reason: ''
-      }
+      bookDialogVisible: false,
+      selectedCourse: null,
+      bookForm: {
+        notes: ''
+      },
+      currentUser: null
     };
   },
   methods: {
@@ -108,83 +157,148 @@ export default {
     },
     getStatusTagType(status) {
       switch(status) {
-        case '已确认': return 'success';
-        case '待确认': return 'warning';
-        case '已取消': return 'info';
+        case 1: return 'success'; // 已确认
+        case 0: return 'warning'; // 待确认
+        case 2: return 'info';    // 已取消
+        case 3: return '';        // 已完成
         default: return '';
       }
     },
-    canCancel(booking) {
-      if (booking.status !== '已确认') {
-        return false;
-      }
-
-      const now = new Date();
-      const startTime = new Date(booking.courseStartTime);
-      const hoursDiff = (startTime - now) / (1000 * 60 * 60);
-
-      return hoursDiff > 24 && this.remainingCancels > 0;
+    getStatusText(status) {
+      const statusMap = {
+        0: '待确认',
+        1: '已确认',
+        2: '已取消',
+        3: '已完成'
+      };
+      return statusMap[status] || '未知';
     },
-    handleCancel(booking) {
-      this.cancelForm.bookingId = booking.id;
-      this.cancelForm.reason = '';
-      this.cancelDialogVisible = true;
-    },
-    confirmCancel() {
-      if (!this.cancelForm.reason) {
-        this.$message.error('请填写取消原因');
-        return;
-      }
-
-      this.$axios.post(`${this.$httpUrl}/booking/cancel/${this.cancelForm.bookingId}`, {
-        reason: this.cancelForm.reason
-      }).then(res => res.data)
-          .then(res => {
-            if (res.code === 200) {
-              this.$message.success(res.msg);
-              this.cancelDialogVisible = false;
-              this.loadBookings();
-              this.loadCancellationInfo();
-            } else {
-              this.$message.error(res.msg);
-            }
-          }).catch(error => {
-        this.$message.error('取消预约失败');
-        console.error(error);
-      });
-    },
-    loadBookings() {
-      this.loading = true;
-      const user = JSON.parse(sessionStorage.getItem('CurUser'));
-      if (user && user.id) {
-        this.currentUserId = user.id;
-        this.$axios.get(`${this.$httpUrl}/booking/student/${user.id}`)
-            .then(res => res.data)
-            .then(res => {
-              if (res.code === 200) {
-                this.bookings = res.data;
-              }
-              this.loading = false;
-            }).catch(() => {
-          this.loading = false;
-        });
-      } else {
-        this.loading = false;
-      }
-    },
-    loadCancellationInfo() {
-      this.$axios.get(`${this.$httpUrl}/booking/cancellationCount`)
+    // 加载可选教练列表
+    loadAvailableCoaches() {
+      this.$axios.get(`${this.$httpUrl}/coach/selected`)
           .then(res => res.data)
           .then(res => {
             if (res.code === 200) {
-              this.remainingCancels = res.data.remaining;
+              this.availableCoaches = res.data;
             }
+          })
+          .catch(error => {
+            console.error('加载教练列表失败', error);
           });
+    },
+    // 加载教练的课程
+    loadCoachCourses(coachId) {
+      this.loading = true;
+      const coach = this.availableCoaches.find(c => c.coachId === coachId);
+      this.selectedCoachName = coach ? coach.name : '';
+
+      this.$axios.get(`${this.$httpUrl}/course/coach/${coachId}`)
+          .then(res => res.data)
+          .then(res => {
+            if (res.code === 200) {
+              this.coachCourses = res.data;
+            }
+            this.loading = false;
+          })
+          .catch(() => {
+            this.loading = false;
+          });
+    },
+    // 加载我的预约记录
+    loadMyBookings() {
+      if (!this.currentUser) return;
+
+      this.$axios.get(`${this.$httpUrl}/booking/student/${this.currentUser.id}`)
+          .then(res => res.data)
+          .then(res => {
+            if (res.code === 200) {
+              this.myBookings = res.data;
+            }
+          })
+          .catch(error => {
+            console.error('加载预约记录失败', error);
+          });
+    },
+    // 处理预约
+    handleBook(course) {
+      this.selectedCourse = course;
+      this.bookForm.notes = '';
+      this.bookDialogVisible = true;
+    },
+    // 确认预约
+    confirmBook() {
+      if (!this.selectedCourse || !this.currentUser) return;
+
+      const bookingData = {
+        studentId: this.currentUser.id,
+        coachId: this.selectedCoach,
+        courseName: this.selectedCourse.courseName,
+        courseNumber: this.selectedCourse.courseNumber,
+        scheduleDate: this.selectedCourse.courseStartTime,
+        schedulingPeriod: this.calculateTimePeriod(
+            this.selectedCourse.courseStartTime,
+            this.selectedCourse.courseEndTime
+        ),
+        status: 0, // 待确认
+        campusId: this.currentUser.campusId,
+        notes: this.bookForm.notes
+      };
+
+      this.$axios.post(`${this.$httpUrl}/booking/create`, bookingData)
+          .then(res => res.data)
+          .then(res => {
+            if (res.code === 200) {
+              this.$message.success('预约成功，等待教练确认');
+              this.bookDialogVisible = false;
+              // 刷新数据
+              this.loadCoachCourses(this.selectedCoach);
+              this.loadMyBookings();
+            } else {
+              this.$message.error(res.msg || '预约失败');
+            }
+          })
+          .catch(error => {
+            this.$message.error('预约失败');
+            console.error(error);
+          });
+    },
+    // 计算时间段
+    calculateTimePeriod(startTime, endTime) {
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      return `${start.getHours()}:${start.getMinutes().toString().padStart(2, '0')}-${end.getHours()}:${end.getMinutes().toString().padStart(2, '0')}`;
+    },
+    // 处理取消预约
+    handleCancel(booking) {
+      this.$confirm('确定要取消此预约吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.post(`${this.$httpUrl}/booking/cancel/${booking.bookingId}`)
+            .then(res => res.data)
+            .then(res => {
+              if (res.code === 200) {
+                this.$message.success('取消预约成功');
+                this.loadMyBookings();
+              } else {
+                this.$message.error(res.msg || '取消预约失败');
+              }
+            })
+            .catch(error => {
+              this.$message.error('取消预约失败');
+              console.error(error);
+            });
+      });
     }
   },
   mounted() {
-    this.loadBookings();
-    this.loadCancellationInfo();
+    const user = JSON.parse(sessionStorage.getItem('CurUser'));
+    if (user && user.id) {
+      this.currentUser = user;
+      this.loadAvailableCoaches();
+      this.loadMyBookings();
+    }
   }
 };
 </script>
@@ -193,8 +307,10 @@ export default {
 .bookings-container {
   padding: 20px;
 }
-.empty-tip {
-  margin-top: 20px;
-  text-align: center;
+.coach-selection {
+  margin-bottom: 20px;
+}
+.courses-container, .my-bookings {
+  margin-bottom: 30px;
 }
 </style>

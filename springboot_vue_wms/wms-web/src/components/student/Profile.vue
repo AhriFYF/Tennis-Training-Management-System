@@ -20,12 +20,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="学号">
-              <el-input v-model="studentForm.no" disabled></el-input>
+              <el-input v-model="studentForm.studentId" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="姓名" prop="name">
-              <el-input v-model="studentForm.name"  ></el-input>
+              <el-input v-model="studentForm.name"  disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>

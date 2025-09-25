@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @TableName("bookings")
 public class Booking {
     @Id
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "booking_id", type = IdType.AUTO)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long bookingId;
 
     @Column(name = "student_id", nullable = false)
     private Integer studentId;
@@ -22,23 +22,20 @@ public class Booking {
     @Column(name = "coach_id", nullable = false)
     private Integer coachId;
 
-    @Column(name = "coach_name", nullable = false, length = 50)
-    private String coachName;
+    @Column(name = "course_name", nullable = false, length = 100)
+    private String courseName;
 
-    @Column(name = "course_start_time", nullable = false)
-    private LocalDateTime courseStartTime;
+    @Column(name = "course_number", nullable = false, length = 50)
+    private String courseNumber;
 
-    @Column(name = "course_end_time", nullable = false)
-    private LocalDateTime courseEndTime;
+    @Column(name = "schedule_date", nullable = false)
+    private LocalDateTime scheduleDate;
 
-    @Column(name = "court_number", nullable = false, length = 20)
-    private String courtNumber;
+    @Column(name = "scheduling_period", nullable = false, length = 50)
+    private String schedulingPeriod;
 
-    @Column(name = "course_prices", nullable = false)
-    private Double coursePrices;
-
-    @Column(name = "status", nullable = false, length = 20)
-    private String status; // 待确认、已确认、已取消
+    @Column(name = "status", nullable = false)
+    private Integer status; // 0-待确认, 1-已确认, 2-已取消, 3-已完成
 
     @Column(name = "created_time", nullable = false)
     private LocalDateTime createdTime;
@@ -46,18 +43,42 @@ public class Booking {
     @Column(name = "updated_time", nullable = false)
     private LocalDateTime updatedTime;
 
-    @Column(name = "cancellation_reason", length = 200)
-    private String cancellationReason;
+    @Column(name = "campus_id", nullable = false)
+    private Integer campusId;
 
-    @Column(name = "cancelled_by", length = 20)
-    private String cancelledBy; // student或coach
+    @Column(name = "notes", length = 500)
+    private String notes;
 
-    public Long getId() {
-        return id;
+    // 构造函数
+    public Booking() {
+        this.createdTime = LocalDateTime.now();
+        this.updatedTime = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingId=" + bookingId +
+                ", studentId=" + studentId +
+                ", coachId=" + coachId +
+                ", courseName='" + courseName + '\'' +
+                ", courseNumber='" + courseNumber + '\'' +
+                ", scheduleDate=" + scheduleDate +
+                ", schedulingPeriod='" + schedulingPeriod + '\'' +
+                ", status=" + status +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                ", campusId=" + campusId +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
+
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
     }
 
     public Integer getStudentId() {
@@ -76,51 +97,43 @@ public class Booking {
         this.coachId = coachId;
     }
 
-    public String getCoachName() {
-        return coachName;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public LocalDateTime getCourseStartTime() {
-        return courseStartTime;
+    public String getCourseNumber() {
+        return courseNumber;
     }
 
-    public void setCourseStartTime(LocalDateTime courseStartTime) {
-        this.courseStartTime = courseStartTime;
+    public void setCourseNumber(String courseNumber) {
+        this.courseNumber = courseNumber;
     }
 
-    public LocalDateTime getCourseEndTime() {
-        return courseEndTime;
+    public LocalDateTime getScheduleDate() {
+        return scheduleDate;
     }
 
-    public void setCourseEndTime(LocalDateTime courseEndTime) {
-        this.courseEndTime = courseEndTime;
+    public void setScheduleDate(LocalDateTime scheduleDate) {
+        this.scheduleDate = scheduleDate;
     }
 
-    public String getCourtNumber() {
-        return courtNumber;
+    public String getSchedulingPeriod() {
+        return schedulingPeriod;
     }
 
-    public void setCourtNumber(String courtNumber) {
-        this.courtNumber = courtNumber;
+    public void setSchedulingPeriod(String schedulingPeriod) {
+        this.schedulingPeriod = schedulingPeriod;
     }
 
-    public Double getCoursePrices() {
-        return coursePrices;
-    }
-
-    public void setCoursePrices(Double coursePrices) {
-        this.coursePrices = coursePrices;
-    }
-
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -140,19 +153,36 @@ public class Booking {
         this.updatedTime = updatedTime;
     }
 
-    public String getCancellationReason() {
-        return cancellationReason;
+    public Integer getCampusId() {
+        return campusId;
     }
 
-    public void setCancellationReason(String cancellationReason) {
-        this.cancellationReason = cancellationReason;
+    public void setCampusId(Integer campusId) {
+        this.campusId = campusId;
     }
 
-    public String getCancelledBy() {
-        return cancelledBy;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setCancelledBy(String cancelledBy) {
-        this.cancelledBy = cancelledBy;
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    // 新增：状态检查方法
+    public boolean isPending() {
+        return this.status == 0;
+    }
+
+    public boolean isConfirmed() {
+        return this.status == 1;
+    }
+
+    public boolean isCancelled() {
+        return this.status == 2;
+    }
+
+    public boolean isCompleted() {
+        return this.status == 3;
     }
 }
