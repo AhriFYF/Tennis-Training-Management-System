@@ -49,7 +49,7 @@
                 <el-avatar :size="80" icon="el-icon-user-solid" v-else></el-avatar>
                 <div class="coach-info">
                   <h3>{{ coach.name }}</h3>
-                  <p>{{ getLevelText(coach.level) }}教练</p>
+                  <p>教练</p>
                 </div>
               </div>
 
@@ -95,7 +95,7 @@
                 <el-avatar :size="80" icon="el-icon-user-solid" v-else></el-avatar>
                 <div class="coach-info">
                   <h3>{{ coach.name }}</h3>
-                  <p>{{ getLevelText(coach.level) }}教练</p>
+                  <p>教练</p>
                 </div>
               </div>
 
@@ -140,11 +140,10 @@
           <el-table-column label="教练信息">
             <template slot-scope="scope">
               <div class="coach-info">
-                <el-avatar :size="50" :src="scope.row.photoUrl" v-if="scope.row.photoUrl"></el-avatar>
-                <el-avatar :size="50" icon="el-icon-user-solid" v-else></el-avatar>
+                <el-avatar :size="50" icon="el-icon-user-solid"></el-avatar>
                 <div class="info-text">
-                  <strong>{{ scope.row.name }}</strong>
-                  <p>{{ getLevelText(scope.row.level) }}教练 · {{ scope.row.campusName }}</p>
+                  <strong>{{ scope.row.coachName }}</strong>
+                  <p>教练</p>
                 </div>
               </div>
             </template>
@@ -178,13 +177,6 @@ export default {
     };
   },
   methods: {
-    getLevelText(level) {
-      switch(level) {
-        case 1: return '初级';
-        case 2: return '中级';
-        case 3: return '高级';
-      }
-    },
     getStatusTagType(status) {
       switch(status) {
         case '已确认': return 'success';
