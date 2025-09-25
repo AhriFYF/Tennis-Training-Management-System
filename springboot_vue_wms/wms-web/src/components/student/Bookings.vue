@@ -1,4 +1,3 @@
-<!-- Bookings.vue 学生预约管理组件 -->
 <template>
   <div class="bookings-container">
     <h2>我的课程预约</h2>
@@ -9,7 +8,7 @@
         style="margin-bottom: 20px;"
     ></el-alert>
 
-    <el-table :data="bookings" style="width: 100%" stripe>
+    <el-table :data="bookings" style="width: 100%" stripe v-loading="loading">
       <el-table-column prop="coachName" label="教练" width="120"></el-table-column>
       <el-table-column prop="courseStartTime" label="开始时间" width="180">
         <template slot-scope="scope">
@@ -22,7 +21,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="courtNumber" label="球台" width="100"></el-table-column>
-      <el-table-column prop="coursePrices" label="费用(元)" width="100"></el-table-column>
+      <el-table-column prop="coursePrices" label="费用(元)" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.coursePrices.toFixed(2) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="status" label="状态" width="120">
         <template slot-scope="scope">
           <el-tag :type="getStatusTagType(scope.row.status)">
@@ -48,13 +51,37 @@
           >
             已取消
           </el-button>
+          <span v-else-if="!canCancel(scope.row) && scope.row.status === '已确认'">
+            无法取消
+          </span>
         </template>
       </el-table-column>
     </el-table>
 
-    <div v-if="bookings.length === 0" class="empty-tip">
+    <div v-if="bookings.length === 0 && !loading" class="empty-tip">
       <el-alert title="暂无预约记录" type="info" show-icon></el-alert>
     </div>
+
+    <!-- 取消预约对话框 -->
+    <el-dialog
+        title="取消预约"
+        :visible.sync="cancelDialogVisible"
+        width="30%">
+      <el-form :model="cancelForm">
+        <el-form-item label="取消原因">
+          <el-input
+              type="textarea"
+              :rows="3"
+              placeholder="请输入取消原因"
+              v-model="cancelForm.reason">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmCancel">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -65,12 +92,19 @@ export default {
     return {
       bookings: [],
       remainingCancels: 3,
-      currentUserId: null
+      currentUserId: null,
+      loading: false,
+      cancelDialogVisible: false,
+      cancelForm: {
+        bookingId: null,
+        reason: ''
+      }
     };
   },
   methods: {
     formatDateTime(dateTime) {
-      return new Date(dateTime).toLocaleString();
+      if (!dateTime) return '';
+      return new Date(dateTime).toLocaleString('zh-CN');
     },
     getStatusTagType(status) {
       switch(status) {
@@ -81,34 +115,46 @@ export default {
       }
     },
     canCancel(booking) {
+      if (booking.status !== '已确认') {
+        return false;
+      }
+
       const now = new Date();
       const startTime = new Date(booking.courseStartTime);
       const hoursDiff = (startTime - now) / (1000 * 60 * 60);
 
-      return booking.status === '已确认' &&
-          hoursDiff > 24 &&
-          this.remainingCancels > 0;
+      return hoursDiff > 24 && this.remainingCancels > 0;
     },
     handleCancel(booking) {
-      this.$confirm('确定要取消此预约吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$axios.post(`${this.$httpUrl}/booking/cancel/${booking.id}`)
-            .then(res => res.data)
-            .then(res => {
-              if (res.code === 200) {
-                this.$message.success(res.msg);
-                this.loadBookings();
-                this.remainingCancels--;
-              } else {
-                this.$message.error(res.msg);
-              }
-            });
+      this.cancelForm.bookingId = booking.id;
+      this.cancelForm.reason = '';
+      this.cancelDialogVisible = true;
+    },
+    confirmCancel() {
+      if (!this.cancelForm.reason) {
+        this.$message.error('请填写取消原因');
+        return;
+      }
+
+      this.$axios.post(`${this.$httpUrl}/booking/cancel/${this.cancelForm.bookingId}`, {
+        reason: this.cancelForm.reason
+      }).then(res => res.data)
+          .then(res => {
+            if (res.code === 200) {
+              this.$message.success(res.msg);
+              this.cancelDialogVisible = false;
+              this.loadBookings();
+              this.loadCancellationInfo();
+            } else {
+              this.$message.error(res.msg);
+            }
+          }).catch(error => {
+        this.$message.error('取消预约失败');
+        console.error(error);
       });
     },
     loadBookings() {
+      this.loading = true;
       const user = JSON.parse(sessionStorage.getItem('CurUser'));
       if (user && user.id) {
         this.currentUserId = user.id;
@@ -118,7 +164,12 @@ export default {
               if (res.code === 200) {
                 this.bookings = res.data;
               }
-            });
+              this.loading = false;
+            }).catch(() => {
+          this.loading = false;
+        });
+      } else {
+        this.loading = false;
       }
     },
     loadCancellationInfo() {
@@ -126,7 +177,7 @@ export default {
           .then(res => res.data)
           .then(res => {
             if (res.code === 200) {
-              this.remainingCancels = 3 - res.data.count;
+              this.remainingCancels = res.data.remaining;
             }
           });
     }

@@ -3,6 +3,7 @@ package com.wms.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wms.dto.StudentRegisterDTO;
 import com.wms.dto.StudentDetailDTO;
+import com.wms.dto.StudentUpdateDTO;
 import com.wms.entity.User;
 import com.wms.entity.student_users;
 import com.wms.mapper.UserMapper;
@@ -100,7 +101,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
 
     @Override
     @Transactional
-    public boolean updateStudentProfile(Integer studentId, StudentRegisterDTO updatedInfo) {
+    public boolean updateStudentProfile(Integer studentId, StudentUpdateDTO updatedInfo) {
         // 1. 获取学生信息
         student_users student = studentUsersMapper.selectById(studentId);
         if (student == null) {
@@ -110,6 +111,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
         // 2. 更新student_users表
         if (updatedInfo.getClassGrade() != null) {
             student.setClassGrade(updatedInfo.getClassGrade());
+        }
+
+        // 更新照片URL（如果提供了）
+        if (updatedInfo.getPhotoUrl() != null) {
+            student.setPhotoUrl(updatedInfo.getPhotoUrl());
         }
 
         int studentUpdated = studentUsersMapper.updateById(student);
@@ -139,6 +145,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
             } else if ("F".equals(updatedInfo.getGender())) {
                 user.setSex(0);
             }
+        }
+
+        // 更新校区ID（如果提供了）
+        if (updatedInfo.getCampusId() != null) {
+            user.setCampusId(updatedInfo.getCampusId());
         }
 
         int userUpdated = userMapper.updateById(user);

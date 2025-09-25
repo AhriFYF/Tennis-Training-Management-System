@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wms.common.Result;
 import com.wms.dto.StudentRegisterDTO;
 import com.wms.dto.StudentDetailDTO;
+import com.wms.dto.StudentUpdateDTO;
+import com.wms.dto.PasswordChangeDTO;
 import com.wms.entity.User;
 import com.wms.entity.student_users;
 import com.wms.service.StudentService;
@@ -28,11 +30,10 @@ public class StudentController {
     /**
      * 学生注册
      */
-    // 修正注册方法中的检查逻辑
     @PostMapping("/register")
     public Result register(@RequestBody StudentRegisterDTO dto) {
         try {
-            // 检查学号是否已存在（直接使用Service中的方法）
+            // 检查学号是否已存在
             StudentDetailDTO existingStudent = studentService.getStudentByNo(dto.getNo());
             if (existingStudent != null) {
                 return Result.fail("学号已存在");
@@ -45,7 +46,9 @@ public class StudentController {
         }
     }
 
-    // 修正获取所有学生列表的方法，返回详细信息而非基本实体
+    /**
+     * 获取所有学生列表
+     */
     @GetMapping("/list")
     public Result getAllStudents() {
         try {
@@ -88,7 +91,7 @@ public class StudentController {
      * 更新学生个人信息
      */
     @PutMapping("/profile")
-    public Result updateProfile(@RequestBody StudentRegisterDTO updatedInfo, HttpServletRequest request) {
+    public Result updateProfile(@RequestBody StudentUpdateDTO updateDTO, HttpServletRequest request) {
         // 从session获取用户ID
         Integer userId = (Integer) request.getSession().getAttribute("userId");
         if (userId == null) {
@@ -102,11 +105,35 @@ public class StudentController {
         }
 
         try {
-            boolean success = studentService.updateStudentProfile(studentDetail.getStudentId(), updatedInfo);
+            boolean success = studentService.updateStudentProfile(studentDetail.getStudentId(), updateDTO);
             return success ? Result.suc("更新成功") : Result.fail("更新失败");
         } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
+    }
+
+    /**
+     * 修改密码
+     */
+    @PostMapping("/changePassword")
+    public Result changePassword(@RequestBody PasswordChangeDTO dto, HttpServletRequest request) {
+        // 从session获取用户ID
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        if (userId == null) {
+            return Result.fail("未登录或会话已过期");
+        }
+
+        // 验证原密码
+        User user = userService.getById(userId);
+        if (user == null || !user.getPassword().equals(dto.getOldPassword())) {
+            return Result.fail("原密码不正确");
+        }
+
+        // 更新密码
+        user.setPassword(dto.getNewPassword());
+        boolean success = userService.updateById(user);
+
+        return success ? Result.suc("密码修改成功") : Result.fail("密码修改失败");
     }
 
     /**
@@ -120,8 +147,6 @@ public class StudentController {
         }
         return Result.suc(student);
     }
-
-
 
     /**
      * 根据学生ID获取详细信息
