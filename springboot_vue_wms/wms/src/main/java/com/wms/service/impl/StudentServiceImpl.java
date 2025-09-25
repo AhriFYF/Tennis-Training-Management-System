@@ -11,16 +11,18 @@ import com.wms.mapper.StudentUsersMapper;
 import com.wms.service.CampusService;
 import com.wms.service.StudentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_users> implements StudentService {
+
+    private static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -109,28 +111,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentUsersMapper, student_
         }
 
         // 2. 更新student_users表
-
-
         if (updatedInfo.getClassGrade() != null) {
             student.setClassGrade(updatedInfo.getClassGrade());
         }
-
-        if (updatedInfo.getName() != null) {
-            student.setName(updatedInfo.getName());
-        }
-
-        if (updatedInfo.getPhone() != null) {
-            student.setPhone(updatedInfo.getPhone());
-        }
-
-        if(updatedInfo.getGender() != null) {
-            student.setGender(updatedInfo.getGender());
-        }
-
-        if(updatedInfo.getAge() != null) {
-            student.setAge(updatedInfo.getAge());
-        }
-
 
         // 更新照片URL（如果提供了）
         if (updatedInfo.getPhotoUrl() != null) {

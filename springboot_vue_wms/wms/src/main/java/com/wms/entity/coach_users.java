@@ -176,6 +176,11 @@ public class coach_users {
         this.hourlyRate = hourlyRate;
     }
 
+    // 关联校区信息（非数据库字段）
+    @Transient
+    @TableField(exist = false)
+    private String campusName;
+
     public String getCampusName() {
         return campusName;
     }
@@ -186,6 +191,9 @@ public class coach_users {
 
     // 自动计算课时费
     public Integer getHourlyRate() {
+        if (this.level == null) {
+            return 80; // default value
+        }
         return switch(this.level) {
             case 1 -> 80;
             case 2 -> 150;
@@ -193,9 +201,4 @@ public class coach_users {
             default -> 80;
         };
     }
-
-    // 关联校区信息（非数据库字段）
-    @Transient
-    @TableField(exist = false)
-    private String campusName;
 }

@@ -29,10 +29,7 @@
             <i class="el-icon-date"></i>
             <span slot="title">我的预约</span>
           </el-menu-item>
-          <el-menu-item index="/student-coach-search">
-            <i class="el-icon-search"></i>
-            <span slot="title">教练查询</span>
-          </el-menu-item>
+
           <el-menu-item index="/student-coach-application">
             <i class="el-icon-edit"></i>
             <span slot="title">教练申请</span>

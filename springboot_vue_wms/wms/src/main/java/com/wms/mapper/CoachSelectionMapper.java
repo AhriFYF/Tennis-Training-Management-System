@@ -35,4 +35,8 @@ public interface CoachSelectionMapper extends BaseMapper<coach_selection> {
     // 检查是否已存在双选关系
     @Select("SELECT COUNT(*) FROM coach_selection WHERE student_id = #{studentId} AND coach_id = #{coachId}")
     int existsSelection(@Param("studentId") Integer studentId, @Param("coachId") Integer coachId);
+
+    // 检查是否已存在双选关系（使用教练userId）
+    @Select("SELECT COUNT(*) FROM coach_selection WHERE student_id = #{studentId} AND coach_id = #{coachUserId}")
+    int existsSelectionByUserId(@Param("studentId") Integer studentId, @Param("coachUserId") Integer coachUserId);
 }

@@ -6,12 +6,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.wms.common.Loggable;
 import com.wms.entity.SystemLog;
 import com.wms.service.SystemLogService;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,8 +24,9 @@ import java.time.LocalDateTime;
 
 @Aspect
 @Component
-@Slf4j
 public class LogAspect {
+
+    private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     @Autowired
     private SystemLogService systemLogService;

@@ -88,7 +88,7 @@ public class StudentController {
     }
 
     /**
-     * 更新学生个人信息 - 同时更新User表和student_users表
+     * 更新学生个人信息
      */
     @PutMapping("/profile")
     public Result updateProfile(@RequestBody StudentUpdateDTO updateDTO, HttpServletRequest request) {
@@ -105,41 +105,11 @@ public class StudentController {
         }
 
         try {
-            // 更新student_users表
-            boolean studentUpdated = studentService.updateStudentProfile(studentDetail.getStudentId(), updateDTO);
-
-            // 同时更新User表
-            boolean userUpdated = updateUserInfo(userId, updateDTO);
-
-            return (studentUpdated && userUpdated) ? Result.suc("更新成功") : Result.fail("更新失败");
+            boolean success = studentService.updateStudentProfile(studentDetail.getStudentId(), updateDTO);
+            return success ? Result.suc("更新成功") : Result.fail("更新失败");
         } catch (Exception e) {
             return Result.fail(e.getMessage());
         }
-    }
-
-    /**
-     * 更新User表信息
-     */
-    private boolean updateUserInfo(Integer userId, StudentUpdateDTO updateDTO) {
-        User user = userService.getById(userId);
-        if (user == null) {
-            return false;
-        }
-
-        // 更新User表中的相关信息
-        user.setName(updateDTO.getName());
-        user.setAge(updateDTO.getAge());
-        user.setPhone(updateDTO.getPhone());
-        user.setCampusId(updateDTO.getCampusId());
-
-        // 性别转换：M -> 1, F -> 0
-        if ("M".equals(updateDTO.getGender())) {
-            user.setSex(1);
-        } else if ("F".equals(updateDTO.getGender())) {
-            user.setSex(0);
-        }
-
-        return userService.updateById(user);
     }
 
     /**

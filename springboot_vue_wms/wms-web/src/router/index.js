@@ -230,14 +230,7 @@ const routes = [
 
         ]
     },
-    {
-        path: '/student-coach-search',
-        name: 'studentCoachSearch',
-        component: () => import('../components/student/CoachSearch.vue'),
-        children: [
 
-        ]
-    },
     {
         path: '/student-coach-application',
         name: 'studentCoachApplication',

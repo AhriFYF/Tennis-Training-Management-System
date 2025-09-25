@@ -7,14 +7,16 @@ import com.wms.entity.student_users;
 import com.wms.mapper.StudentUsersMapper;
 import com.wms.service.CampusService;
 import com.wms.service.StudentUsersService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class StudentUsersServiceImpl extends ServiceImpl<StudentUsersMapper, student_users> implements StudentUsersService {
+
+    private static final Logger log = LoggerFactory.getLogger(StudentUsersServiceImpl.class);
 
     @Autowired
     private CampusService campusService;
@@ -46,7 +48,7 @@ public class StudentUsersServiceImpl extends ServiceImpl<StudentUsersMapper, stu
             // 2. 组装详细信息
             return assembleStudentDetail(student);
         } catch (Exception e) {
-            log.error("查询学号 {} 的学生详情失败: {}", studentNo, e.getMessage());
+            log.error("查询学号 {} 的学生详情失败: {}", studentNo, e.getMessage(), e);
             throw new RuntimeException("查询学生详情失败", e);
         }
     }
@@ -63,7 +65,7 @@ public class StudentUsersServiceImpl extends ServiceImpl<StudentUsersMapper, stu
             // 2. 组装详细信息（复用已有的私有方法）
             return assembleStudentDetail(student);
         } catch (Exception e) {
-            log.error("查询用户ID {} 的学生详情失败: {}", userId, e.getMessage());
+            log.error("查询用户ID {} 的学生详情失败: {}", userId, e.getMessage(), e);
             throw new RuntimeException("查询学生详情失败", e);
         }
     }
