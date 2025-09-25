@@ -27,6 +27,9 @@ public class StudentCourseSelectionServiceImpl extends ServiceImpl<StudentCourse
     private UserMapper userMapper;
 
     @Autowired
+    private StudentUsersMapper studentUsersMapper;
+
+    @Autowired
     private CoachUsersMapper coachUsersMapper;
 
     @Autowired
@@ -47,11 +50,12 @@ public class StudentCourseSelectionServiceImpl extends ServiceImpl<StudentCourse
                 return false;
             }
 
-            // 2. 获取学生信息（从user表）
-            User student = userMapper.selectById(selection.getStudentUsers());
+            // 2. 获取学生信息（从student_users表）
+            student_users student = studentUsersMapper.selectById(selection.getStudentUsers());
             if (student == null) {
                 return false;
             }
+
 
             // 3. 获取教练信息
             coach_users coach = coachUsersMapper.findByUserId(course.getCoachUser());
@@ -76,11 +80,11 @@ public class StudentCourseSelectionServiceImpl extends ServiceImpl<StudentCourse
             selection.setSourceTable("course_information");
             selection.setCampusId(student.getCampusId());
 
-            // 5. 扣除学生余额（从user表）
-            BigDecimal newBalance = student.getBalance().subtract(BigDecimal.valueOf(course.getCoursePrices()));
+            // 5. 扣除学生余额（从student_users表）
+            // 扣费操作
+            Integer newBalance = (int) (student.getBalance() - course.getCoursePrices());
             student.setBalance(newBalance);
-            userMapper.updateById(student);
-
+            studentUsersMapper.updateById(student); // 使用studentUsersMapper更新
             // 6. 更新课程状态为已预约
             course.setStatus("1");
             courseInformationMapper.updateById(course);
