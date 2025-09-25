@@ -34,7 +34,7 @@
         <h1 class="welcome-title">
           {{'超级管理员 ' + user.name}}
         </h1>
-        <p class="campus-name">{{ '管理校区：' + user.campusId }}</p>
+        <p class="campus-name">{{ '管理校区：' + (user.campusName || '加载中...') }}</p>
       </div>
     </div>
 
@@ -169,6 +169,7 @@ export default {
   data() {
     return {
       user: {},
+      campusName: '', // 新增一个属性来存储校区名称
       showKeyGenerationDialog: false,
       showKeyVerificationDialog: false,
       generatingKey: false,
@@ -204,9 +205,37 @@ export default {
         
         // 检查密钥状态
         this.checkKeyStatus();
+
+        // 新增：如果 campusId 存在，则查询校区名称
+        if (this.user.campusId) {
+          this.getCampusName(this.user.campusId);
+        }
       }
     },
-    
+
+    // 新增方法：根据 campusId 获取校区名称
+    getCampusName(campusId) {
+      this.$axios.get(`${this.$httpUrl}/campus/findById?id=${campusId}`)
+          .then(res => {
+            if (res.data.code === 200) {
+              // 成功获取数据，将校区名称赋值给 user 对象
+              const campusInfo = res.data.data;
+              if (campusInfo && campusInfo.length > 0) {
+                this.$set(this.user, 'campusName', campusInfo[0].name);
+              } else {
+                this.$set(this.user, 'campusName', '未知校区');
+              }
+            } else {
+              // 请求失败或数据不存在
+              this.$set(this.user, 'campusName', '获取失败');
+            }
+          })
+          .catch(error => {
+            console.error('查询校区信息失败：', error);
+            this.$set(this.user, 'campusName', '网络错误');
+          });
+    },
+
     checkKeyStatus() {
       if (this.user.superAdminKey) {
         const now = new Date();

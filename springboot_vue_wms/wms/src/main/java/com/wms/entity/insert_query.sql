@@ -13,7 +13,7 @@ INSERT INTO campuses (name, address, contact_person, contact_phone, contact_emai
 INSERT INTO user (no, name, password, age, sex, phone, role_id, isvalid, campus_id, balance) VALUES
 -- 管理员
 ('1', 'SuperAdminTest', '123', 35, 1, '13800000011', 0, 'Y', 1, 0),
-('2', 'AdminTest', '123', 35, 1, '13800000022', 1, 'Y', 1, 0),
+('2', 'AdminTest', '123', 35, 1, '13800000022', 1, 'Y', 2, 0),
 ('3', 'CoachTest', '123', 35, 1, '13800000033', 2, 'Y', 1, 0),
 ('4', 'StudentTest', '123', 15, 1, '13800000044', 3, 'Y', 1, 10000),
 ('admin001', '超级管理员', '123456', 35, 1, '13800000001', 0, 'Y', 1, 0),
