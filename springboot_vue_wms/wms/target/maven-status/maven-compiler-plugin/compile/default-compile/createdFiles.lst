@@ -33,6 +33,7 @@ com\wms\mapper\MatchScheduleMapper.class
 com\wms\entity\PaymentRecord.class
 com\wms\mapper\CourseMapper.class
 com\wms\entity\match_registration.class
+com\wms\service\StudentCourseSelectionService.class
 com\wms\entity\Storage.class
 com\wms\mapper\StudentUsersMapper.class
 com\wms\service\impl\StudentServiceImpl.class
@@ -60,6 +61,7 @@ com\wms\entity\ResponseMessage.class
 com\wms\entity\match_schedule.class
 com\wms\mapper\CoachSelectionMapper.class
 com\wms\common\CodeGenerator$2.class
+com\wms\service\impl\StudentCourseSelectionServiceImpl.class
 com\wms\controller\SelectionController.class
 com\wms\mapper\SystemLogMapper.class
 com\wms\service\impl\CoachSelectionServiceImpl.class
@@ -78,6 +80,7 @@ com\wms\service\impl\CoachCancelServiceImpl.class
 com\wms\common\Loggable.class
 com\wms\controller\UserController.class
 com\wms\service\impl\CourseInformationServiceImpl.class
+com\wms\controller\StudentCourseController.class
 com\wms\controller\RecordController.class
 com\wms\dto\CoachSelectionDTO.class
 com\wms\mapper\GoodsMapper.class
@@ -104,9 +107,11 @@ com\wms\service\CoachSelectionService.class
 com\wms\common\CorsConfig.class
 com\wms\mapper\CoachCourseSelectionMapper.class
 com\wms\controller\CoachCourseController.class
+com\wms\mapper\CoachSchedulingMapper.class
 com\wms\mapper\CampusMapper.class
 com\wms\service\PaymentService.class
 com\wms\entity\coach_cancels_class.class
+com\wms\controller\StudentCourseSelectionController.class
 com\wms\service\MatchScheduleService.class
 com\wms\entity\Record.class
 com\wms\controller\GoodstypeController.class
@@ -117,6 +122,7 @@ com\wms\entity\MonthlyCompetitionRegistration.class
 com\wms\mapper\CoachFindStudentMapper.class
 com\wms\service\GoodstypeService.class
 com\wms\entity\MonthlyCompetition.class
+com\wms\mapper\StudentCourseSelectionMapper.class
 com\wms\entity\PaymentType.class
 com\wms\entity\coach_scheduling.class
 com\wms\controller\GoodsController.class
