@@ -68,6 +68,8 @@ export default {
               .then((res) => {
                 if (res.code == 200) {
                   sessionStorage.setItem("CurUser", JSON.stringify(res.data.user));
+                  // 保存登录响应，用于密钥验证
+                  sessionStorage.setItem("loginResponse", JSON.stringify(res));
                   localStorage.setItem("user", JSON.stringify(res.data));
                   const menu = res.data.menu;
                   this.$store.commit("setMenu", menu); // 假定您有 Vuex store
@@ -75,7 +77,14 @@ export default {
                   const user = res.data.user;
                   const roleId = user.roleId;
 
-                  if (roleId === 0) {
+                  // 检查是否需要密钥处理
+                  if (res.needKeyGeneration) {
+                    this.$router.replace("/SuperAdmin");
+                  } else if (res.needKeyVerification) {
+                    this.$router.replace("/SuperAdmin");
+                  } else if (roleId === 0) {
+                    // 超级管理员已验证密钥
+                    sessionStorage.setItem("superAdminKeyVerified", "true");
                     this.$router.replace("/SuperAdmin");
                   } else if (roleId === 1) {
                     this.$router.replace("/admin");
@@ -105,7 +114,7 @@ export default {
     coachRegister() {
       this.$router.push("/register?role=coach");
     },
-  },
+  }
 };
 </script>
 

@@ -9,6 +9,12 @@ CREATE TABLE `user` (
   `phone` varchar(20) DEFAULT NULL COMMENT '电话',
   `role_id` int(11) DEFAULT NULL COMMENT '角色 0超级管理员，1管理员，2普通账号',
   `isValid` varchar(4) DEFAULT 'Y' COMMENT '是否有效，Y有效，其他无效',
+  `campus_id` int(11) DEFAULT NULL COMMENT '所属校区ID',
+  `balance` decimal(10,2) DEFAULT 0.00 COMMENT '账户余额',
+  `super_admin_key` varchar(32) DEFAULT NULL COMMENT '超级管理员密钥',
+  `key_created_time` datetime DEFAULT NULL COMMENT '密钥创建时间',
+  `key_expired_time` datetime DEFAULT NULL COMMENT '密钥过期时间',
+  `device_id` varchar(100) DEFAULT NULL COMMENT '设备标识',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
