@@ -260,7 +260,6 @@ const routes = [
         name: 'studentRecharge',
         component: () => import('../components/student/Recharge.vue'),
         children: [
-
         ]
     },
     {

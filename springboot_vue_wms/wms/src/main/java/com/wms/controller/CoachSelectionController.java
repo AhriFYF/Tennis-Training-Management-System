@@ -62,8 +62,8 @@ public class CoachSelectionController {
                     return Result.error("同意失败");
                 }
             } else {
-                // 拒绝请求，直接删除记录
-                boolean success = coachSelectionService.removeSelection(selectionId);
+                // 拒绝请求，设置状态为"2"
+                boolean success = coachSelectionService.processSelection(selectionId, "2");
                 if (success) {
                     return Result.success("拒绝成功");
                 } else {

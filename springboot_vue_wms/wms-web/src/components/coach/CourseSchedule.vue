@@ -158,8 +158,10 @@ export default {
         disabledDate: (time) => {
           if (this.courseForm.courseStartTime) {
             const startTime = new Date(this.courseForm.courseStartTime).getTime();
+            // 禁止选择开始时间之前的时间（包括同一天的早些时间）
             return time.getTime() <= startTime;
           }
+          // 禁止选择今天之前的日期
           return time.getTime() < Date.now() - 8.64e7;
         }
       }

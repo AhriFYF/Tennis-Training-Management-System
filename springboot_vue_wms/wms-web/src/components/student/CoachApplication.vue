@@ -340,8 +340,8 @@ export default {
     },
     // 检查是否已申请某教练
     isApplied(coachId) {
-      // 检查在申请中
-      const inApplication = this.applications.some(app => app.coachId === coachId && app.status === '待确认');
+      // 检查在申请中（不包括已拒绝的申请）
+      const inApplication = this.applications.some(app => app.coachId === coachId && app.status !== '已拒绝');
       // 检查已确认
       const confirmed = this.myCoaches.some(coach => coach.coachId === coachId);
       return inApplication || confirmed;

@@ -39,8 +39,8 @@ public class CoachSelectionServiceImpl extends ServiceImpl<CoachSelectionMapper,
     @Transactional
     public boolean processSelection(Integer selectionId, String status) {
         try {
-            // 验证状态值（只允许设置为"1"，即同意）
-            if (!"1".equals(status)) {
+            // 验证状态值（只允许设置为"1"或"2"）
+            if (!"1".equals(status) && !"2".equals(status)) {
                 throw new IllegalArgumentException("状态值无效");
             }
 
@@ -123,6 +123,8 @@ public class CoachSelectionServiceImpl extends ServiceImpl<CoachSelectionMapper,
             // 根据状态值设置格式化的状态显示
             if ("1".equals(application.getStatus())) {
                 dto.setStatus("已同意");
+            } else if ("2".equals(application.getStatus())) {
+                dto.setStatus("已拒绝");
             } else {
                 dto.setStatus("未同意");
             }
@@ -144,6 +146,7 @@ public class CoachSelectionServiceImpl extends ServiceImpl<CoachSelectionMapper,
     public int countApplications(Integer studentId) {
         LambdaQueryWrapper<coach_selection> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(coach_selection::getStudentId, studentId);
+        wrapper.ne(coach_selection::getStatus, "2"); // 不计算被拒绝的申请
         return this.count(wrapper);
     }
 
@@ -152,6 +155,7 @@ public class CoachSelectionServiceImpl extends ServiceImpl<CoachSelectionMapper,
         LambdaQueryWrapper<coach_selection> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(coach_selection::getStudentId, studentId);
         wrapper.eq(coach_selection::getCoachId, coachId);
+        wrapper.ne(coach_selection::getStatus, "2"); // 不计算被拒绝的申请
         return this.count(wrapper) > 0;
     }
 
@@ -160,6 +164,7 @@ public class CoachSelectionServiceImpl extends ServiceImpl<CoachSelectionMapper,
         LambdaQueryWrapper<coach_selection> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(coach_selection::getStudentId, studentId);
         wrapper.eq(coach_selection::getCoachId, coachUserId); // 使用教练的userId进行查询
+        wrapper.ne(coach_selection::getStatus, "2"); // 不计算被拒绝的申请
         return this.count(wrapper) > 0;
     }
 
