@@ -122,10 +122,12 @@
               size="small"
               style="width: 100%"
           >
-            <el-option label="北京校区" value="1" />
-            <el-option label="上海校区" value="2" />
-            <el-option label="广州校区" value="3" />
-            <el-option label="深圳校区" value="4" />
+            <el-option 
+                v-for="campus in campuses" 
+                :key="campus.id" 
+                :label="campus.name" 
+                :value="campus.id.toString()" 
+            />
           </el-select>
         </el-form-item>
 
@@ -246,6 +248,7 @@ export default {
       role: 'student',
       submitting: false,
       photoUrl: "",
+      campuses: [], // 校区数据
       registerForm: {
         // 通用字段
         no: "",
@@ -323,8 +326,26 @@ export default {
     // 从URL参数获取角色类型
     const urlParams = new URLSearchParams(window.location.search);
     this.role = urlParams.get('role') || 'student';
+    // 获取校区数据
+    this.fetchCampuses();
   },
   methods: {
+    // 获取校区数据
+    fetchCampuses() {
+      this.$axios.get('/campus/list')
+          .then(response => {
+            if (response.data.code === 200) {
+              this.campuses = response.data.data;
+            } else {
+              this.$message.error('获取校区数据失败');
+            }
+          })
+          .catch(error => {
+            console.error('获取校区数据错误:', error);
+            this.$message.error('获取校区数据失败，请稍后重试');
+          });
+    },
+
     handlePhotoChange(file) {
       this.registerForm.photo = file.raw;
       this.photoUrl = URL.createObjectURL(file.raw);
@@ -355,7 +376,7 @@ export default {
         name: this.registerForm.name,
         phone: this.registerForm.phone,
         age: this.registerForm.age,
-        sex: this.registerForm.gender === 'M' ? 1 : 0,
+        gender: this.registerForm.gender,
         campusId: parseInt(this.registerForm.campusId),
         roleId: 3, // 学生角色
         isvalid: 'Y',
