@@ -262,7 +262,12 @@ const routes = [
         children: [
 
         ]
-    }
+    },
+    {
+        path: '/student-course-evaluation',
+        name: 'StudentCourseEvaluation',
+        component: () => import('../components/StudentCourseEvaluation'),
+    },
 ]
 
 const router = new VueRouter({

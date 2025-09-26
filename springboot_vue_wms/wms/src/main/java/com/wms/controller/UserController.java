@@ -138,7 +138,32 @@ public class UserController {
             System.out.println("Login success, campus ID is: " + loginUser.getCampusId());
             request.getSession().setAttribute("userId", loginUser.getId());
 
-            // 3. 如果是超级管理员，检查是否需要密钥验证
+            // 3. 检查是否为教练角色（roleId=2）并且需要审核
+            if (loginUser.getRoleId() == 2) { // 2表示教练角色
+                // 查询教练详细信息
+                coach_users coachUser = coachUsersService.lambdaQuery()
+                        .eq(coach_users::getUserId, loginUser.getId())
+                        .one();
+                
+                // 检查教练是否存在
+                if (coachUser == null) {
+                    return Result.fail("教练信息不存在，请联系管理员");
+                }
+                
+                // 检查审核状态
+                System.out.println("+++++++++++++++++++++++++" + coachUser.getAuditStatus());
+                if (coachUser.getAuditStatus() != 1) { // 1表示审核通过
+                    if (coachUser.getAuditStatus() == 0) {
+                        return Result.fail("您的账户正在审核中，请耐心等待管理员审核");
+                    } else if (coachUser.getAuditStatus() == 2) {
+                        return Result.fail("您的账户审核未通过，请联系管理员");
+                    } else {
+                        return Result.fail("您的账户状态异常，请联系管理员");
+                    }
+                }
+            }
+
+            // 4. 如果是超级管理员，检查是否需要密钥验证
             if (loginUser.getRoleId() == 0) { // 0表示超级管理员
                 // 检查IP地址限制
                 String clientIpAddress = getClientIpAddress(request);
@@ -170,12 +195,12 @@ public class UserController {
                 }
             }
 
-            // 4. 查询该角色对应的菜单权限
+            // 5. 查询该角色对应的菜单权限
             List<Menu> menuList = menuService.lambdaQuery()
                     .like(Menu::getMenuright, loginUser.getRoleId())
                     .list();
 
-            // 5. 构建返回给前端的数据
+            // 6. 构建返回给前端的数据
             HashMap<String, Object> res = new HashMap<>();
             res.put("user", loginUser);
             res.put("menu", menuList);

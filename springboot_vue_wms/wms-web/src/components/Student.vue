@@ -42,6 +42,10 @@
             <i class="el-icon-time"></i>
             <span slot="title">月赛赛程</span>
           </el-menu-item>
+          <el-menu-item index="/student-course-evaluation">
+            <i class="el-icon-star-off"></i>
+            <span slot="title">课程评价</span>
+          </el-menu-item>
           <el-menu-item index="/student-recharge">
             <i class="el-icon-money"></i>
             <span slot="title">账户充值</span>
