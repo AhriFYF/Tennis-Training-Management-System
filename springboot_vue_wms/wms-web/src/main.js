@@ -9,8 +9,8 @@ import router from './router';
 import store from './store';
 Vue.prototype.$axios=axios;
 Vue.prototype.$http = axios
-Vue.prototype.$httpUrl='http://10.67.41.194:8080'
-axios.defaults.baseURL = 'http://10.67.41.194:8080'
+Vue.prototype.$httpUrl='http://172.17.5.101:8080'
+axios.defaults.baseURL = 'http://172.17.5.101:8080'
 axios.defaults.withCredentials = true;
 Vue.config.productionTip = false
 //Vue.use(ElementUI);
